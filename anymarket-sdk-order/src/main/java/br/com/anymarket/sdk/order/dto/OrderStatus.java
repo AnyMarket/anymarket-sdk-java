@@ -8,6 +8,7 @@ import java.util.List;
 public enum OrderStatus {
 
     PENDING("Pendente"),
+    DELIVERY_ISSUE("Problema no Envio"),
     PAID_WAITING_SHIP("Pago", PENDING),
     INVOICED("Faturado", PENDING, PAID_WAITING_SHIP),
     PAID_WAITING_DELIVERY("Enviado", PENDING, PAID_WAITING_SHIP, INVOICED),
