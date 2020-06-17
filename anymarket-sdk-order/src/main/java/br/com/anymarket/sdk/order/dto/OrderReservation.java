@@ -1,6 +1,7 @@
 package br.com.anymarket.sdk.order.dto;
 
 import br.com.anymarket.sdk.MarketPlace;
+import br.com.anymarket.sdk.serializer.MarketPlaceProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
@@ -17,6 +18,7 @@ public class OrderReservation {
     @JsonProperty("marketPlaceId")
     private String marketPlaceId;
 
+    @MarketPlaceProperty
     @JsonProperty("marketPlace")
     private MarketPlace marketPlace;
 

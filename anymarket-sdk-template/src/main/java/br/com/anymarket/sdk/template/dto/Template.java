@@ -1,6 +1,7 @@
 package br.com.anymarket.sdk.template.dto;
 
 import br.com.anymarket.sdk.MarketPlace;
+import br.com.anymarket.sdk.serializer.MarketPlaceProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Template {
@@ -35,6 +36,7 @@ public class Template {
     @JsonProperty("removeDescriptionTableContent")
     private boolean removeDescriptionTableContent = false;
 
+    @MarketPlaceProperty
     @JsonProperty("marketPlace")
     private MarketPlace marketPlace;
 

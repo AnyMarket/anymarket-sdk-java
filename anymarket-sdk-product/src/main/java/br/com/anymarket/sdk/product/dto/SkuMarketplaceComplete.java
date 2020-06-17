@@ -4,6 +4,7 @@ import br.com.anymarket.sdk.MarketPlace;
 import br.com.anymarket.sdk.SKUMpOrigin;
 import br.com.anymarket.sdk.dto.AvailableStockDTO;
 import br.com.anymarket.sdk.dto.IndividualAvailableStockDTO;
+import br.com.anymarket.sdk.serializer.MarketPlaceProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,6 +31,7 @@ public class SkuMarketplaceComplete implements Serializable {
     @JsonProperty(value = "idInMarketplace")
     private String idInMarketplace;
 
+    @MarketPlaceProperty
     @JsonProperty(value = "marketPlace")
     private MarketPlace marketPlace;
 

@@ -1,6 +1,7 @@
 package br.com.anymarket.sdk.order.dto;
 
 import br.com.anymarket.sdk.MarketPlace;
+import br.com.anymarket.sdk.serializer.MarketPlaceProperty;
 import br.com.anymarket.sdk.serializer.SDKDateSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,6 +28,7 @@ public class Order {
     @JsonProperty("marketPlaceNumber")
     private String marketPlaceNumber;
 
+    @MarketPlaceProperty
     @JsonProperty("marketPlace")
     private MarketPlace marketPlace;
 

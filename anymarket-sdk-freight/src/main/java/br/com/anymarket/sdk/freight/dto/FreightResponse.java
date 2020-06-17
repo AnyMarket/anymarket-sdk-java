@@ -1,6 +1,7 @@
 package br.com.anymarket.sdk.freight.dto;
 
 import br.com.anymarket.sdk.MarketPlace;
+import br.com.anymarket.sdk.serializer.MarketPlaceProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 public class FreightResponse {
 
+    @MarketPlaceProperty
     @JsonProperty(value = "marketPlace")
     private MarketPlace marketPlace;
 
