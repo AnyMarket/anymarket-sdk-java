@@ -226,7 +226,7 @@ public class SkuMarketPlaceService extends HttpService {
         Objects.requireNonNull(idSkuMarketplace, "Informe o idSkuMarketplace");
         Objects.requireNonNull(idAccounts, "Informe os idAccounts");
 
-        String idAccountsParameter = idAccounts.stream().map(Object::toString).collect(Collectors.joining(","));
+        String idAccountsParameter = idAccounts.stream().map(id -> id.toString()).collect(Collectors.joining(","));
 
         String endpoint = String.format("/skus/marketplaces/%s/complete/forAccounts?idAccounts=%s", idSkuMarketplace, idAccountsParameter);
 
