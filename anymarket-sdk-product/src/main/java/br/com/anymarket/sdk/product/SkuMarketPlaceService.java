@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static br.com.anymarket.sdk.http.headers.AnymarketHeaderUtils.addModuleOriginHeader;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -221,13 +222,40 @@ public class SkuMarketPlaceService extends HttpService {
         return getSkuMarketplaceComplete(idSkuMarketplace, endpoint, headers);
     }
 
-    public SkuMarketplaceComplete getSkuMarketplaceCompleteByIdAndIdAccount(Long idSkuMarketplace, Long idAccount, IntegrationHeader... headers) {
+    public List<SkuMarketplaceComplete> getSkuMarketplaceCompleteByIdAndIdAccounts(Long idSkuMarketplace, List<Long> idAccounts, IntegrationHeader... headers) {
         Objects.requireNonNull(idSkuMarketplace, "Informe o idSkuMarketplace");
-        Objects.requireNonNull(idAccount, "Informe o idAccount");
+        Objects.requireNonNull(idAccounts, "Informe os idAccounts");
 
-        String endpoint = String.format("/skus/marketplaces/%s/complete/%s", idSkuMarketplace, idAccount);
+        String idAccountsParameter = idAccounts.stream().map(Object::toString).collect(Collectors.joining(","));
 
-        return getSkuMarketplaceComplete(idSkuMarketplace, endpoint, headers);
+        String endpoint = String.format("/skus/marketplaces/%s/complete/forAccounts?idAccounts=%s", idSkuMarketplace, idAccountsParameter);
+
+        return getSkuMarketplaceCompleteList(idSkuMarketplace, endpoint, headers);
+    }
+
+
+    private List<SkuMarketplaceComplete> getSkuMarketplaceCompleteList(Long idSkuMarketplace, String endpoint, IntegrationHeader[] headers) {
+        GetRequest getRequest = get(apiEndPoint.concat(endpoint), addModuleOriginHeader(headers, this.moduleOrigin));
+        final List<SkuMarketplaceComplete> allSkuMps = Lists.newArrayList();
+
+        try {
+            LOG.info("Chamando endpoint {}", apiEndPoint.concat(endpoint));
+            Response response = execute(getRequest);
+            LOG.info("Response status {}", response.getStatus());
+
+            if (response.getStatus() == HttpStatus.SC_OK) {
+                Page<SkuMarketplaceComplete> rootResponse = response.to(new TypeReference<Page<SkuMarketplaceComplete>>() {});
+                allSkuMps.addAll(rootResponse.getContent());
+                return allSkuMps;
+            } else {
+                throw new NotFoundException(String.format("SkuMarketplace not found for id %s.", idSkuMarketplace));
+            }
+        } catch (HttpServerException e) {
+            throw e;
+        } catch (Exception e) {
+            LOG.error("Ocorreu um erro ao chamar endpoint {}", this.apiEndPoint.concat(endpoint), e);
+            throw new NotFoundException(String.format("SkuMarketplace not found for id %s.", idSkuMarketplace));
+        }
     }
 
     private SkuMarketplaceComplete getSkuMarketplaceComplete(Long idSkuMarketplace, String endpoint, IntegrationHeader[] headers) {
