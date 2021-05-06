@@ -18,6 +18,7 @@ import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -236,7 +237,6 @@ public class SkuMarketPlaceService extends HttpService {
 
     private List<SkuMarketplaceComplete> getSkuMarketplaceCompleteList(Long idSkuMarketplace, String endpoint, IntegrationHeader[] headers) {
         GetRequest getRequest = get(apiEndPoint.concat(endpoint), addModuleOriginHeader(headers, this.moduleOrigin));
-        final List<SkuMarketplaceComplete> allSkuMps = Lists.newArrayList();
 
         try {
             LOG.info("Chamando endpoint {}", apiEndPoint.concat(endpoint));
@@ -244,9 +244,8 @@ public class SkuMarketPlaceService extends HttpService {
             LOG.info("Response status {}", response.getStatus());
 
             if (response.getStatus() == HttpStatus.SC_OK) {
-                Page<SkuMarketplaceComplete> rootResponse = response.to(new TypeReference<Page<SkuMarketplaceComplete>>() {});
-                allSkuMps.addAll(rootResponse.getContent());
-                return allSkuMps;
+                return Arrays.asList(response.to(SkuMarketplaceComplete[].class));
+
             } else {
                 throw new NotFoundException(String.format("SkuMarketplace not found for id %s.", idSkuMarketplace));
             }
