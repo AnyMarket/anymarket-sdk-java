@@ -2,6 +2,7 @@ package br.com.anymarket.sdk.product;
 
 import br.com.anymarket.sdk.MarketPlace;
 import br.com.anymarket.sdk.SDKConstants;
+import br.com.anymarket.sdk.dto.AvailableStockForAccountDTO;
 import br.com.anymarket.sdk.exception.HttpServerException;
 import br.com.anymarket.sdk.exception.NotFoundException;
 import br.com.anymarket.sdk.http.HttpService;
@@ -223,15 +224,48 @@ public class SkuMarketPlaceService extends HttpService {
         return getSkuMarketplaceComplete(idSkuMarketplace, endpoint, headers);
     }
 
-    public List<SkuMarketplaceComplete> getSkuMarketplaceCompleteByIdAndIdAccounts(Long idSkuMarketplace, List<Long> idAccounts, IntegrationHeader... headers) {
+    public SkuMarketplaceComplete getSkuMarketplaceCompleteByIdAndIdAccount(Long idSkuMarketplace, Long idAccount, IntegrationHeader... headers) {
+        Objects.requireNonNull(idSkuMarketplace, "Informe o idSkuMarketplace");
+        Objects.requireNonNull(idAccount, "Informe os idAccounts");
+
+
+        String endpoint = String.format("/skus/marketplaces/%s/complete/%s", idSkuMarketplace, idAccount);
+
+        return getSkuMarketplaceComplete(idSkuMarketplace, endpoint, headers);
+    }
+
+    public List<AvailableStockForAccountDTO> getAvailableStockByIdAndIdAccounts(Long idSkuMarketplace, List<Long> idAccounts, IntegrationHeader... headers) {
         Objects.requireNonNull(idSkuMarketplace, "Informe o idSkuMarketplace");
         Objects.requireNonNull(idAccounts, "Informe os idAccounts");
 
-        String idAccountsParameter = idAccounts.stream().map(id -> id.toString()).collect(Collectors.joining(","));
+        StringBuilder idAccountsParameter = new StringBuilder();
+        for (int index = 0; index < idAccounts.size(); index++) {
+            idAccountsParameter.append(idAccounts.get(index).toString());
+            if (idAccounts.size() - 1  != index) {
+                idAccountsParameter.append(",");
+            }
+        }
 
-        String endpoint = String.format("/skus/marketplaces/%s/complete/forAccounts?idAccounts=%s", idSkuMarketplace, idAccountsParameter);
+        String endpoint = String.format("/skus/marketplaces/%s/availableStockForAccounts?idAccounts=%s", idSkuMarketplace, idAccountsParameter);
 
-        return getSkuMarketplaceCompleteList(idSkuMarketplace, endpoint, headers);
+        GetRequest getRequest = get(apiEndPoint.concat(endpoint), addModuleOriginHeader(headers, this.moduleOrigin));
+
+        try {
+            LOG.info("Chamando endpoint {}", apiEndPoint.concat(endpoint));
+            Response response = execute(getRequest);
+            LOG.info("Response status {}", response.getStatus());
+
+            if (response.getStatus() == HttpStatus.SC_OK) {
+                return Arrays.asList(response.to(AvailableStockForAccountDTO[].class));
+            } else {
+                throw new NotFoundException(String.format("SkuMarketplace not found for id %s.", idSkuMarketplace));
+            }
+        } catch (HttpServerException e) {
+            throw e;
+        } catch (Exception e) {
+            LOG.error("Ocorreu um erro ao chamar endpoint {}", this.apiEndPoint.concat(endpoint), e);
+            throw new NotFoundException(String.format("SkuMarketplace not found for id %s.", idSkuMarketplace));
+        }
     }
 
 
