@@ -80,14 +80,17 @@ public enum MarketPlace {
     RIACHUELO("Riachuelo"),
     CONECTA_LA("Conecta La"),
     OLIST("OLIST"),
-    RENNER("Renner"),
+    RENNER("Renner e Camicado"),
     AJPLACE("AJPlace"),
     CREDITAS("Creditas"),
     SHOPEE("Shopee"),
     CASSOL_CENTERLAR("Cassol Centerlar"),
     MAXMANIA("Maxmania"),
     ONSTORES("ONSTORES"),
-    HOMEREFILL("Homerefill");
+    HOMEREFILL("Homerefill"),
+    DOTZ("Dotz"),
+    DECATHLON("Decathlon"),
+    FOODIES_STORE("Foodies Store");
 
     private String name;
 
