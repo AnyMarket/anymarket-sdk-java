@@ -91,7 +91,8 @@ public enum MarketPlace {
     DOTZ("Dotz"),
     DECATHLON("Decathlon"),
     FOODIES_STORE("Foodies Store"),
-    FACILY("Facily");
+    FACILY("Facily"),
+    MEGATONE("MEGATONE");
 
     private String name;
 
