@@ -92,7 +92,11 @@ public enum MarketPlace {
     DECATHLON("Decathlon"),
     FOODIES_STORE("Foodies Store"),
     ON_STORES_VTEX("On Stores Vtex"),
-    FACILY("Facily");
+    FACILY("Facily"),
+    CASA_VIDEO("Casa & Vídeo"),
+    SUPERCAMPO("SuperCampo"),
+    FRAVEGA_MARKET("FravegaMarket"),
+    MEGATONE("MEGATONE");
 
     private String name;
 

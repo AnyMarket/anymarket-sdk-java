@@ -36,6 +36,28 @@ public class PaymentResource {
     @JsonProperty("dueDate")
     private Date dueDate;
 
+    @JsonProperty("cardOperator")
+    private String cardOperator;
+
+    @JsonProperty("orderAuthorizationCardCode")
+    private String orderAuthorizationCardCode;
+
+    public String getCardOperator() {
+        return cardOperator;
+    }
+
+    public void setCardOperator(String cardOperator) {
+        this.cardOperator = cardOperator;
+    }
+
+    public String getOrderAuthorizationCardCode() {
+        return orderAuthorizationCardCode;
+    }
+
+    public void setOrderAuthorizationCardCode(String orderAuthorizationCardCode) {
+        this.orderAuthorizationCardCode = orderAuthorizationCardCode;
+    }
+
     public String getMethod() {
         return method;
     }
