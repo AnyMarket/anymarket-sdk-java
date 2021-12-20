@@ -90,7 +90,9 @@ public enum MarketPlace {
     HOMEREFILL("Homerefill"),
     DOTZ("Dotz"),
     DECATHLON("Decathlon"),
-    FOODIES_STORE("Foodies Store");
+    FOODIES_STORE("Foodies Store"),
+    ON_STORES_VTEX("On Stores Vtex"),
+    FACILY("Facily");
 
     private String name;
 
