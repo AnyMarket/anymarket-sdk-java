@@ -25,6 +25,7 @@
     <module>anymarket-sdk-profile</module>
     <module>anymarket-sdk-automatic-message</module>
   </modules>
+  
   <packaging>pom</packaging>
 
   <name>SDK de Integração com a APIv2 do AnyMarket</name>
