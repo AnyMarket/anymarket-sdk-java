@@ -6,7 +6,6 @@ public enum MarketPlace {
     MERCADO_LIVRE("Mercado Livre"),
     B2W("B2W"),
     ECOMMERCE("E-Commerce"),
-    WALMART("Walmart"),
     VTEX("VTEX"),
     GFG("GFG - Dafiti"),
     LINIO("Linio"),

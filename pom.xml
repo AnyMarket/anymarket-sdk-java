@@ -4,7 +4,7 @@
 
   <groupId>br.com.anymarket.sdk</groupId>
   <artifactId>anymarket-sdk-java</artifactId>
-  <version>0.81.2</version>
+  <version>0.82.0</version>
   <modules>
     <module>anymarket-sdk-stock</module>
     <module>anymarket-sdk-order</module>
@@ -25,7 +25,7 @@
     <module>anymarket-sdk-profile</module>
     <module>anymarket-sdk-automatic-message</module>
   </modules>
-  
+
   <packaging>pom</packaging>
 
   <name>SDK de Integração com a APIv2 do AnyMarket</name>
