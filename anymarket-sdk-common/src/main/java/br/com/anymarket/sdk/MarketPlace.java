@@ -99,7 +99,8 @@ public enum MarketPlace {
     BAIANAO("Baianao"),
     MARISA("Marisa"),
     LOJA_DO_MECANICO("Loja do Mecânico"),
-    TA_TASHOP("ta-taShop");
+    TA_TASHOP("ta-taShop"),
+    ALIEXPRESS("AliExpress");
 
     private String name;
 
