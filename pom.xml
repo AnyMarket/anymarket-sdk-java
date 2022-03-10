@@ -194,6 +194,18 @@
           <compilerArgument>-parameters</compilerArgument>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>com.amashchenko.maven.plugin</groupId>
+        <artifactId>gitflow-maven-plugin</artifactId>
+        <version>1.14.3</version>
+        <configuration>
+          <versionDigitToIncrement>1</versionDigitToIncrement>
+          <pushRemote>true</pushRemote>
+          <useSnapshotInDevelop>true</useSnapshotInDevelop>
+          <commitDevelopmentVersionAtStart>true</commitDevelopmentVersionAtStart>
+          <useSnapshotInHotfix>true</useSnapshotInHotfix>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
