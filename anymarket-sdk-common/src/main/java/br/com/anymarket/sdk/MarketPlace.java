@@ -101,7 +101,8 @@ public enum MarketPlace {
     LOJA_DO_MECANICO("Loja do Mecânico"),
     TA_TASHOP("ta-taShop"),
     ALIEXPRESS("AliExpress"),
-    WOOD_PRIME("Wood Prime");
+    WOOD_PRIME("Wood Prime"),
+    LOJA_SUMUP("Loja SumUp");
 
     private String name;
 
