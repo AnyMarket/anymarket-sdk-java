@@ -33,6 +33,7 @@ public class SkuMarketPlaceService extends HttpService {
     private static final String SKUMP_URI = "/skus/%s/marketplaces";
     private static final String SKUMP_UPDATE_PRICE_URI = "/skus/%s/updatePrice/%s";
     private static final String SKUMP_ALL_MARKETPLACE = "/skus/%s/all";
+    private static final String SKUMP_SEARCH_MARKETPLACE = "/skus/%s/search";
     private static final String SKUMP_SEND_URI = "/skus/%s/marketplaces/%s/send";
     public static final String NEXT = "next";
     public static final String SKUMP_NOT_INFORMED = "Informe o idSkuMarketplace";
@@ -272,4 +273,35 @@ public class SkuMarketPlaceService extends HttpService {
             throw new NotFoundException(String.format(SKUMP_NOT_FOUND, idSkuMarketplace));
         }
     }
+
+    public SkuMarketPlace findByMarketplaceAndIdAccountAndSkuInMP(MarketPlace marketPlace, Long idAccount, String skuInMarketplace, IntegrationHeader... headers) {
+        Objects.requireNonNull(marketPlace, "Informe o Marketplace");
+        Objects.requireNonNull(idAccount, "Informe o idAccount");
+        Objects.requireNonNull(skuInMarketplace, "Informe o skuInMarketplace");
+
+        String urlFormated = String.format(apiEndPoint.concat(SKUMP_SEARCH_MARKETPLACE), marketPlace);
+
+        String finalUrl = urlFormated.concat("?idAccount=").concat(String.valueOf(idAccount)).concat("&skuInMarketplace=").concat(skuInMarketplace);
+
+        final GetRequest getRequest = get(finalUrl, addModuleOriginHeader(headers, this.moduleOrigin));
+        final Response response = execute(getRequest);
+
+        return response.to(new TypeReference<SkuMarketPlace>() {});
+    }
+
+    public SkuMarketPlace findByMarketplaceAndIdAccountAndIdInMP(MarketPlace marketPlace, Long idAccount, String idInMarketplace, IntegrationHeader... headers) {
+        Objects.requireNonNull(marketPlace, "Informe o Marketplace");
+        Objects.requireNonNull(idAccount, "Informe o idAccount");
+        Objects.requireNonNull(idInMarketplace, "Informe o skuInMarketplace");
+
+        String urlFormated = String.format(apiEndPoint.concat(SKUMP_SEARCH_MARKETPLACE), marketPlace);
+
+        String finalUrl = urlFormated.concat("?idAccount=").concat(String.valueOf(idAccount)).concat("&idInMarketplace=").concat(idInMarketplace);
+
+        final GetRequest getRequest = get(finalUrl, addModuleOriginHeader(headers, this.moduleOrigin));
+        final Response response = execute(getRequest);
+
+        return response.to(new TypeReference<SkuMarketPlace>() {});
+    }
+
 }
