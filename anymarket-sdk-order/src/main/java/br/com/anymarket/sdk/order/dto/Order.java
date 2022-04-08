@@ -173,7 +173,7 @@ public class Order {
     @JsonProperty("needCollect")
     private Boolean needCollect;
 
-    @JsonProperty("CollectRequestDate")
+    @JsonProperty("collectRequestDate")
     private Date collectRequestDate;
 
     public boolean isFrozen() {
