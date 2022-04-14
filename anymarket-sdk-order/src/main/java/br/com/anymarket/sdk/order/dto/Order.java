@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
+import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -174,6 +175,7 @@ public class Order {
     private Boolean needCollect;
 
     @JsonProperty("collectRequestDate")
+    @JsonSerialize(using = SDKDateSerializer.class)
     private Date collectRequestDate;
 
     public boolean isFrozen() {
