@@ -102,7 +102,8 @@ public enum MarketPlace {
     TA_TASHOP("ta-taShop"),
     ALIEXPRESS("AliExpress"),
     WOOD_PRIME("Wood Prime"),
-    LOJA_SUMUP("Loja SumUp");
+    LOJA_SUMUP("Loja SumUp"),
+    OLIST_NEW_API("OLIST New Api");
 
     private String name;
 
