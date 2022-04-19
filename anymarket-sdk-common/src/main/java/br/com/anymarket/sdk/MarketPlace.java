@@ -103,7 +103,8 @@ public enum MarketPlace {
     ALIEXPRESS("AliExpress"),
     WOOD_PRIME("Wood Prime"),
     LOJA_SUMUP("Loja SumUp"),
-    OLIST_NEW_API("OLIST New Api");
+    OLIST_NEW_API("OLIST New Api"),
+    NOVO_MUNDO_NEW_API("Novo Mundo Nova Api");
 
     private String name;
 
