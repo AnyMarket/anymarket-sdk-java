@@ -36,6 +36,12 @@ public class PaymentResource {
     @JsonProperty("dueDate")
     private Date dueDate;
 
+    @JsonProperty("gatewayFee")
+    private BigDecimal gatewayFee;
+
+    @JsonProperty("marketplaceFee")
+    private BigDecimal marketplaceFee;
+
     @JsonProperty("cardOperator")
     private String cardOperator;
 
@@ -120,5 +126,21 @@ public class PaymentResource {
 
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public BigDecimal getGatewayFee() {
+        return gatewayFee;
+    }
+
+    public void setGatewayFee(BigDecimal gatewayFee) {
+        this.gatewayFee = gatewayFee;
+    }
+
+    public BigDecimal getMarketplaceFee() {
+        return marketplaceFee;
+    }
+
+    public void setMarketplaceFee(BigDecimal marketplaceFee) {
+        this.marketplaceFee = marketplaceFee;
     }
 }
