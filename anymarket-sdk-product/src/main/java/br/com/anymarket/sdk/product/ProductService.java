@@ -18,12 +18,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.mashape.unirest.request.body.RequestBodyEntity;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static br.com.anymarket.sdk.http.headers.AnymarketHeaderUtils.addModuleOriginHeader;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -234,4 +232,21 @@ public class ProductService extends HttpService {
         throw new NotFoundException(format("Product(id: %s) active attributes not found to this marketplace(%s).", idProduct, marketPlace.name()));
     }
 
+
+    public List<String> findByOiAndIdsInClient(List<String> skus, IntegrationHeader... headers) {
+        List<String> results = new ArrayList<>();
+
+        Objects.requireNonNull(skus, "Informe no minimo um sku");
+
+        String url = apiEndPoint.concat(PRODUCTS_URI).concat("/").concat("bySkusInMarketplace").concat("?skus=" + StringUtils.join(skus, ","));
+
+        final GetRequest getRequest = get(url, addModuleOriginHeader(headers, this.moduleOrigin));
+        final Response response = execute(getRequest);
+        if (response.getStatus() == HttpStatus.SC_OK) {
+            List<String> rootResponse = response.to(new TypeReference<List<String>>() {
+            });
+            results.addAll(rootResponse);
+        }
+        return results;
+    }
 }
