@@ -37,6 +37,7 @@ public class SkuMarketPlaceService extends HttpService {
     private static final String SKUMP_ALL_MARKETPLACE = "/skus/%s/all";
     private static final String SKUMP_SEARCH_MARKETPLACE = "/skus/%s/search";
     private static final String SKUMP_SEND_URI = "/skus/%s/marketplaces/%s/send";
+    private static final String SKUMP_GET_RESERVATION_STOCK = "/skus/%s/%s/stock/reservation";
     public static final String NEXT = "next";
     public static final String SKUMP_NOT_INFORMED = "Informe o idSkuMarketplace";
     public static final String REQUESTING_ENDPOINT = "Chamando endpoint {}";
@@ -308,6 +309,27 @@ public class SkuMarketPlaceService extends HttpService {
         final Response response = execute(getRequest);
 
         return response.to(new TypeReference<SkuMarketPlace>() {});
+    }
+
+    public StockReservation findStockReservationBySkuInMarketPlace(MarketPlace marketPlace, Long idAccount, String skuInMarketplace, IntegrationHeader... headers) {
+        Objects.requireNonNull(marketPlace, "Informe o Marketplace");
+        Objects.requireNonNull(skuInMarketplace, "Informe o SkuInMarketPlace");
+
+        String urlFormated = String.format(apiEndPoint.concat(SKUMP_GET_RESERVATION_STOCK), marketPlace.name(), skuInMarketplace);
+
+        if(idAccount != null) {
+            urlFormated = urlFormated.concat("?idAccount=").concat(idAccount.toString());
+        }
+
+        final GetRequest getRequest = get(urlFormated, addModuleOriginHeader(headers, this.moduleOrigin));
+        final Response response = execute(getRequest);
+
+        if (response.getStatus() == HttpStatus.SC_OK) {
+            return response.to(new TypeReference<StockReservation>() {
+            });
+        } else {
+            throw new NotFoundException(String.format("StockReservation for Marketplace %s and skuInMarketPlace: %s not found.", marketPlace.name(), skuInMarketplace));
+        }
     }
 
     public List<String> findByOiAndMarketplaceAndSkusInMarketplace(MarketPlace marketPlace, List<String> skus, IntegrationHeader... headers) {
