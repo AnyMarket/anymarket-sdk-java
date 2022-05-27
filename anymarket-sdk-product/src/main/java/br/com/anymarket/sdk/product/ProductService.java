@@ -232,7 +232,6 @@ public class ProductService extends HttpService {
         throw new NotFoundException(format("Product(id: %s) active attributes not found to this marketplace(%s).", idProduct, marketPlace.name()));
     }
 
-
     public List<String> findByOiAndIdsInClient(List<String> skus, IntegrationHeader... headers) {
         List<String> results = new ArrayList<>();
 
