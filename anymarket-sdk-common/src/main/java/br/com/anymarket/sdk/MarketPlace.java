@@ -106,7 +106,8 @@ public enum MarketPlace {
     OLIST_NEW_API("OLIST New Api"),
     NOVO_MUNDO_NEW_API("Novo Mundo Nova Api"),
     SUA_COMPRA("Sua Compra"),
-    SHOPHUB("Shophub");
+    SHOPHUB("Shophub"),
+    POSTHAUS_NEW_API("Posthaus Nova Api");
 
     private String name;
 
