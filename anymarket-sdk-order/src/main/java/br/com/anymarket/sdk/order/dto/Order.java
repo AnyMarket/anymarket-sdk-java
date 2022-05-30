@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
+import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -169,6 +170,13 @@ public class Order {
 
     @JsonProperty("documentPaymentInstitution")
     private String documentPaymentInstitution;
+
+    @JsonProperty("needCollect")
+    private Boolean needCollect;
+
+    @JsonProperty("collectRequestDate")
+    @JsonSerialize(using = SDKDateSerializer.class)
+    private Date collectRequestDate;
 
     public boolean isFrozen() {
         return MarketPlace.NETSHOES.equals(marketPlace) && FROZEN.equalsIgnoreCase(Strings.nullToEmpty(marketPlaceStatus));
@@ -550,6 +558,22 @@ public class Order {
         this.documentIntermediator = documentIntermediator;
     }
 
+    public Boolean getNeedCollect() {
+        return needCollect;
+    }
+
+    public void setNeedCollect(Boolean needCollect) {
+        this.needCollect = needCollect;
+    }
+
+    public Date getCollectRequestDate() {
+        return collectRequestDate;
+    }
+
+    public void setCollectRequestDate(Date collectRequestDate) {
+        this.collectRequestDate = collectRequestDate;
+    }
+
     public String getIntermediateRegistrationId() {
         return intermediateRegistrationId;
     }
@@ -569,35 +593,35 @@ public class Order {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-            .add("id", id)
-            .add("marketPlaceId", marketPlaceId)
-            .add("marketPlaceNumber", marketPlaceNumber)
-            .add("marketPlace", marketPlace)
-            .add("createdAt", createdAt)
-            .add("paymentDate", paymentDate)
-            .add("transmissionStatus", transmissionStatus)
-            .add("status", status)
-            .add("marketPlaceUrl", marketPlaceUrl)
-            .add("marketPlaceShipmentStatus", marketPlaceShipmentStatus)
-            .add("invoice", invoice)
-            .add("marketPlaceStatus", marketPlaceStatus)
-            .add("marketPlaceStatusComplement", marketPlaceStatusComplement)
-            .add("discount", discount)
-            .add("freight", freight)
-            .add("productNet", productNet)
-            .add("productGross", productGross)
-            .add("total", total)
-            .add("interestValue", interestValue)
-            .add("observation", observation)
-            .add("tracking", tracking)
-            .add("items", items)
-            .add("anymarketAddress", anymarketOrderAddress)
-            .add("subChannel", subChannel)
-            .add("subChannelNormalized", subChannelNormalized)
-            .add("orderMessage", orderMessage)
-            .add("fulfillment", fulfillment)
-            .add("metadata", metadata)
-            .add("orderTypeName", orderTypeName)
-            .toString();
+                .add("id", id)
+                .add("marketPlaceId", marketPlaceId)
+                .add("marketPlaceNumber", marketPlaceNumber)
+                .add("marketPlace", marketPlace)
+                .add("createdAt", createdAt)
+                .add("paymentDate", paymentDate)
+                .add("transmissionStatus", transmissionStatus)
+                .add("status", status)
+                .add("marketPlaceUrl", marketPlaceUrl)
+                .add("marketPlaceShipmentStatus", marketPlaceShipmentStatus)
+                .add("invoice", invoice)
+                .add("marketPlaceStatus", marketPlaceStatus)
+                .add("marketPlaceStatusComplement", marketPlaceStatusComplement)
+                .add("discount", discount)
+                .add("freight", freight)
+                .add("productNet", productNet)
+                .add("productGross", productGross)
+                .add("total", total)
+                .add("interestValue", interestValue)
+                .add("observation", observation)
+                .add("tracking", tracking)
+                .add("items", items)
+                .add("anymarketAddress", anymarketOrderAddress)
+                .add("subChannel", subChannel)
+                .add("subChannelNormalized", subChannelNormalized)
+                .add("orderMessage", orderMessage)
+                .add("fulfillment", fulfillment)
+                .add("metadata", metadata)
+                .add("orderTypeName", orderTypeName)
+                .toString();
     }
 }

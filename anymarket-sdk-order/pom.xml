@@ -6,7 +6,7 @@
   <parent>
     <artifactId>anymarket-sdk-java</artifactId>
     <groupId>br.com.anymarket.sdk</groupId>
-    <version>0.84.0-SNAPSHOT</version>
+    <version>0.85.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>anymarket-sdk-order</artifactId>
@@ -23,6 +23,11 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.10.5</version>
     </dependency>
   </dependencies>
 
