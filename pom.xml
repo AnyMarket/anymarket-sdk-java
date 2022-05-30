@@ -201,9 +201,11 @@
         <configuration>
           <versionDigitToIncrement>1</versionDigitToIncrement>
           <pushRemote>true</pushRemote>
+          <useSnapshotInRelease>true</useSnapshotInRelease>
           <useSnapshotInDevelop>true</useSnapshotInDevelop>
           <commitDevelopmentVersionAtStart>true</commitDevelopmentVersionAtStart>
           <useSnapshotInHotfix>true</useSnapshotInHotfix>
+          <allowSnapshots>true</allowSnapshots>
         </configuration>
       </plugin>
     </plugins>
