@@ -19,6 +19,9 @@ import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 
@@ -305,14 +308,14 @@ public class SkuMarketPlaceService extends HttpService {
         return response.to(new TypeReference<SkuMarketPlace>() {});
     }
 
-    public StockReservation findStockReservationBySkuInMarketPlace(MarketPlace marketPlace, Long idAccount, String skuInMarketplace, IntegrationHeader... headers) {
+    public StockReservation findStockReservationBySkuInMarketPlace(MarketPlace marketPlace, Long idAccount, String skuInMarketplace, IntegrationHeader... headers) throws UnsupportedEncodingException {
         Objects.requireNonNull(marketPlace, "Informe o Marketplace");
         Objects.requireNonNull(skuInMarketplace, "Informe o SkuInMarketPlace");
 
-        String urlFormated = String.format(apiEndPoint.concat(SKUMP_GET_RESERVATION_STOCK), marketPlace.name(), skuInMarketplace);
+        String urlFormated = String.format(apiEndPoint.concat(SKUMP_GET_RESERVATION_STOCK), marketPlace.name()).concat("?skuInMarketplace=").concat(encodeToUrlEnconded(skuInMarketplace));
 
         if(idAccount != null) {
-            urlFormated = urlFormated.concat("?idAccount=").concat(idAccount.toString());
+            urlFormated = urlFormated.concat("&idAccount=").concat(idAccount.toString());
         }
 
         final GetRequest getRequest = get(urlFormated, addModuleOriginHeader(headers, this.moduleOrigin));
@@ -322,7 +325,24 @@ public class SkuMarketPlaceService extends HttpService {
             return response.to(new TypeReference<StockReservation>() {
             });
         } else {
-            throw new NotFoundException(String.format("StockReservation for Marketplace %s and skuInMarketPlace: %s not found.", marketPlace.name(), skuInMarketplace));
+            throw new NotFoundException(String.format("StockReservation for Marketplace %s and skuInMarketPlace: %s not found. cause: %s", marketPlace.name(), skuInMarketplace, response.getMessage()));
+        }
+    }
+
+    private String encodeToUrlEnconded(String value) throws UnsupportedEncodingException {
+        try {
+            return URLEncoder.encode(value, String.valueOf(StandardCharsets.UTF_8))
+                    .replace("+", "%20")
+                    .replace("%5C", "%5C%5C")
+                    .replace("*", "%2A")
+                    .replace("/", "%2F")
+                    .replace("(", "%28")
+                    .replace(")", "%29")
+                    .replace("!", "%21")
+                    .replace("@", "%40")
+                    .replace("$", "%24");
+        } catch (UnsupportedEncodingException e) {
+            throw new UnsupportedEncodingException(String.format("Could no enconde value: %s to UrlEnconde, cause: %s", value, e.getMessage()));
         }
     }
 }
