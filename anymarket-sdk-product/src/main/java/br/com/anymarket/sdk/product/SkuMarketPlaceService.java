@@ -38,7 +38,7 @@ public class SkuMarketPlaceService extends HttpService {
     private static final String SKUMP_ALL_MARKETPLACE = "/skus/%s/all";
     private static final String SKUMP_SEARCH_MARKETPLACE = "/skus/%s/search";
     private static final String SKUMP_SEND_URI = "/skus/%s/marketplaces/%s/send";
-    private static final String SKUMP_GET_RESERVATION_STOCK = "/skus/%s/%s/stock/reservation";
+    private static final String SKUMP_GET_RESERVATION_STOCK = "/skus/%s/stock/reservation";
     public static final String NEXT = "next";
     public static final String SKUMP_NOT_INFORMED = "Informe o idSkuMarketplace";
     public static final String REQUESTING_ENDPOINT = "Chamando endpoint {}";
