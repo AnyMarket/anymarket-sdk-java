@@ -21,8 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 
@@ -313,7 +311,7 @@ public class SkuMarketPlaceService extends HttpService {
         Objects.requireNonNull(marketPlace, "Informe o Marketplace");
         Objects.requireNonNull(skuInMarketplace, "Informe o SkuInMarketPlace");
 
-        String urlFormated = String.format(apiEndPoint.concat(SKUMP_GET_RESERVATION_STOCK), marketPlace.name()).concat("?skuInMarketplace=").concat(SDKUrlEncoder.encodeToUrlEnconded(skuInMarketplace));
+        String urlFormated = String.format(apiEndPoint.concat(SKUMP_GET_RESERVATION_STOCK), marketPlace.name()).concat("?skuInMarketplace=").concat(SDKUrlEncoder.encodeParameterToUTF8(skuInMarketplace));
 
         if(idAccount != null) {
             urlFormated = urlFormated.concat("&idAccount=").concat(idAccount.toString());
