@@ -10,6 +10,7 @@ import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.paging.Page;
 import br.com.anymarket.sdk.product.dto.*;
 import br.com.anymarket.sdk.resource.Link;
+import br.com.anymarket.sdk.util.SDKUrlEncoder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.request.GetRequest;
@@ -312,7 +313,7 @@ public class SkuMarketPlaceService extends HttpService {
         Objects.requireNonNull(marketPlace, "Informe o Marketplace");
         Objects.requireNonNull(skuInMarketplace, "Informe o SkuInMarketPlace");
 
-        String urlFormated = String.format(apiEndPoint.concat(SKUMP_GET_RESERVATION_STOCK), marketPlace.name()).concat("?skuInMarketplace=").concat(encodeToUrlEnconded(skuInMarketplace));
+        String urlFormated = String.format(apiEndPoint.concat(SKUMP_GET_RESERVATION_STOCK), marketPlace.name()).concat("?skuInMarketplace=").concat(SDKUrlEncoder.encodeToUrlEnconded(skuInMarketplace));
 
         if(idAccount != null) {
             urlFormated = urlFormated.concat("&idAccount=").concat(idAccount.toString());
@@ -326,23 +327,6 @@ public class SkuMarketPlaceService extends HttpService {
             });
         } else {
             throw new NotFoundException(String.format("StockReservation for Marketplace %s and skuInMarketPlace: %s not found. cause: %s", marketPlace.name(), skuInMarketplace, response.getMessage()));
-        }
-    }
-
-    private String encodeToUrlEnconded(String value) throws UnsupportedEncodingException {
-        try {
-            return URLEncoder.encode(value, String.valueOf(StandardCharsets.UTF_8))
-                    .replace("+", "%20")
-                    .replace("%5C", "%5C%5C")
-                    .replace("*", "%2A")
-                    .replace("/", "%2F")
-                    .replace("(", "%28")
-                    .replace(")", "%29")
-                    .replace("!", "%21")
-                    .replace("@", "%40")
-                    .replace("$", "%24");
-        } catch (UnsupportedEncodingException e) {
-            throw new UnsupportedEncodingException(String.format("Could no enconde value: %s to UrlEnconde, cause: %s", value, e.getMessage()));
         }
     }
 }
