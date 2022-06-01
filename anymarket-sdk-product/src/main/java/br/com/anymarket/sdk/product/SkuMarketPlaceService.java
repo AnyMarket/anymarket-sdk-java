@@ -307,7 +307,7 @@ public class SkuMarketPlaceService extends HttpService {
         return response.to(new TypeReference<SkuMarketPlace>() {});
     }
 
-    public StockReservation findStockReservationBySkuInMarketPlace(MarketPlace marketPlace, Long idAccount, String skuInMarketplace, IntegrationHeader... headers) throws UnsupportedEncodingException {
+    public StockReservation findStockReservationBySkuInMarketPlace(MarketPlace marketPlace, Long idAccount, String skuInMarketplace, IntegrationHeader... headers) {
         Objects.requireNonNull(marketPlace, "Informe o Marketplace");
         Objects.requireNonNull(skuInMarketplace, "Informe o SkuInMarketPlace");
 
