@@ -10,6 +10,7 @@ import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.paging.Page;
 import br.com.anymarket.sdk.product.dto.*;
 import br.com.anymarket.sdk.resource.Link;
+import br.com.anymarket.sdk.util.SDKUrlEncoder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 import com.mashape.unirest.request.GetRequest;
@@ -19,6 +20,7 @@ import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,7 +37,7 @@ public class SkuMarketPlaceService extends HttpService {
     private static final String SKUMP_ALL_MARKETPLACE = "/skus/%s/all";
     private static final String SKUMP_SEARCH_MARKETPLACE = "/skus/%s/search";
     private static final String SKUMP_SEND_URI = "/skus/%s/marketplaces/%s/send";
-    private static final String SKUMP_GET_RESERVATION_STOCK = "/skus/%s/%s/stock/reservation";
+    private static final String SKUMP_GET_RESERVATION_STOCK = "/skus/%s/stock/reservation";
     public static final String NEXT = "next";
     public static final String SKUMP_NOT_INFORMED = "Informe o idSkuMarketplace";
     public static final String REQUESTING_ENDPOINT = "Chamando endpoint {}";
@@ -309,10 +311,10 @@ public class SkuMarketPlaceService extends HttpService {
         Objects.requireNonNull(marketPlace, "Informe o Marketplace");
         Objects.requireNonNull(skuInMarketplace, "Informe o SkuInMarketPlace");
 
-        String urlFormated = String.format(apiEndPoint.concat(SKUMP_GET_RESERVATION_STOCK), marketPlace.name(), skuInMarketplace);
+        String urlFormated = String.format(apiEndPoint.concat(SKUMP_GET_RESERVATION_STOCK), marketPlace.name()).concat("?skuInMarketplace=").concat(SDKUrlEncoder.encodeParameterToUTF8(skuInMarketplace));
 
         if(idAccount != null) {
-            urlFormated = urlFormated.concat("?idAccount=").concat(idAccount.toString());
+            urlFormated = urlFormated.concat("&idAccount=").concat(idAccount.toString());
         }
 
         final GetRequest getRequest = get(urlFormated, addModuleOriginHeader(headers, this.moduleOrigin));
@@ -322,7 +324,7 @@ public class SkuMarketPlaceService extends HttpService {
             return response.to(new TypeReference<StockReservation>() {
             });
         } else {
-            throw new NotFoundException(String.format("StockReservation for Marketplace %s and skuInMarketPlace: %s not found.", marketPlace.name(), skuInMarketplace));
+            throw new NotFoundException(String.format("StockReservation for Marketplace %s and skuInMarketPlace: %s not found. cause: %s", marketPlace.name(), skuInMarketplace, response.getMessage()));
         }
     }
 }
