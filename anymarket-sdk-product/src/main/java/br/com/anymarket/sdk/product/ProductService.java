@@ -18,7 +18,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.mashape.unirest.request.body.RequestBodyEntity;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
 import java.util.*;
@@ -237,10 +236,10 @@ public class ProductService extends HttpService {
 
         Objects.requireNonNull(skus, "Informe no minimo um sku");
 
-        String url = apiEndPoint.concat(PRODUCTS_URI).concat("/").concat("byOiAndIdsInClient").concat("?skus=" + StringUtils.join(skus, ","));
+        String url = apiEndPoint.concat(PRODUCTS_URI).concat("/").concat("byOiAndIdsInClient");
 
-        final GetRequest getRequest = get(url, addModuleOriginHeader(headers, this.moduleOrigin));
-        final Response response = execute(getRequest);
+        final RequestBodyEntity postRequest = post(url, skus, addModuleOriginHeader(headers, this.moduleOrigin));
+        final Response response = execute(postRequest);
         if (response.getStatus() == HttpStatus.SC_OK) {
             List<String> rootResponse = response.to(new TypeReference<List<String>>() {
             });
