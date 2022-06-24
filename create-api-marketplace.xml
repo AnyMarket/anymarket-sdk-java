@@ -24,7 +24,7 @@
         <script language="javascript">
             <![CDATA[
         var marketplace = project.getProperty('marketplace');
-        var marketplaceEnum = marketplace.replace(/([ ]+)/, '_').toUpperCase();
+        var marketplaceEnum = marketplace.replaceAll(/([ ]+)/, '_').toUpperCase();
         project.setProperty('marketplaceEnum', marketplaceEnum);
         ]]>
         </script>
