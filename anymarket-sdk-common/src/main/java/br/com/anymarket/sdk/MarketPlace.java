@@ -108,7 +108,7 @@ public enum MarketPlace {
     SUA_COMPRA("Sua Compra"),
     SHOPHUB("Shophub"),
     POSTHAUS_NEW_API("Posthaus Nova Api"),
-    PHILIPS_STORE("Philips Store");
+    LOJAS_LEBES_NEW_API("Lojas Lebes");
 
     private String name;
 
