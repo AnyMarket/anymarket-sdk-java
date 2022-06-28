@@ -24,6 +24,7 @@
     <module>anymarket-sdk-printtag</module>
     <module>anymarket-sdk-profile</module>
     <module>anymarket-sdk-automatic-message</module>
+    <module>anymarket-sdk-parameter</module>
   </modules>
 
   <packaging>pom</packaging>
