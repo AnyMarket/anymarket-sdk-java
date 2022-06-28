@@ -76,6 +76,10 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>anymarket-sdk-automatic-message</artifactId>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>anymarket-sdk-parameter</artifactId>
+    </dependency>
   </dependencies>
 
 
