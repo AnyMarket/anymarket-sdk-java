@@ -4,7 +4,7 @@
 
   <groupId>br.com.anymarket.sdk</groupId>
   <artifactId>anymarket-sdk-java</artifactId>
-  <version>0.85.1-SNAPSHOT </version>
+  <version>0.85.3</version>
   <modules>
     <module>anymarket-sdk-stock</module>
     <module>anymarket-sdk-order</module>
@@ -24,7 +24,7 @@
     <module>anymarket-sdk-printtag</module>
     <module>anymarket-sdk-profile</module>
     <module>anymarket-sdk-automatic-message</module>
-    <module>anymarket-sdk-campaign</module>
+    <module>anymarket-sdk-parameter</module>
   </modules>
 
   <packaging>pom</packaging>
@@ -131,6 +131,11 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>anymarket-sdk-parameter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
         <version>${guava.version}</version>
@@ -139,11 +144,6 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
         <version>${commons-lang.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>br.com.anymarket.sdk</groupId>
-        <artifactId>anymarket-sdk-campaign</artifactId>
-        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
