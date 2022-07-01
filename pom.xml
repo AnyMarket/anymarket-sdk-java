@@ -25,6 +25,7 @@
     <module>anymarket-sdk-profile</module>
     <module>anymarket-sdk-automatic-message</module>
     <module>anymarket-sdk-parameter</module>
+    <module>anymarket-sdk-campaign</module>
   </modules>
 
   <packaging>pom</packaging>
@@ -133,6 +134,11 @@
       <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>anymarket-sdk-parameter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>anymarket-sdk-campaign</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
