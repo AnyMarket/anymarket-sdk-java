@@ -6,7 +6,7 @@
   <parent>
     <artifactId>anymarket-sdk-java</artifactId>
     <groupId>br.com.anymarket.sdk</groupId>
-    <version>0.85.2-156313</version>
+    <version>0.85.3</version>
   </parent>
 
   <artifactId>anymarket-sdk-all</artifactId>
@@ -75,6 +75,10 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>anymarket-sdk-automatic-message</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>anymarket-sdk-parameter</artifactId>
     </dependency>
   </dependencies>
 
