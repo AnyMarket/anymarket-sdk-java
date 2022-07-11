@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,6 +34,7 @@ public class SkuMarketPlaceService extends HttpService {
     private static final Logger LOG = LoggerFactory.getLogger(SkuMarketPlaceService.class);
 
     private static final String SKUMP_URI = "/skus/%s/marketplaces";
+    private static final String SKUMP_URI_MARKETPLACE = "/skus/%s";
     private static final String SKUMP_UPDATE_PRICE_URI = "/skus/%s/updatePrice/%s";
     private static final String SKUMP_ALL_MARKETPLACE = "/skus/%s/all";
     private static final String SKUMP_SEARCH_MARKETPLACE = "/skus/%s/search";
@@ -92,6 +94,10 @@ public class SkuMarketPlaceService extends HttpService {
 
     private String getURLFormated(final Long idSku) {
         return String.format(apiEndPoint.concat(SKUMP_URI), idSku.toString());
+    }
+
+    private String getURLMarketplaceFormated(MarketPlace marketPlace) {
+        return String.format(apiEndPoint.concat(SKUMP_URI_MARKETPLACE), marketPlace.name());
     }
 
     public SkuMarketPlace save(final SkuMarketPlace skuMp, Long idSku, IntegrationHeader... headers) {
@@ -327,4 +333,23 @@ public class SkuMarketPlaceService extends HttpService {
             throw new NotFoundException(String.format("StockReservation for Marketplace %s and skuInMarketPlace: %s not found. cause: %s", marketPlace.name(), skuInMarketplace, response.getMessage()));
         }
     }
+
+    public List<String> findByOiAndMarketplaceAndSkusInMarketplace(MarketPlace marketPlace, List<String> skus, IntegrationHeader... headers) {
+        List<String> results = new ArrayList<>();
+
+        Objects.requireNonNull(marketPlace, "Informe o Marketplace");
+        Objects.requireNonNull(skus, "Informe no minimo um sku");
+
+        String url = getURLMarketplaceFormated(marketPlace).concat("/").concat("bySkusInMarketplace");
+
+        final RequestBodyEntity postRequest = post(url, skus, addModuleOriginHeader(headers, this.moduleOrigin));
+        final Response response = execute(postRequest);
+        if (response.getStatus() == HttpStatus.SC_OK) {
+            List<String> rootResponse = response.to(new TypeReference<List<String>>() {
+            });
+            results.addAll(rootResponse);
+        }
+        return results;
+    }
+
 }
