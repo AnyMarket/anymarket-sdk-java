@@ -6,9 +6,12 @@ import br.com.anymarket.sdk.exception.NotFoundException;
 import br.com.anymarket.sdk.http.HttpService;
 import br.com.anymarket.sdk.http.Response;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.request.GetRequest;
 import org.apache.http.HttpStatus;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 import static br.com.anymarket.sdk.http.headers.AnymarketHeaderUtils.addModuleOriginHeader;
@@ -18,7 +21,8 @@ import static java.lang.String.format;
 public class CampaignService extends HttpService {
 
     private static final String ACTIVE_CAMPAIGN_URI = "/campaigns/active/%s/%s";
-    public static final String ERROR_CAMPAIGN_NOT_FOUND_FOR_MARKETPLACE = "Campanha com o id %s não foi encontrada para o marketplace %s.";
+    private static final String ERROR_CAMPAIGN_NOT_FOUND_FOR_MARKETPLACE = "Campanha com o id %s não foi encontrada para o marketplace %s.";
+    private static final String CAMPAIGN_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     private final String apiEndPoint;
     private String moduleOrigin;
@@ -33,7 +37,7 @@ public class CampaignService extends HttpService {
         this.moduleOrigin = origin;
     }
 
-    public Campaign getActiveCampaignById(Long idCampaign, String marketplace, IntegrationHeader... headers) {
+    public Campaign getActiveCampaignById(Long idCampaign, String marketplace, IntegrationHeader... headers) throws IOException {
         Objects.requireNonNull(idCampaign, "Informe o id da campanha.");
         Objects.requireNonNull(marketplace, "Informe o marketplace da campanha");
 
@@ -42,7 +46,7 @@ public class CampaignService extends HttpService {
 
         Response response = execute(request);
         if (response.getStatus() == HttpStatus.SC_OK) {
-            return response.to(Campaign.class);
+            return mapToCampaign(response);
         }
 
         throw new NotFoundException(format(ERROR_CAMPAIGN_NOT_FOUND_FOR_MARKETPLACE,
@@ -51,6 +55,13 @@ public class CampaignService extends HttpService {
 
     private String getURLFormatted(Long idCampaign, String marketplace) {
         return String.format(apiEndPoint.concat(ACTIVE_CAMPAIGN_URI), idCampaign, marketplace);
+    }
+
+    private Campaign mapToCampaign(Response response) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setDateFormat(new SimpleDateFormat(CAMPAIGN_DATE_FORMAT));
+
+        return mapper.readValue(response.getMessage(), Campaign.class);
     }
 
 }

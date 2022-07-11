@@ -111,6 +111,7 @@ public class SkuMarketPlace implements Serializable {
         setAccountName(builder.accountName);
         setSkuMarketPlaceMessage(builder.skuMarketPlaceMessage);
         setOrigin(builder.origin);
+        setIdCampaign(builder.idCampaign);
     }
 
     public static Builder builder() {

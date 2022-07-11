@@ -19,6 +19,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -62,7 +63,7 @@ public class CampaignServiceTest {
     }
 
     @Test
-    public void should_get_active_campaign_by_id_expected_success() throws UnirestException {
+    public void should_get_active_campaign_by_id_expected_success() throws UnirestException, IOException {
         try (MockedStatic<Unirest> unirest = Mockito.mockStatic(Unirest.class)) {
             unirest.when((MockedStatic.Verification) Unirest.get(URL)).thenReturn(getRequest);
             when(getRequest.asString()).thenReturn(httpResponse);
@@ -76,7 +77,7 @@ public class CampaignServiceTest {
 
             Campaign campaign = campaignService.getActiveCampaignById(CAMPAIGN_ID, MARKETPLACE, headers);
 
-            LocalDateTime initialDateLT = LocalDateTime.of(2019, 8, 24, 14, 15, 39);
+            LocalDateTime initialDateLT = LocalDateTime.of(2019, 8, 24, 14, 15, 39, 613000000);
             LocalDateTime finalDateLT = LocalDateTime.of(2020, 4, 15, 14, 0, 0);
 
             Date initialDate = Date.from(initialDateLT.atZone(ZoneId.systemDefault()).toInstant());
@@ -90,14 +91,14 @@ public class CampaignServiceTest {
             assertEquals(initialDate, campaign.getInitialDate());
             assertEquals(finalDate, campaign.getFinalDate());
             assertEquals(PRODUCTS_COUNT, campaign.getProductsCount());
-        } catch (UnirestException e) {
+        } catch (UnirestException | IOException e) {
             throw e;
         }
 
     }
 
     @Test
-    public void should_get_active_campaign_by_id_expected_not_found_exception() {
+    public void should_get_active_campaign_by_id_expected_not_found_exception() throws IOException {
         expectation.expect(NotFoundException.class);
         expectation.expectMessage("Campanha com o id 123 não foi encontrada para o marketplace B2W");
 
@@ -111,8 +112,8 @@ public class CampaignServiceTest {
                 "  \"idAccount\": \"" + ACCOUNT_ID + "\",\n" +
                 "  \"accountName\": \"" + ACCOUNT_NAME + "\",\n" +
                 "  \"description\": \"" + DESCRIPTION + "\",\n" +
-                "  \"initialDate\": \"2019-08-24T14:15:39-03:00\",\n" +
-                "  \"finalDate\": \"2020-04-15T14:00:00-03:00\",\n" +
+                "  \"initialDate\": \"2019-08-24T14:15:39.613Z\",\n" +
+                "  \"finalDate\": \"2020-04-15T14:00:00.000Z\",\n" +
                 "  \"marketplace\": \"" + MARKETPLACE + "\",\n" +
                 "  \"status\": \"ACTIVE\",\n" +
                 "  \"productsCount\": " + PRODUCTS_COUNT + "\n" +
