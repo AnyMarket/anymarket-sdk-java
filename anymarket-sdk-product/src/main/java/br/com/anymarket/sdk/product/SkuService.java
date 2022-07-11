@@ -124,6 +124,17 @@ public class SkuService extends HttpService {
         throw new NotFoundException(format("Sku with id %s not found.", idSku));
     }
 
+    public Sku getByPartnerId(String partnerId, boolean showProduct, IntegrationHeader... headers) {
+        checkNotNull(partnerId, "Informe o idInClient");
+        String param = showProduct ? "?showProduct=true" : "";
+        GetRequest getRequest = get(this.apiEndPoint.concat("/skus/partnerId/").concat(partnerId).concat(param), addModuleOriginHeader(headers, this.moduleOrigin));
+        Response response = execute(getRequest);
+        if (response.getStatus() == HttpStatus.SC_OK) {
+            return response.to(Sku.class);
+        }
+        throw new NotFoundException(format("Sku with idInClient %s not found.", partnerId));
+    }
+
     public Page<Sku> getSkusPaged(IntegrationHeader... headers) {
         return getSkusPaged(null, null, headers);
     }
