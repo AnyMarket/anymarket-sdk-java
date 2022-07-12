@@ -109,7 +109,10 @@ public enum MarketPlace {
     SHOPHUB("Shophub"),
     POSTHAUS_NEW_API("Posthaus Nova Api"),
     LOJAS_LEBES_NEW_API("Lojas Lebes"),
-    PHILIPS_STORE("Philips Store");
+    PHILIPS_STORE("Philips Store"),
+    VINKLO_BY_FESTALAB("Vinklo by Festalab"),
+    RAMARIM("Ramarim"),
+    COMFORTFLEX("Comfortflex");
 
     private String name;
 
