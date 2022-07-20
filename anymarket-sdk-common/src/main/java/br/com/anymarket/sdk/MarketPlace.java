@@ -112,8 +112,7 @@ public enum MarketPlace {
     PHILIPS_STORE("Philips Store"),
     VINKLO_BY_FESTALAB("Vinklo by Festalab"),
     RAMARIM("Ramarim"),
-    COMFORTFLEX("Comfortflex");
-    POSTHAUS_NEW_API("Posthaus Nova Api"),
+    COMFORTFLEX("Comfortflex"),
     BELEZA_NA_WEB("Beleza na Web");
 
     private String name;
