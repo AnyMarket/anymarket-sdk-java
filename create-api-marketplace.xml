@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<project name="ANYMARKET Marketplace">
+
+    <property name="marketplace" value="${MARKETPLACE_NAME}"/>
+
+    <target name="generate-new-marketplace" depends="update-enum">
+        <exec executable="git">
+            <arg value="add"/>
+            <arg value="."/>
+        </exec>
+    </target>
+
+    <target name="update-enum" depends="name-replace">
+        <property name="fileMarketplaceJava"
+                  value="${basedir}/anymarket-sdk-common/src/main/java/br/com/anymarket/sdk/MarketPlace.java"/>
+
+        <replaceregexp file="${fileMarketplaceJava}"
+                       match=";(\s*)private String name"
+                       replace=",&#10;    ${marketplaceEnum}(&quot;${marketplace}&quot;);\1private String name"
+                       byline="false"/>
+    </target>
+
+    <target name="name-replace">
+        <script language="javascript">
+            <![CDATA[
+        var marketplace = project.getProperty('marketplace');
+        var marketplaceEnum = marketplace.replace(/\s/g, '_').toUpperCase();
+        project.setProperty('marketplaceEnum', marketplaceEnum);
+        ]]>
+        </script>
+    </target>
+
+</project>
