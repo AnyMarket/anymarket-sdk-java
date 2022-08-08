@@ -113,7 +113,8 @@ public enum MarketPlace {
     VINKLO_BY_FESTALAB("Vinklo by Festalab"),
     RAMARIM("Ramarim"),
     COMFORTFLEX("Comfortflex"),
-    BELEZA_NA_WEB("Beleza na Web");
+    BELEZA_NA_WEB("Beleza na Web"),
+    GIMBA("Gimba");
 
     private String name;
 
