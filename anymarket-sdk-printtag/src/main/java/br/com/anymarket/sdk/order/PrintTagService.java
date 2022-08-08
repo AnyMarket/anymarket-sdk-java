@@ -58,6 +58,6 @@ public class PrintTagService {
 
     private void markTagAsPrinted(final String url, final PrintTagResource printTag, final IntegrationHeader... headers) {
         Preconditions.checkNotNull(printTag, TAG_NOT_FOUND);
-        post(url).body(printTag).headers(addModuleOriginHeader(headers, this.moduleOrigin)).getResponse();
+        post(apiEndPointForResource.concat(url)).body(printTag).headers(addModuleOriginHeader(headers, this.moduleOrigin)).getResponse();
     }
 }
