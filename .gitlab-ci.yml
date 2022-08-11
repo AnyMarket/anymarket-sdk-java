@@ -1,0 +1,17 @@
+variables:
+  APP_TYPE: "java"
+  JAVA_VERSION: 8
+  MR_BUILD_ENABLED: "true"
+
+include:
+  - project: anymarket/pipelines-anymarket
+    ref: feature/test_alpine
+    file: /dependencies/ci-cd-base-config.yml
+
+
+
+
+
+
+
+
