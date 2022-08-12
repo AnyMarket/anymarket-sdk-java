@@ -13,6 +13,8 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 
 public class PrintTagService {
 
+    private static final String TAG_NOT_FOUND = "Erro ao emitir etiqueta: Dados não encontrados.";
+
     private String apiEndPointForResource;
     private String moduleOrigin;
 
@@ -32,7 +34,7 @@ public class PrintTagService {
     }
 
     public InputStream getPrintTag(PrintTagResource printTag, PrintType printType, FileType file, IntegrationHeader... headers) {
-        Preconditions.checkNotNull(printTag, "Erro ao emitir etiqueta: Dados não encontrados.");
+        Preconditions.checkNotNull(printTag, TAG_NOT_FOUND);
         Preconditions.checkNotNull(printType, "Erro ao emitir etiqueta: Tipo não informado.");
 
 
@@ -47,13 +49,15 @@ public class PrintTagService {
     }
 
     public void markTagPrinted(PrintTagResource printTag, IntegrationHeader... headers){
-        Preconditions.checkNotNull(printTag, "Erro ao emitir etiqueta: Dados não encontrados.");
+        markTagAsPrinted("/printtag/markAsPrinted", printTag, headers);
+    }
 
-        String url = apiEndPointForResource.concat("/printtag/markAsPrinted");
+    public void markTagPrintedV2(PrintTagResource printTag, IntegrationHeader... headers){
+        markTagAsPrinted("/printtag/markTagPrintedV2", printTag, headers);
+    }
 
-        post(url)
-            .body(printTag)
-            .headers(addModuleOriginHeader(headers, this.moduleOrigin))
-            .getResponse();
+    private void markTagAsPrinted(final String url, final PrintTagResource printTag, final IntegrationHeader... headers) {
+        Preconditions.checkNotNull(printTag, TAG_NOT_FOUND);
+        post(apiEndPointForResource.concat(url)).body(printTag).headers(addModuleOriginHeader(headers, this.moduleOrigin)).getResponse();
     }
 }
