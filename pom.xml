@@ -4,7 +4,7 @@
 
   <groupId>br.com.anymarket.sdk</groupId>
   <artifactId>anymarket-sdk-java</artifactId>
-  <version>0.85.13-263727-SNAPSHOT</version>
+  <version>0.85.13</version>
   <modules>
     <module>anymarket-sdk-stock</module>
     <module>anymarket-sdk-order</module>
@@ -16,6 +16,7 @@
     <module>anymarket-sdk-categories</module>
     <module>anymarket-sdk-delegator</module>
     <module>anymarket-sdk-callback</module>
+    <module>anymarket-sdk-campaign</module>
     <module>anymarket-sdk-variation</module>
     <module>anymarket-sdk-question</module>
     <module>anymarket-sdk-freight</module>
@@ -88,6 +89,11 @@
       <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>anymarket-sdk-callback</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>anymarket-sdk-campaign</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
