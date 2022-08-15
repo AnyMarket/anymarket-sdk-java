@@ -6,7 +6,7 @@
   <parent>
     <artifactId>anymarket-sdk-java</artifactId>
     <groupId>br.com.anymarket.sdk</groupId>
-    <version>0.85.13</version>
+    <version>0.85.13-SNAPSHOT</version>
   </parent>
 
   <artifactId>anymarket-sdk-all</artifactId>
@@ -47,10 +47,6 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>anymarket-sdk-callback</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>anymarket-sdk-campaign</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
