@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class SDKUrlEncoder {
 
@@ -36,5 +37,22 @@ public class SDKUrlEncoder {
      */
     public static String encodeParameterToUTF8(final String parameterToEncode) {
         return encodeParameter(parameterToEncode, DEFAULT_ENCODE);
+    }
+
+    public static String encodeToUrlEnconded(String value) throws UnsupportedEncodingException {
+        try {
+            return URLEncoder.encode(value, String.valueOf(StandardCharsets.UTF_8))
+                    .replace("+", "%20")
+                    .replace("%5C", "%5C%5C")
+                    .replace("*", "%2A")
+                    .replace("/", "%2F")
+                    .replace("(", "%28")
+                    .replace(")", "%29")
+                    .replace("!", "%21")
+                    .replace("@", "%40")
+                    .replace("$", "%24");
+        } catch (UnsupportedEncodingException e) {
+            throw new UnsupportedEncodingException(String.format("Could no enconde value: %s to UrlEnconde, cause: %s", value, e.getMessage()));
+        }
     }
 }

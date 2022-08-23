@@ -6,6 +6,7 @@ import br.com.anymarket.sdk.exception.HttpClientException;
 import br.com.anymarket.sdk.exception.NotFoundException;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.order.dto.Order;
+import br.com.anymarket.sdk.order.dto.OrderStatus;
 import br.com.anymarket.sdk.order.dto.OrderTransmissionStatusResource;
 import br.com.anymarket.sdk.order.filters.*;
 import br.com.anymarket.sdk.paging.Page;
@@ -14,6 +15,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 
 import java.util.List;
+import java.util.Optional;
 
 import static br.com.anymarket.sdk.http.headers.AnymarketHeaderUtils.addModuleOriginHeader;
 import static br.com.anymarket.sdk.http.restdsl.AnyMarketRestDSL.*;
@@ -47,6 +49,16 @@ public class OrderService {
             .routeParam("id", idOrder.toString())
             .getResponse()
             .to(Order.class);
+    }
+
+    public OrderStatus getOrderStatusByMarketplaceId(String marketplaceId, MarketPlace marketplace, IntegrationHeader... headers) {
+        checkNotNull(marketplaceId, "Erro ao recuperar pedido: Id não informado");
+        return get(apiEndPointForResource.concat("/orders/{marketplace}/{id}/status"))
+                .headers(addModuleOriginHeader(headers, this.moduleOrigin))
+                .routeParam("marketplace", marketplace.name())
+                .routeParam("id", marketplaceId)
+                .getResponse()
+                .to(OrderStatus.class);
     }
 
     public Order getOrderByPartnerID(String partnerId, IntegrationHeader... headers) {

@@ -82,6 +82,9 @@ public class SkuMarketPlace implements Serializable {
     @JsonProperty("origin")
     private SKUMpOrigin origin;
 
+    @JsonProperty("idCampaign")
+    private Long idCampaign;
+
     protected SkuMarketPlace() {
         //to serialize
     }
@@ -108,6 +111,7 @@ public class SkuMarketPlace implements Serializable {
         setAccountName(builder.accountName);
         setSkuMarketPlaceMessage(builder.skuMarketPlaceMessage);
         setOrigin(builder.origin);
+        setIdCampaign(builder.idCampaign);
     }
 
     public static Builder builder() {
@@ -294,6 +298,14 @@ public class SkuMarketPlace implements Serializable {
         this.origin = origin;
     }
 
+    public Long getIdCampaign() {
+        return idCampaign;
+    }
+
+    public void setIdCampaign(Long idCampaign) {
+        this.idCampaign = idCampaign;
+    }
+
     @Override
     public String toString() {
         return "SkuMarketPlace{" +
@@ -312,6 +324,7 @@ public class SkuMarketPlace implements Serializable {
             ", idAccount=" + idAccount +
             ", idAccount=" + accountName +
             ", origin=" + origin +
+            ", idCampaign=" + idCampaign +
             '}';
     }
 
@@ -337,6 +350,7 @@ public class SkuMarketPlace implements Serializable {
         private String accountName;
         private SkuMarketPlaceMessage skuMarketPlaceMessage;
         private SKUMpOrigin origin;
+        private Long idCampaign;
 
         private Builder() {
         }
@@ -443,6 +457,11 @@ public class SkuMarketPlace implements Serializable {
 
         public Builder withOrigin(SKUMpOrigin origin) {
             this.origin = origin;
+            return this;
+        }
+
+        public Builder withIdCampaign(Long idCampaign) {
+            this.idCampaign = idCampaign;
             return this;
         }
 
