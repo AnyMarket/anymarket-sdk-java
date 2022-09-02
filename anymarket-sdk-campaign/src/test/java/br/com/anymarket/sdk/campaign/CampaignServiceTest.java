@@ -98,11 +98,19 @@ public class CampaignServiceTest {
     }
 
     @Test
-    public void should_get_active_campaign_by_id_expected_not_found_exception() throws IOException {
-        expectation.expect(NotFoundException.class);
-        expectation.expectMessage("Campanha com o id 123 não foi encontrada para o marketplace B2W");
+    public void should_get_active_campaign_by_id_expected_not_found_exception() throws IOException, UnirestException {
+        try (MockedStatic<Unirest> unirest = Mockito.mockStatic(Unirest.class)) {
+            unirest.when((MockedStatic.Verification) Unirest.get(URL)).thenReturn(getRequest);
+            when(getRequest.asString()).thenReturn(httpResponse);
+            when(httpResponse.getStatus()).thenReturn(HttpStatus.SC_NOT_FOUND);
 
-        campaignService.getActiveCampaignById(CAMPAIGN_ID, MARKETPLACE);
+            expectation.expect(NotFoundException.class);
+            expectation.expectMessage("Campanha com o id 123 não foi encontrada para o marketplace B2W");
+
+            campaignService.getActiveCampaignById(CAMPAIGN_ID, MARKETPLACE);
+        } catch (UnirestException e) {
+            throw e;
+        }
     }
 
     private String getCampaignResponse() {
