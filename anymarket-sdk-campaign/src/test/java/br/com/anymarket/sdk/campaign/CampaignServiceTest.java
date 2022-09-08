@@ -112,7 +112,6 @@ public class CampaignServiceTest {
             throw e;
         }
     }
-
     private String getCampaignResponse() {
         return "{\n" +
                 "  \"id\": " + CAMPAIGN_ID + ",\n" +
