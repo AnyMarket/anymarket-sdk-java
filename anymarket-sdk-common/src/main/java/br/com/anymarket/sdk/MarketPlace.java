@@ -114,7 +114,9 @@ public enum MarketPlace {
     RAMARIM("Ramarim"),
     COMFORTFLEX("Comfortflex"),
     BELEZA_NA_WEB("Beleza na Web"),
-    GIMBA("Gimba");
+    GIMBA("Gimba"),
+    MESBLA("MESBLA"),
+    BALAROTI("Balaroti");
 
     private String name;
 
