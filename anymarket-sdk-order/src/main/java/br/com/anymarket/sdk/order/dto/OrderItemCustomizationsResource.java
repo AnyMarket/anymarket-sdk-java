@@ -11,18 +11,18 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OrderItemCustomizationResource implements Serializable {
+public class OrderItemCustomizationsResource implements Serializable {
 
-    @JsonProperty("item_customization_type")
+    @JsonProperty("customizationType")
     private String customizationType;
 
-    @JsonProperty("item_customization_quantity")
+    @JsonProperty("customizationQuantity")
     private BigDecimal customizationQuantity;
 
-    @JsonProperty("item_customization_price")
+    @JsonProperty("customizationPrice")
     private BigDecimal customizationPrice;
 
-    @JsonProperty("item_customization_value")
+    @JsonProperty("customizationValue")
     private String customizationValue;
 
 }
