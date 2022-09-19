@@ -8,10 +8,10 @@ public class SimpleSkuResource {
 
     @JsonProperty("id")
     private Long id;
-
     @JsonProperty("partnerId")
     private String partnerId;
-
+    @JsonProperty("externalId")
+    private String externalId;
     @JsonProperty("title")
     private String title;
 
@@ -29,6 +29,14 @@ public class SimpleSkuResource {
 
     public void setPartnerId(String partnerId) {
         this.partnerId = partnerId;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 
     public String getTitle() {
