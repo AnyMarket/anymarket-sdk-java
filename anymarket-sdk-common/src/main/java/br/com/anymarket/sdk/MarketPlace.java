@@ -116,7 +116,8 @@ public enum MarketPlace {
     BELEZA_NA_WEB("Beleza na Web"),
     GIMBA("Gimba"),
     MESBLA("MESBLA"),
-    BALAROTI("Balaroti");
+    BALAROTI("Balaroti"),
+    ZEMA("Zema");
 
     private String name;
 
