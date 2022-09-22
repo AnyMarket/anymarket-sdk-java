@@ -117,7 +117,8 @@ public enum MarketPlace {
     GIMBA("Gimba"),
     MESBLA("MESBLA"),
     BALAROTI("Balaroti"),
-    ZEMA("Zema");
+    ZEMA("Zema"),
+    BANCO_NEXT_NEXTSHOP("Banco Next - nextShop");
 
     private String name;
 
