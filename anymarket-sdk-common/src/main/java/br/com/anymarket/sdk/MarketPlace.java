@@ -117,7 +117,8 @@ public enum MarketPlace {
     GIMBA("Gimba"),
     MESBLA("MESBLA"),
     BALAROTI("Balaroti"),
-    ZEMA("Zema");
+    ZEMA("Zema"),
+    WEBAR("WebAr");
 
     private String name;
 
