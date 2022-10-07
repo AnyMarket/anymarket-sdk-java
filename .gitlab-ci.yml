@@ -6,7 +6,7 @@ variables:
 
 include:
   - project: anymarket/pipelines-anymarket
-    ref: feature/test_alpine
+    ref: master
     file: /dependencies/ci-cd-base-config.yml
 
 
