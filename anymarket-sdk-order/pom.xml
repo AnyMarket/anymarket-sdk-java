@@ -6,7 +6,7 @@
   <parent>
     <artifactId>anymarket-sdk-java</artifactId>
     <groupId>br.com.anymarket.sdk</groupId>
-    <version>0.85.21</version>
+    <version>0.87.0</version>
   </parent>
 
   <artifactId>anymarket-sdk-order</artifactId>
@@ -29,6 +29,12 @@
       <artifactId>joda-time</artifactId>
       <version>2.10.5</version>
     </dependency>
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <version>1.18.22</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 
 
