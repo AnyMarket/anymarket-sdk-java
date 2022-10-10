@@ -36,6 +36,9 @@ public class OrderItemResource {
     @JsonProperty("shippings")
     private List<OrderItemShippingResource> shippings = new ArrayList();
 
+    @JsonProperty("customizations")
+    private List<OrderItemCustomizationsResource> customizations = new ArrayList<>();
+
     @JsonProperty("marketPlaceId")
     private String marketPlaceId;
 
@@ -176,6 +179,14 @@ public class OrderItemResource {
 
     public void setSkuKit(SimpleSkuKitResource skuKit) {
         this.skuKit = skuKit;
+    }
+
+    public List<OrderItemCustomizationsResource> getCustomizations() {
+        return customizations;
+    }
+
+    public void setCustomizations(List<OrderItemCustomizationsResource> customizations) {
+        this.customizations = customizations;
     }
 
     @Override

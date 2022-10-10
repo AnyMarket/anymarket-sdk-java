@@ -119,6 +119,7 @@ public enum MarketPlace {
     BALAROTI("Balaroti"),
     ZEMA("Zema"),
     NEXTSHOP("NextShop"),
+    WEBAR("WebAr"),
     EOS("EOS");
 
     private String name;
