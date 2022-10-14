@@ -121,7 +121,8 @@ public enum MarketPlace {
     NEXTSHOP("NextShop"),
     WEBAR("WebAr"),
     EOS("EOS"),
-    LIVESHOP("LiveShop");
+    LIVESHOP("LiveShop"),
+    SHOPPING_LEBLON("Shopping Leblon");
 
     private String name;
 
