@@ -116,6 +116,14 @@ public class OrderService {
     }
 
     public Order getOrderBy(String idInMarketplace, MarketPlace marketplace, IntegrationHeader... headers) {
+        return getOrderByInternal(idInMarketplace, marketplace, true, headers);
+    }
+
+    public Order getOrderByWithNoException(String idInMarketplace, MarketPlace marketplace, IntegrationHeader... headers) {
+        return getOrderByInternal(idInMarketplace, marketplace, false, headers);
+    }
+
+    private Order getOrderByInternal(String idInMarketplace, MarketPlace marketplace, boolean withException, IntegrationHeader... headers) {
         checkNotNull(idInMarketplace, "Erro ao recuperar pedido: idInMarketplace não informado");
         checkNotNull(idInMarketplace, "Erro ao recuperar pedido: marketplace não informado");
 
@@ -126,7 +134,7 @@ public class OrderService {
                 .getResponse()
                 .to(Order.class);
 
-        if (order == null) {
+        if (order == null && withException) {
             throw new NotFoundException(format("Não foi encontrado pedido com idInMarketplace %s e marketplace %s", idInMarketplace, marketplace.getDescription()));
         }
 
