@@ -120,7 +120,9 @@ public enum MarketPlace {
     ZEMA("Zema"),
     NEXTSHOP("NextShop"),
     WEBAR("WebAr"),
-    EOS("EOS");
+    EOS("EOS"),
+    LIVESHOP("LiveShop"),
+    SHOPPING_LEBLON("Shopping Leblon");
 
     private String name;
 
