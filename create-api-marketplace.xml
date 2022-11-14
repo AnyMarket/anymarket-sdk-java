@@ -2,6 +2,7 @@
 <project name="ANYMARKET Marketplace">
 
     <property name="marketplace" value="${MARKETPLACE_NAME}"/>
+    <property name="marketplaceValue" value="${MARKETPLACE_VALUE}"/>
 
     <target name="generate-new-marketplace" depends="update-enum">
         <exec executable="git">
@@ -16,7 +17,7 @@
 
         <replaceregexp file="${fileMarketplaceJava}"
                        match=";(\s*)private String name"
-                       replace=",&#10;    ${marketplaceEnum}(&quot;${marketplace}&quot;);\1private String name"
+                       replace=",&#10;    ${marketplaceEnum}(&quot;${marketplaceValue}&quot;);\1private String name"
                        byline="false"/>
     </target>
 
@@ -24,6 +25,7 @@
         <script language="javascript">
             <![CDATA[
         var marketplace = project.getProperty('marketplace');
+        var marketplaceValue = project.getProperty('marketplaceValue');
         var marketplaceEnum = marketplace.replace(/\s/g, '_').toUpperCase();
         project.setProperty('marketplaceEnum', marketplaceEnum);
         ]]>
