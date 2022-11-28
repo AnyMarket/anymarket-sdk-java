@@ -5,7 +5,8 @@ public enum MarketPlaceDelivery {
     B2W_NEW_API("B2W Entregas", "B2W_NEW_API", "B2W"),
     GFG("Dafiti Entregas", "GFG", "Dafiti"),
     MAGAZINE_LUIZA("Magalu Entregas", "MAGAZINE_LUIZA", "Magalu"),
-    MERCADO_LIVRE("Mercado Envios", "MERCADO_LIVRE", "ME2");
+    MERCADO_LIVRE("Mercado Envios", "MERCADO_LIVRE", "ME2"),
+    NETSHOES("Netshoes Entregas", "NETSHOES", "Netshoes");
 
     private String name;
     private String marketPlace;
