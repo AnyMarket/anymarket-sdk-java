@@ -96,6 +96,9 @@ public class ProductBase {
     @JsonProperty("allowAutomaticSkuMarketplaceCreation")
     private Boolean allowAutomaticSkuMarketplaceCreation = Boolean.FALSE;
 
+    @JsonProperty("isProductActive")
+    private Boolean isActive;
+
     public Long getId() {
         return id;
     }
@@ -286,6 +289,14 @@ public class ProductBase {
 
     public void setAllowAutomaticSkuMarketplaceCreation(Boolean allowAutomaticSkuMarketplaceCreation) {
         this.allowAutomaticSkuMarketplaceCreation = allowAutomaticSkuMarketplaceCreation;
+    }
+
+    public Boolean isActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public List<Image> getImagesForSku(SkuComplete sku) {
