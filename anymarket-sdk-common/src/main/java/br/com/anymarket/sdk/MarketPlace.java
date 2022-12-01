@@ -123,7 +123,8 @@ public enum MarketPlace {
     EOS("EOS"),
     LIVESHOP("LiveShop"),
     SHOPPING_LEBLON("Shopping Leblon"),
-    PORTAL_DO_MEDICO_NEW_API("Portal do Médico Nova API");
+    PORTAL_DO_MEDICO_NEW_API("Portal do Médico Nova API"),
+    CAZCO_MARKETPLACES("Cazco Marketplaces");
 
     private String name;
 
