@@ -13,6 +13,7 @@ public enum MarketPlace {
     MAGAZINE_LUIZA("Magazine Luiza"),
     CARREFOUR("Carrefour"),
     AMAZON("Amazon"),
+    AMAZON_GLOBAL_API("Amazon Global Api"),
     BUSCAPE("Buscapé"),
     ORACLECOMMERCE("Oracle Commerce Cloud"),
     MADEIRA_MADEIRA("Madeira Madeira"),
