@@ -33,6 +33,9 @@ public class BuyerResource{
     @JsonProperty("documentNumberNormalized")
     private String documentNumberNormalized;
 
+    @JsonProperty("companyStateTaxId")
+    private String companyStateTaxId;
+
     public Long getId() {
         return id;
     }
@@ -103,5 +106,13 @@ public class BuyerResource{
 
     public void setDocumentNumberNormalized(String documentNumberNormalized) {
         this.documentNumberNormalized = documentNumberNormalized;
+    }
+
+    public String getCompanyStateTaxId() {
+        return companyStateTaxId;
+    }
+
+    public void setCompanyStateTaxId(String companyStateTaxId) {
+        this.companyStateTaxId = companyStateTaxId;
     }
 }
