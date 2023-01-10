@@ -1,7 +1,7 @@
 package br.com.anymarket.sdk.parameter.dto;
 
 public enum MarketPlaceDelivery {
-    AMAZON("Amazon FBA", "AMAZON", "FBA_ONSITE"),
+    AMAZON("Amazon Entregas", "AMAZON", "FBA_ONSITE,DBA"),
     B2W_NEW_API("B2W Entregas", "B2W_NEW_API", "B2W"),
     GFG("Dafiti Entregas", "GFG", "Dafiti"),
     MAGAZINE_LUIZA("Magalu Entregas", "MAGAZINE_LUIZA", "Magalu"),
