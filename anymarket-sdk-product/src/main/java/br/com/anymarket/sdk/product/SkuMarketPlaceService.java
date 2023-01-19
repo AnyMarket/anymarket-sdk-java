@@ -246,6 +246,12 @@ public class SkuMarketPlaceService extends HttpService {
         return getSkuMarketplaceComplete(idSkuMarketplace, endpoint, headers);
     }
 
+    public SkuMarketplaceComplete getSkuMarketplaceCompleteByIdWithReservationsForAccountMultiLocal(Long idSkuMarketplace, IntegrationHeader... headers) {
+        Objects.requireNonNull(idSkuMarketplace, SKUMP_NOT_INFORMED);
+        String endpoint = String.format("/skus/marketplaces/%s/multilocal/withReservationsForAccount", idSkuMarketplace);
+        return getSkuMarketplaceComplete(idSkuMarketplace, endpoint, headers);
+    }
+
     private SkuMarketplaceComplete getSkuMarketplaceComplete(Long idSkuMarketplace, String endpoint, IntegrationHeader[] headers) {
         GetRequest getRequest = get(apiEndPoint.concat(endpoint), addModuleOriginHeader(headers, this.moduleOrigin));
 
