@@ -126,7 +126,8 @@ public enum MarketPlace {
     SHOPPING_LEBLON("Shopping Leblon"),
     PORTAL_DO_MEDICO_NEW_API("Portal do Médico Nova API"),
     CAZCO_MARKETPLACES("Cazco Marketplaces"),
-    BRAVIUM("Bravium");
+    BRAVIUM("Bravium"),
+    FENICIO("Fenicio");
 
     private String name;
 
