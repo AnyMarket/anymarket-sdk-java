@@ -127,7 +127,8 @@ public enum MarketPlace {
     PORTAL_DO_MEDICO_NEW_API("Portal do Médico Nova API"),
     CAZCO_MARKETPLACES("Cazco Marketplaces"),
     BRAVIUM("Bravium"),
-    FENICIO("Fenicio");
+    FENICIO("Fenicio"),
+    RAIA_DROGASIL("Raia Drogasil");
 
     private String name;
 
