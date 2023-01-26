@@ -128,7 +128,8 @@ public enum MarketPlace {
     CAZCO_MARKETPLACES("Cazco Marketplaces"),
     BRAVIUM("Bravium"),
     FENICIO("Fenicio"),
-    RAIA_DROGASIL("Raia Drogasil");
+    RAIA_DROGASIL("Raia Drogasil"),
+    MCF_SHOP("MCF Shop");
 
     private String name;
 
