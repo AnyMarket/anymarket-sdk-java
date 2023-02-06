@@ -8,11 +8,3 @@ include:
   - project: anymarket/pipelines-anymarket
     ref: master
     file: /dependencies/ci-cd-base-config.yml
-
-
-
-
-
-
-
-
