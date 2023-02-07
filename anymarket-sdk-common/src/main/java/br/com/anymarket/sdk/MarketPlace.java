@@ -130,7 +130,8 @@ public enum MarketPlace {
     FENICIO("Fenicio"),
     RAIA_DROGASIL("Raia Drogasil"),
     MCF_SHOP("MCF Shop"),
-    SHOPPING_LIVELO("Shopping Livelo");
+    SHOPPING_LIVELO("Shopping Livelo"),
+    PRIVALIA("PRIVALIA");
 
     private String name;
 
