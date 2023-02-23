@@ -131,7 +131,8 @@ public enum MarketPlace {
     RAIA_DROGASIL("Raia Drogasil"),
     MCF_SHOP("MCF Shop"),
     SHOPPING_LIVELO("Shopping Livelo"),
-    PRIVALIA("PRIVALIA");
+    PRIVALIA("PRIVALIA"),
+    AMARO("AMARO");
 
     private String name;
 
