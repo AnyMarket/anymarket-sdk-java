@@ -133,7 +133,8 @@ public enum MarketPlace {
     SHOPPING_LIVELO("Shopping Livelo"),
     PRIVALIA("PRIVALIA"),
     AMARO("AMARO"),
-    OI_PLACE("Oi Place");
+    OI_PLACE("Oi Place"),
+    KPLACE("Kplace");
 
     private String name;
 
