@@ -134,7 +134,8 @@ public enum MarketPlace {
     PRIVALIA("PRIVALIA"),
     AMARO("AMARO"),
     OI_PLACE("Oi Place"),
-    KPLACE("Kplace");
+    KPLACE("Kplace"),
+    LOKAS_COLOMBO("Lojas Colombo");
 
     private String name;
 
