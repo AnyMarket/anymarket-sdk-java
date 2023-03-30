@@ -6,5 +6,5 @@ variables:
 
 include:
   - project: anymarket/pipelines-anymarket
-    ref: feature/marketplace_generate
+    ref: master
     file: /dependencies/ci-cd-base-config.yml
