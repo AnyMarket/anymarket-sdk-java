@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <project name="ANYMARKET Marketplace">
 
-    <property name="marketplace" value="${MARKETPLACE_NAME}"/>
-    <property name="marketplaceValue" value="${MARKETPLACE_VALUE}"/>
+    <property name="marketplaceEnum" value="${MARKETPLACE_ENUM}"/>
+    <property name="marketplaceValue" value="${MARKETPLACE_NAME}"/>
 
     <target name="generate-new-marketplace" depends="update-enum">
         <exec executable="git">
@@ -24,7 +24,7 @@
     <target name="name-replace">
         <script language="javascript">
             <![CDATA[
-        var marketplace = project.getProperty('marketplace');
+        var marketplace = project.getProperty('marketplaceEnum');
         var marketplaceValue = project.getProperty('marketplaceValue');
         var marketplaceEnum = marketplace.replace(/\s/g, '_').toUpperCase();
         project.setProperty('marketplaceEnum', marketplaceEnum);
