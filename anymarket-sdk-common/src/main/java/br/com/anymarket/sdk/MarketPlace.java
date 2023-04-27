@@ -138,7 +138,8 @@ public enum MarketPlace {
     LOJAS_COLOMBO("Lojas Colombo"),
     SHOPIFY("Shopify"),
     SICREDI("Sicredi"),
-    FALABELLA("Falabella");
+    FALABELLA("Falabella"),
+    ANGELONI("Angeloni");
 
     private String name;
 
