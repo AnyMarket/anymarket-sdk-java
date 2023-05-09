@@ -140,6 +140,7 @@ public enum MarketPlace {
     SICREDI("Sicredi"),
     FALABELLA("Falabella"),
     ANGELONI("Angeloni"),
+    WOOCOMMERCE("Woocommerce"),
     SHEIN("Shein");
 
     private String name;
