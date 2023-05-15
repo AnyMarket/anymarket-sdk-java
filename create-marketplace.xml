@@ -3,12 +3,26 @@
 
     <property name="marketplaceEnum" value="${MARKETPLACE_ENUM}"/>
     <property name="marketplaceValue" value="${MARKETPLACE_NAME}"/>
+    <property name="isProduction" value="${IS_PRODUCTION}"/>
 
-    <target name="generate-new-marketplace" depends="update-enum">
+    <target name="marketplace-production-condition" if="${isProduction}">
+        <echo>Ignored generating new Marketplace for Production</echo>
+    </target>
+
+    <target name="marketplace-sandbox-condition" unless="${isProduction}">
+        <echo>Generating new Marketplace for Sandbox</echo>
+        <antcall target="generate-new-marketplace-sandbox">
+        </antcall>
+    </target>
+
+    <target name="generate-new-marketplace-sandbox" depends="update-enum">
         <exec executable="git">
             <arg value="add"/>
             <arg value="."/>
         </exec>
+    </target>
+
+    <target name="generate-new-marketplace" depends="marketplace-production-condition, marketplace-sandbox-condition">
     </target>
 
     <target name="update-enum" depends="name-replace">
