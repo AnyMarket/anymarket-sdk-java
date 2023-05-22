@@ -141,6 +141,8 @@ public enum MarketPlace {
     FALABELLA("Falabella"),
     ANGELONI("Angeloni"),
     WOOCOMMERCE("Woocommerce"),
+    GOATPLACE("Goatplace"),
+    WOOCOMMERCE("Woocommerce"),
     SHEIN("Shein");
 
     private String name;
