@@ -141,7 +141,8 @@ public enum MarketPlace {
     FALABELLA("Falabella"),
     ANGELONI("Angeloni"),
     WOOCOMMERCE("Woocommerce"),
-    GOATPLACE("Goatplace");
+    GOATPLACE("Goatplace"),
+    RAMARIM_NOVA_API("Ramarim Nova Api");
 
     private String name;
 
