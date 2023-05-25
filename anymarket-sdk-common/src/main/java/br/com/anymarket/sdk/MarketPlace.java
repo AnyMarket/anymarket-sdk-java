@@ -143,7 +143,8 @@ public enum MarketPlace {
     WOOCOMMERCE("Woocommerce"),
     GOATPLACE("Goatplace"),
     COMFORTFLEX_NOVA_API("Comfortflex Nova Api"),
-    RAMARIM_NOVA_API("Ramarim Nova Api");
+    RAMARIM_NOVA_API("Ramarim Nova Api"),
+    RIPLEY("Ripley");
 
     private String name;
 
