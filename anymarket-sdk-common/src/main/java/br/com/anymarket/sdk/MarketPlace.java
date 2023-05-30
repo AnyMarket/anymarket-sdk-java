@@ -140,7 +140,11 @@ public enum MarketPlace {
     SICREDI("Sicredi"),
     FALABELLA("Falabella"),
     ANGELONI("Angeloni"),
-    WOOCOMMERCE("Woocommerce");
+    WOOCOMMERCE("Woocommerce"),
+    GOATPLACE("Goatplace"),
+    COMFORTFLEX_NOVA_API("Comfortflex Nova Api"),
+    RAMARIM_NOVA_API("Ramarim Nova Api"),
+    RIPLEY("Ripley");
 
     private String name;
 
