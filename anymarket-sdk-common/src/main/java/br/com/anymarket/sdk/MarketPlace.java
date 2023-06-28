@@ -145,7 +145,8 @@ public enum MarketPlace {
     COMFORTFLEX_NOVA_API("Comfortflex Nova Api"),
     RAMARIM_NOVA_API("Ramarim Nova Api"),
     RIPLEY("Ripley"),
-    SHEIN("Shein");
+    SHEIN("Shein"),
+    COPPEL("Coppel");
 
     private String name;
 
