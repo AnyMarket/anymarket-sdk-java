@@ -158,9 +158,4 @@ public enum MarketPlace {
         return this.name;
     }
 
-    public boolean supportsPrediction() {
-        return this == SHOPEE
-            || this == MERCADO_LIVRE;
-    }
-
 }
