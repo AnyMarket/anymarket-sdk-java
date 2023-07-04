@@ -145,6 +145,8 @@ public enum MarketPlace {
     COMFORTFLEX_NOVA_API("Comfortflex Nova Api"),
     RAMARIM_NOVA_API("Ramarim Nova Api"),
     RIPLEY("Ripley"),
+    SHEIN("Shein"),
+    COPPEL("Coppel"),
     SHOPPING_BB("Shopping BB");
 
     private String name;
@@ -155,11 +157,6 @@ public enum MarketPlace {
 
     public String getDescription() {
         return this.name;
-    }
-
-    public boolean supportsPrediction() {
-        return this == SHOPEE
-            || this == MERCADO_LIVRE;
     }
 
 }
