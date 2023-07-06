@@ -1,9 +1,12 @@
 package br.com.anymarket.sdk.categories.dto.marketplace;
 
 import com.google.common.base.Objects;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -18,6 +21,7 @@ public class MarketplaceCategoryDetails {
     private Boolean isReceivingItens;
     private Boolean variationsMandatory;
     private Boolean canBeSelected;
+    private String completePath;
     private List<MarketplaceCategory> path = new ArrayList<MarketplaceCategory>();
     private List<MarketplaceCategory> children = new ArrayList<MarketplaceCategory>();
 
@@ -27,6 +31,7 @@ public class MarketplaceCategoryDetails {
     public MarketplaceCategoryDetails(Builder builder) {
         this.codeInMarketPlace = builder.codeInMarketPlace;
         this.name = builder.name;
+        this.completePath = builder.getCompletePath();
         this.path = builder.path;
         this.children = builder.children;
         this.isReceivingItens = builder.isReceivingItens;
@@ -40,6 +45,14 @@ public class MarketplaceCategoryDetails {
 
     public String getName() {
         return name;
+    }
+
+    public String getCompletePath() {
+        return completePath;
+    }
+
+    public void setCompletePath(String completePath) {
+        this.completePath = completePath;
     }
 
     public List<MarketplaceCategory> getPath() {
@@ -76,6 +89,7 @@ public class MarketplaceCategoryDetails {
         private Boolean isReceivingItens = false;
         private Boolean variationsMandatory = false;
         private Boolean canBeSelected = false;
+        private String completePath = "";
         private List<MarketplaceCategory> path;
         private List<MarketplaceCategory> children;
 
@@ -86,6 +100,11 @@ public class MarketplaceCategoryDetails {
 
         public Builder withName(String name) {
             this.name = name;
+            return this;
+        }
+
+        public Builder withCompletePath(String completePath) {
+            this.completePath = completePath;
             return this;
         }
 
@@ -112,6 +131,16 @@ public class MarketplaceCategoryDetails {
         public Builder canBeSelected() {
             this.canBeSelected = true;
             return this;
+        }
+
+        public String getCompletePath() {
+            if (StringUtils.isBlank(completePath)) {
+                return path.stream()
+                    .map(MarketplaceCategory::getName)
+                    .collect(Collectors.joining("/"));
+            }
+
+            return completePath;
         }
 
         public MarketplaceCategoryDetails build() {
