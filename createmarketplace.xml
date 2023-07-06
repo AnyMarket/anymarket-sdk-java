@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project name="ANYMARKET Marketplace">
 
-    <property name="marketplace" value="Shopping Leblon"/>
+    <property name="marketplace" value="Shopping BB"/>
 
     <target name="generate-new-marketplace" depends="update-enum">
         <exec executable="git">
