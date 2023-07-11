@@ -149,7 +149,8 @@ public enum MarketPlace {
     COPPEL("Coppel"),
     SHOPPING_BB("Shopping BB"),
     VENTURESHOP("Ventureshop"),
-    TROCAFONE("Trocafone");
+    TROCAFONE("Trocafone"),
+    LOJAS_QUERO_QUERO("Lojas Quero-Quero");
 
     private String name;
 
