@@ -147,7 +147,10 @@ public enum MarketPlace {
     RIPLEY("Ripley"),
     SHEIN("Shein"),
     COPPEL("Coppel"),
-    SHOPPING_BB("Shopping BB");
+    SHOPPING_BB("Shopping BB"),
+    VENTURESHOP("Ventureshop"),
+    TROCAFONE("Trocafone"),
+    LOJAS_QUERO_QUERO("Lojas Quero-Quero");
 
     private String name;
 
