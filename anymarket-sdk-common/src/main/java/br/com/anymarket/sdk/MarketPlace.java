@@ -150,7 +150,8 @@ public enum MarketPlace {
     SHOPPING_BB("Shopping BB"),
     VENTURESHOP("Ventureshop"),
     TROCAFONE("Trocafone"),
-    LOJAS_QUERO_QUERO("Lojas Quero-Quero");
+    LOJAS_QUERO_QUERO("Lojas Quero-Quero"),
+    HOUSE_OF_GAMERS("House Of Gamers");
 
     private String name;
 
