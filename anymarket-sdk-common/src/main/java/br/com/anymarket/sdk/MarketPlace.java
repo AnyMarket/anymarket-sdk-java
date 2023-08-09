@@ -152,7 +152,8 @@ public enum MarketPlace {
     TROCAFONE("Trocafone"),
     LOJAS_QUERO_QUERO("Lojas Quero-Quero"),
     HOUSE_OF_GAMERS("House Of Gamers"),
-    CORPO_PERFEITO("Corpo Perfeito");
+    CORPO_PERFEITO("Corpo Perfeito"),
+    MUNDO_YOUPLAY("Mundo YouPlay");
 
     private String name;
 
