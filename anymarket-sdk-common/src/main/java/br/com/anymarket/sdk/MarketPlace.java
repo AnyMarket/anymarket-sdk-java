@@ -155,7 +155,8 @@ public enum MarketPlace {
     CORPO_PERFEITO("Corpo Perfeito"),
     MUNDO_YOUPLAY("Mundo YouPlay"),
     TENDA_ATACADO("Tenda Atacado"),
-    PARIS("Paris");
+    PARIS("Paris"),
+    MARCA_SELETA("Marca Seleta");
 
     private String name;
 
