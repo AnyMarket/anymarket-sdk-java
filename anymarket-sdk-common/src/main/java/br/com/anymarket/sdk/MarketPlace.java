@@ -156,7 +156,8 @@ public enum MarketPlace {
     MUNDO_YOUPLAY("Mundo YouPlay"),
     TENDA_ATACADO("Tenda Atacado"),
     PARIS("Paris"),
-    MARCA_SELETA("Marca Seleta");
+    MARCA_SELETA("Marca Seleta"),
+    WEB_CONTINENTAL_V2("Web Continental V2");
 
     private String name;
 
