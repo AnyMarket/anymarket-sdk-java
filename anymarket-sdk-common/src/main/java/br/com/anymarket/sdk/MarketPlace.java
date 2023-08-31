@@ -135,7 +135,7 @@ public enum MarketPlace {
     AMARO("AMARO"),
     OI_PLACE("Oi Place"),
     KPLACE("Kplace"),
-    LOJAS_COLOMBO("Lojas Colombo"),
+    LOJAS_COLOMBO("Lojas Colombo Nova API"),
     SHOPIFY("Shopify"),
     SICREDI("Sicredi"),
     FALABELLA("Falabella"),
@@ -156,6 +156,7 @@ public enum MarketPlace {
     MUNDO_YOUPLAY("Mundo YouPlay"),
     TENDA_ATACADO("Tenda Atacado"),
     PARIS("Paris"),
+    MARCA_SELETA("Marca Seleta"),
     WEB_CONTINENTAL_V2("Web Continental V2");
 
     private String name;
