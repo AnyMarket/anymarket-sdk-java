@@ -36,6 +36,9 @@ public class BuyerResource{
     @JsonProperty("companyStateTaxId")
     private String companyStateTaxId;
 
+    @JsonProperty("dateOfBirth")
+    private String dateOfBirth;
+
     public Long getId() {
         return id;
     }
@@ -114,5 +117,13 @@ public class BuyerResource{
 
     public void setCompanyStateTaxId(String companyStateTaxId) {
         this.companyStateTaxId = companyStateTaxId;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }
