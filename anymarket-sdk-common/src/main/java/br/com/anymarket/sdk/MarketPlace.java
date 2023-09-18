@@ -157,7 +157,8 @@ public enum MarketPlace {
     TENDA_ATACADO("Tenda Atacado"),
     PARIS("Paris"),
     MARCA_SELETA("Marca Seleta"),
-    WEB_CONTINENTAL_V2("Web Continental V2");
+    WEB_CONTINENTAL_V2("Web Continental V2"),
+    LE_BISCUIT("Le Biscuit");
 
     private String name;
 
