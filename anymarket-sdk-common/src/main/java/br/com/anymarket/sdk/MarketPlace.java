@@ -159,7 +159,8 @@ public enum MarketPlace {
     MARCA_SELETA("Marca Seleta"),
     WEB_CONTINENTAL_V2("Web Continental V2"),
     LE_BISCUIT("Le Biscuit"),
-    LL_LOYALTY("LL Loyalty");
+    LL_LOYALTY("LL Loyalty"),
+    ITAU_SHOP("Itau Shop");
 
     private String name;
 
