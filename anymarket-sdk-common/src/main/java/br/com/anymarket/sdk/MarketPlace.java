@@ -160,7 +160,8 @@ public enum MarketPlace {
     WEB_CONTINENTAL_V2("Web Continental V2"),
     LE_BISCUIT("Le Biscuit"),
     LL_LOYALTY("LL Loyalty"),
-    ITAU_SHOP("Itau Shop");
+    ITAU_SHOP("Itau Shop"),
+    AKIN_SHOP("Akin Shop");
 
     private String name;
 
