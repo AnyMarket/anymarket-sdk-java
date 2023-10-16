@@ -7,7 +7,7 @@
   <parent>
     <groupId>br.com.anymarket.sdk</groupId>
     <artifactId>anymarket-sdk-java</artifactId>
-    <version>0.88.37</version>
+    <version>0.88.38</version>
   </parent>
 
   <artifactId>anymarket-sdk-freight</artifactId>

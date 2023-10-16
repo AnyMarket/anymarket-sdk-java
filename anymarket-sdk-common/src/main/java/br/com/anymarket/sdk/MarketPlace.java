@@ -161,7 +161,8 @@ public enum MarketPlace {
     LE_BISCUIT("Le Biscuit"),
     LL_LOYALTY("LL Loyalty"),
     ITAU_SHOP("Itau Shop"),
-    IGA("IGA");
+    IGA("IGA"),
+    AKIN_SHOP("Akin Shop");
 
     private String name;
 
