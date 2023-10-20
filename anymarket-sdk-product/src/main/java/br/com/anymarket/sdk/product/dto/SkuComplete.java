@@ -37,6 +37,9 @@ public class SkuComplete {
     @JsonProperty(value = "variations")
     private List<Variation> variations = new ArrayList<Variation>();
 
+    @JsonProperty("volumes")
+    private Integer volumes = 0;
+
     public Long getId() {
         return id;
     }
@@ -101,6 +104,14 @@ public class SkuComplete {
         this.variations = variations;
     }
 
+    public Integer getVolumes() {
+        return volumes;
+    }
+
+    public void setVolumes(Integer volumes) {
+        this.volumes = volumes;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -110,6 +121,7 @@ public class SkuComplete {
             .add("title", title)
             .add("price", price)
             .add("variations", variations)
+            .add("volumes", volumes)
             .toString();
     }
 }

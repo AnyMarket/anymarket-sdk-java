@@ -19,6 +19,7 @@ public class SkuMarketplaceCompleteTranslator {
         sku.setPrice(skuResource.getPrice());
         sku.setSellPrice(skuResource.getSellPrice());
         sku.setAdditionalTime(skuResource.getAdditionalTime());
+        sku.setVolumes(skuResource.getVolumes());
         if (skuResource.getVariations() != null && !skuResource.getVariations().isEmpty()) {
             Map<String, String> variations = new HashMap<>();
 
@@ -44,6 +45,7 @@ public class SkuMarketplaceCompleteTranslator {
         sku.setPrice(skuResource.getPrice());
         sku.setAdditionalTime(skuResource.getAdditionalTime());
         sku.setVariations(skuResource.getVariations());
+        sku.setVolumes(skuResource.getVolumes());
 
         return sku;
     }

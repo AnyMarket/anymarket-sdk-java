@@ -42,6 +42,9 @@ public class SkuResource {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private ProductBase product;
 
+    @JsonProperty("volumes")
+    private Integer volumes = 0;
+
     public Long getId() {
         return id;
     }
@@ -120,5 +123,13 @@ public class SkuResource {
 
     public void setProduct(ProductBase product) {
         this.product = product;
+    }
+
+    public Integer getVolumes() {
+        return volumes;
+    }
+
+    public void setVolumes(Integer volumes) {
+        this.volumes = volumes;
     }
 }
