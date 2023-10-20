@@ -43,6 +43,10 @@ public class Sku implements Serializable {
     @JsonDeserialize(using = VariationDeserializer.class)
     private Map<String, String> variations = new HashMap<String, String>();
 
+    @JsonProperty("volumes")
+    private Integer volumes = 0;
+
+
     public Long getId() {
         return id;
     }
@@ -115,6 +119,14 @@ public class Sku implements Serializable {
         this.additionalTime = additionalTime;
     }
 
+    public Integer getVolumes() {
+        return volumes;
+    }
+
+    public void setVolumes(Integer volumes) {
+        this.volumes = volumes;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -126,6 +138,7 @@ public class Sku implements Serializable {
             .add("sellPrice", sellPrice)
             .add("variations", variations)
             .add("additionalTime", additionalTime)
+            .add("volumes", volumes)
             .toString();
     }
 
