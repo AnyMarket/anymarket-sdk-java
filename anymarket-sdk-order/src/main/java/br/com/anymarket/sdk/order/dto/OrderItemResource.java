@@ -60,6 +60,9 @@ public class OrderItemResource {
     @JsonProperty("officialStoreName")
     private String officialStoreName;
 
+    @JsonProperty("product")
+    private SimpleProductResource product;
+
 
     public String getIdInMarketPlace() {
         return idInMarketPlace;
@@ -189,6 +192,14 @@ public class OrderItemResource {
         this.customizations = customizations;
     }
 
+    public SimpleProductResource getProduct() {
+        return product;
+    }
+
+    public void setProduct(SimpleProductResource product) {
+        this.product = product;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -203,6 +214,7 @@ public class OrderItemResource {
             .add("stocks", stocks)
             .add("officialStoreId", officialStoreId)
             .add("officialStoreName", officialStoreName)
+            .add("product", product)
             .toString();
     }
 }
