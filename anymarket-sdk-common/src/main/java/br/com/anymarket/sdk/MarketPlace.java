@@ -162,7 +162,8 @@ public enum MarketPlace {
     LL_LOYALTY("LL Loyalty"),
     ITAU_SHOP("Itau Shop"),
     IGA("IGA"),
-    AKIN_SHOP("Akin Shop");
+    AKIN_SHOP("Akin Shop"),
+    ELEKTRA("Elektra");
 
     private String name;
 
