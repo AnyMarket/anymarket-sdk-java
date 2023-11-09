@@ -164,7 +164,8 @@ public enum MarketPlace {
     IGA("IGA"),
     AKIN_SHOP("Akin Shop"),
     ELEKTRA("Elektra"),
-    HITES("Hites");
+    HITES("Hites"),
+    KOERICH("Koerich");
 
     private String name;
 
