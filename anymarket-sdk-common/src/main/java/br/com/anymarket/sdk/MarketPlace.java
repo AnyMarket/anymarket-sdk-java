@@ -165,7 +165,8 @@ public enum MarketPlace {
     AKIN_SHOP("Akin Shop"),
     ELEKTRA("Elektra"),
     HITES("Hites"),
-    KOERICH("Koerich");
+    KOERICH("Koerich"),
+    WOOCOMMERCE2("Woocommerce2");
 
     private String name;
 
