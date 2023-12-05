@@ -165,7 +165,9 @@ public enum MarketPlace {
     AKIN_SHOP("Akin Shop"),
     ELEKTRA("Elektra"),
     HITES("Hites"),
-    KOERICH("Koerich");
+    KOERICH("Koerich"),
+    CLARO_SHOP("Claro Shop"),
+    THE_HOME_DEPOT("The Home Depot");
 
     private String name;
 
