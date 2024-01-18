@@ -24,6 +24,8 @@ public class Stock implements AnymarketPojo {
     private Integer additionalTime;
     @JsonProperty("stockLocalId")
     private Long stockLocalId;
+    @JsonProperty("isKit")
+    private boolean isKit;
 
     public Stock() {}
 
@@ -42,6 +44,7 @@ public class Stock implements AnymarketPojo {
         this.costPrice = builder.costPrice;
         this.additionalTime = builder.additionalTime;
         this.stockLocalId = builder.stockLocalId;
+        this.isKit = builder.isKit;
     }
 
     public static Builder builder() {
@@ -72,6 +75,10 @@ public class Stock implements AnymarketPojo {
         return stockLocalId;
     }
 
+    public boolean isKit() {
+        return isKit;
+    }
+
     @Override
     public String getPathURI() {
         return "/stocks";
@@ -85,6 +92,7 @@ public class Stock implements AnymarketPojo {
         private BigDecimal costPrice;
         private Integer additionalTime;
         private Long stockLocalId;
+        private Boolean isKit;
 
         public Builder withId(Long id) {
             this.id = id;
@@ -113,6 +121,11 @@ public class Stock implements AnymarketPojo {
 
         public Builder withStockLocalId(Long stockLocalId) {
             this.stockLocalId = stockLocalId;
+            return this;
+        }
+
+        public Builder withIsKit(Boolean isKit) {
+            this.isKit = isKit;
             return this;
         }
 
