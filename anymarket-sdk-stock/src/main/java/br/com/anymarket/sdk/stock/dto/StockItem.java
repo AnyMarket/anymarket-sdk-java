@@ -33,6 +33,9 @@ public class StockItem implements AnymarketPojo {
     private Date lastStockUpdate;
     @JsonProperty("additionalTime")
     private Integer additionalTime;
+    @JsonProperty("isKit")
+    private boolean isKit;
+
 
     public StockItem() {}
 
@@ -54,6 +57,7 @@ public class StockItem implements AnymarketPojo {
         this.active = builder.active;
         this.lastStockUpdate = builder.lastStockUpdate;
         this.additionalTime = builder.additionalTime;
+        this.isKit = builder.isKit;
     }
 
     public static class Builder {
@@ -66,6 +70,7 @@ public class StockItem implements AnymarketPojo {
         private Boolean active;
         private Date lastStockUpdate;
         private Integer additionalTime;
+        private Boolean isKit;
 
         public Builder withStockKeepingUnit(StockKeepingUnit stockKeepingUnit) {
             this.stockKeepingUnit = stockKeepingUnit;
@@ -101,6 +106,10 @@ public class StockItem implements AnymarketPojo {
         }
         public Builder withAdditionalTime(Integer additionalTime) {
             this.additionalTime = additionalTime;
+            return this;
+        }
+        public Builder withIsKit(Boolean isKit) {
+            this.isKit = isKit;
             return this;
         }
         public StockItem build() {
@@ -152,4 +161,8 @@ public class StockItem implements AnymarketPojo {
     public Integer getAdditionalTime() {
         return additionalTime;
     }
+    public Boolean isKit() {
+        return isKit;
+    }
+
 }
