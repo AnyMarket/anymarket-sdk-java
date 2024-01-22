@@ -5,7 +5,7 @@
   <parent>
     <artifactId>anymarket-sdk-java</artifactId>
     <groupId>br.com.anymarket.sdk</groupId>
-    <version>0.88.43</version>
+    <version>0.88.44</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
