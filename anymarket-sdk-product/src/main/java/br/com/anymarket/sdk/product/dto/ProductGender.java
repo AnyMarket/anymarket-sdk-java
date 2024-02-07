@@ -5,5 +5,7 @@ public enum ProductGender {
     FEMALE,
     UNISSEX,
     BOY,
-    GIRL
+    GIRL,
+    BABIES,
+    CHILDISH_UNISSEX
 }
