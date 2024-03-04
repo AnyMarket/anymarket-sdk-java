@@ -170,9 +170,10 @@ public enum MarketPlace {
     THE_HOME_DEPOT("The Home Depot"),
     WOOCOMMERCE2("Woocommerce2"),
     POLISHOP("Polishop"),
+    VALE_BONUS("Vale Bonus"),
     JUMPSELLER("Jumpseller"),
-    VALE_BONUS("Vale Bonus");
-
+    HELP_SELLER("Help Seller");
+    
     private String name;
 
     private MarketPlace(String name) {
