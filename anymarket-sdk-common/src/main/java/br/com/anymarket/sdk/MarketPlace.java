@@ -171,8 +171,11 @@ public enum MarketPlace {
     WOOCOMMERCE2("Woocommerce2"),
     POLISHOP("Polishop"),
     VALE_BONUS("Vale Bonus"),
+    JUMPSELLER("Jumpseller"),
+    HELP_SELLER("Help Seller"),
+    WEHOUSE("Wehouse"),
     LOJA_DO_COOPERADO("Loja do Cooperado");
-
+    
     private String name;
 
     private MarketPlace(String name) {
