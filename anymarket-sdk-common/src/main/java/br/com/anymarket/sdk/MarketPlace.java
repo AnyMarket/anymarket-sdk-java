@@ -172,7 +172,8 @@ public enum MarketPlace {
     POLISHOP("Polishop"),
     VALE_BONUS("Vale Bonus"),
     JUMPSELLER("Jumpseller"),
-    HELP_SELLER("Help Seller");
+    HELP_SELLER("Help Seller"),
+    WEHOUSE("Wehouse");
     
     private String name;
 
