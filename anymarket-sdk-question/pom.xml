@@ -7,7 +7,7 @@
   <parent>
     <artifactId>anymarket-sdk-java</artifactId>
     <groupId>br.com.anymarket.sdk</groupId>
-    <version>0.88.51</version>
+    <version>0.88.52-SNAPSHOT</version>
   </parent>
 
   <artifactId>anymarket-sdk-question</artifactId>
