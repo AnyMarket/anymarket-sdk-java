@@ -6,6 +6,7 @@ import br.com.anymarket.sdk.http.HttpService;
 import br.com.anymarket.sdk.http.Response;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.product.SkuMarketPlaceService;
+import br.com.anymarket.sdk.profile.dto.Language;
 import br.com.anymarket.sdk.profile.dto.Seller;
 import com.google.common.base.Strings;
 import com.mashape.unirest.request.GetRequest;
@@ -32,5 +33,14 @@ public class SellerProfileService extends HttpService {
             return response.to(Seller.class);
         }
         throw new NotFoundException("Profile not found");
+    }
+
+    public Language getLanguage(IntegrationHeader... headers) {
+        GetRequest getRequest = get(apiEndPoint.concat(SELLER_PROFILE_URI).concat("/language"), headers);
+        Response response = execute(getRequest);
+        if (response.getStatus() == HttpStatus.SC_OK) {
+            return response.to(Language.class);
+        }
+        return new Language("pt");
     }
 }
