@@ -174,7 +174,8 @@ public enum MarketPlace {
     JUMPSELLER("Jumpseller"),
     HELP_SELLER("Help Seller"),
     WEHOUSE("Wehouse"),
-    LOJA_DO_COOPERADO("Loja do Cooperado");
+    LOJA_DO_COOPERADO("Loja do Cooperado"),
+    PITSTOP("PitStop");
     
     private String name;
 
