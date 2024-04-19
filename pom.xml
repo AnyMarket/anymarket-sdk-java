@@ -4,7 +4,7 @@
 
   <groupId>br.com.anymarket.sdk</groupId>
   <artifactId>anymarket-sdk-java</artifactId>
-  <version>0.88.56-SNAPSHOT</version>
+  <version>0.88.56</version>
   <modules>
     <module>anymarket-sdk-stock</module>
     <module>anymarket-sdk-order</module>
