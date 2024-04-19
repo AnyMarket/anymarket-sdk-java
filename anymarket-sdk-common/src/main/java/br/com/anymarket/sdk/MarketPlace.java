@@ -177,8 +177,10 @@ public enum MarketPlace {
     LOJA_DO_COOPERADO("Loja do Cooperado"),
     PITSTOP("PitStop"),
     GIRAFA("Girafa"),
-    LOJAS_MM("Lojas MM");
-    
+    LOJAS_MM("Lojas MM"),
+    YA_PLACE_STORE("YA PLACE STORE"),
+    SELLER_TEST_USA("Seller Test USA");
+
     private String name;
 
     private MarketPlace(String name) {
