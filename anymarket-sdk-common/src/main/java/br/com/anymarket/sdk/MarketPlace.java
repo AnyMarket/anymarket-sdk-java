@@ -179,7 +179,8 @@ public enum MarketPlace {
     GIRAFA("Girafa"),
     LOJAS_MM("Lojas MM"),
     YA_PLACE_STORE("YA PLACE STORE"),
-    SELLER_TEST_USA("Seller Test USA");
+    SELLER_TEST_USA("Seller Test USA"),
+    BABYBIZ("Babybiz");
 
     private String name;
 
