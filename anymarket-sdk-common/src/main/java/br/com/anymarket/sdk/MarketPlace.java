@@ -180,7 +180,8 @@ public enum MarketPlace {
     LOJAS_MM("Lojas MM"),
     YA_PLACE_STORE("YA PLACE STORE"),
     SELLER_TEST_USA("Seller Test USA"),
-    BABYBIZ("Babybiz");
+    BABYBIZ("Babybiz"),
+    CLAROSHOP_MEXICO("Claroshop México");
 
     private String name;
 
