@@ -181,7 +181,8 @@ public enum MarketPlace {
     YA_PLACE_STORE("YA PLACE STORE"),
     SELLER_TEST_USA("Seller Test USA"),
     BABYBIZ("Babybiz"),
-    CLAROSHOP_MEXICO("Claroshop México");
+    CLAROSHOP_MEXICO("Claroshop México"),
+    WAKE_MARKETPLACE("Wake Marketplace");
 
     private String name;
 
