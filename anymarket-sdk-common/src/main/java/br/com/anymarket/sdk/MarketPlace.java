@@ -183,7 +183,8 @@ public enum MarketPlace {
     BABYBIZ("Babybiz"),
     CLAROSHOP_MEXICO("Claroshop México"),
     WAKE_MARKETPLACE("Wake Marketplace"),
-    PAGUE_MENOS("Pague Menos");
+    PAGUE_MENOS("Pague Menos"),
+    SENFF_SHOPPING("Senff Shopping");
 
     private String name;
 
