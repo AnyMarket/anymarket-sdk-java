@@ -185,7 +185,7 @@ public enum MarketPlace {
     WAKE_MARKETPLACE("Wake Marketplace"),
     PAGUE_MENOS("Pague Menos"),
     SENFF_SHOPPING("Senff Shopping"),
-    FASTSHOP_NEW_API("FastShop new api");
+    FASTSHOP_NEW_API("FastShop Nova Api");
 
     private String name;
 
