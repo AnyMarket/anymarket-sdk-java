@@ -4,7 +4,7 @@ import br.com.anymarket.sdk.template.dto.TitleTemplate;
 
 public class TitleTemplateService extends AbstractTemplateService<TitleTemplate> {
 
-    private static final String TEMPLATE_URI = "/titleTemplate";
+    private static final String TEMPLATE_URI = "/titleTemplates";
 
     public TitleTemplateService(String apiEndPoint) {
         super(TEMPLATE_URI, apiEndPoint);
