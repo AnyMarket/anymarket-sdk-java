@@ -186,7 +186,8 @@ public enum MarketPlace {
     PAGUE_MENOS("Pague Menos"),
     SENFF_SHOPPING("Senff Shopping"),
     FASTSHOP_NEW_API("FastShop Nova Api"),
-    PRESTASHOP("Prestashop");
+    PRESTASHOP("Prestashop"),
+    RI_HAPPY_NEW_API("Ri Happy New Api");
 
     private String name;
 
