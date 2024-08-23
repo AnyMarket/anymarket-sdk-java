@@ -188,7 +188,7 @@ public enum MarketPlace {
     FASTSHOP_NEW_API("FastShop Nova Api"),
     PRESTASHOP("Prestashop"),
     RI_HAPPY_NEW_API("Ri Happy Nova Api"),
-    EPOCA("Epoca");
+    EPOCA("Época");
 
     private String name;
 
