@@ -189,7 +189,8 @@ public enum MarketPlace {
     PRESTASHOP("Prestashop"),
     RI_HAPPY_NEW_API("Ri Happy Nova Api"),
     CSM("CSM"),
-    EPOCA("Época");
+    EPOCA("Época"),
+    VANTICO_PENTEST("vantico pentest");
 
     private String name;
 
