@@ -14,7 +14,9 @@ public enum DeliveryStatus {
     DELAYED_PICKUP("Coleta atrasada", "4"),
     HOLD_FOR_SHIPPED("Aguardando envio", "5"),
     DELAYED_SHIPPING("Envio atrasado", "6"),
-    SHIPPED("Enviado", "7");
+    SHIPPED("Enviado", "7"),
+    SHIP_CONFIRMED("Ship Confirmed","8"),
+    QUARANTINE("Quarentena","9");
 
     private final String description;
     private final String code;
