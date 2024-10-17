@@ -191,7 +191,8 @@ public enum MarketPlace {
     CSM("CSM"),
     EPOCA("Época"),
     VANTICO_PENTEST("VANTICO-PENTEST"),
-    FARMADELIVERY("FarmaDelivery");
+    FARMADELIVERY("FarmaDelivery"),
+    GRUPO_MATEUS("Grupo Mateus");
 
     private String name;
 
