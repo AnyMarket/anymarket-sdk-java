@@ -39,7 +39,7 @@ public class OrderReturn {
     private String marketplaceTypeId;
 
     @JsonProperty("accountId")
-    private String accountId;
+    private Long accountId;
 
     @JsonProperty("accountName")
     private String accountName;
