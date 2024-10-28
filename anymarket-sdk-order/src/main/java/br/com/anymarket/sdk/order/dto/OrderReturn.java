@@ -54,7 +54,7 @@ public class OrderReturn {
     private String reason;
 
     @JsonProperty("type")
-    private String type;
+    private ReturnType type;
 
     @JsonProperty("closedAt")
     @JsonSerialize(using = SDKDateSerializer.class)
