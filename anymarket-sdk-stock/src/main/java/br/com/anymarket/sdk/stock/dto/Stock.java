@@ -26,6 +26,8 @@ public class Stock implements AnymarketPojo {
     private Long stockLocalId;
     @JsonProperty("isKit")
     private boolean isKit;
+    @JsonProperty("skuLocationDescription")
+    private String skuLocationDescription;
     @JsonProperty("idSku")
     private Long idSku;
 
@@ -48,6 +50,7 @@ public class Stock implements AnymarketPojo {
         this.additionalTime = builder.additionalTime;
         this.stockLocalId = builder.stockLocalId;
         this.isKit = builder.isKit;
+        this.skuLocationDescription = builder.skuLocationDescription;
         this.idSku = builder.idSku;
     }
 
@@ -83,6 +86,10 @@ public class Stock implements AnymarketPojo {
         return isKit;
     }
 
+    public String getSkuLocationDescription() {
+        return skuLocationDescription;
+    }
+
     public Long getIdSku() {
         return idSku;
     }
@@ -101,6 +108,7 @@ public class Stock implements AnymarketPojo {
         private Integer additionalTime;
         private Long stockLocalId;
         private Boolean isKit;
+        private String skuLocationDescription;
         private Long idSku;
 
         public Builder withId(Long id) {
@@ -135,6 +143,11 @@ public class Stock implements AnymarketPojo {
 
         public Builder withIsKit(Boolean isKit) {
             this.isKit = isKit;
+            return this;
+        }
+
+        public Builder withSkuLocationDescription(String skuLocationDescription) {
+            this.skuLocationDescription = skuLocationDescription;
             return this;
         }
 
