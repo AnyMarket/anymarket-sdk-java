@@ -35,6 +35,8 @@ public class StockItem implements AnymarketPojo {
     private Integer additionalTime;
     @JsonProperty("isKit")
     private boolean isKit;
+    @JsonProperty("skuLocationDescription")
+    private String skuLocationDescription;
 
 
     public StockItem() {}
@@ -58,6 +60,7 @@ public class StockItem implements AnymarketPojo {
         this.lastStockUpdate = builder.lastStockUpdate;
         this.additionalTime = builder.additionalTime;
         this.isKit = builder.isKit;
+        this.skuLocationDescription = builder.skuLocationDescription;
     }
 
     public static class Builder {
@@ -71,47 +74,63 @@ public class StockItem implements AnymarketPojo {
         private Date lastStockUpdate;
         private Integer additionalTime;
         private Boolean isKit;
+        private String skuLocationDescription;
 
         public Builder withStockKeepingUnit(StockKeepingUnit stockKeepingUnit) {
             this.stockKeepingUnit = stockKeepingUnit;
             return this;
         }
+
         public Builder withStockLocal(StockLocal stockLocal) {
             this.stockLocal = stockLocal;
             return this;
         }
+
         public Builder withAmount(BigDecimal amount) {
             this.amount = amount;
             return this;
         }
+
         public Builder withReservationAmount(BigDecimal reservationAmount) {
             this.reservationAmount = reservationAmount;
             return this;
         }
+
         public Builder withAvailableAmount(BigDecimal availableAmount) {
             this.availableAmount = availableAmount;
             return this;
         }
+
         public Builder withPrice(BigDecimal price) {
             this.price = price;
             return this;
         }
+
         public Builder withActive(Boolean active) {
             this.active = active;
             return this;
         }
+
         public Builder withLastStockUpdate(Date lastStockUpdate) {
             this.lastStockUpdate = lastStockUpdate;
             return this;
         }
+
         public Builder withAdditionalTime(Integer additionalTime) {
             this.additionalTime = additionalTime;
             return this;
         }
+
         public Builder withIsKit(Boolean isKit) {
             this.isKit = isKit;
             return this;
         }
+
+        public Builder withSkuLocationDescription(String skuLocationDescription) {
+            this.skuLocationDescription = skuLocationDescription;
+            return this;
+        }
+
         public StockItem build() {
             return new StockItem(this);
         }
@@ -163,6 +182,10 @@ public class StockItem implements AnymarketPojo {
     }
     public Boolean isKit() {
         return isKit;
+    }
+
+    public String getSkuLocationDescription() {
+        return skuLocationDescription;
     }
 
 }
