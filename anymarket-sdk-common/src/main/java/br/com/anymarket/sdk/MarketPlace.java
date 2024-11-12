@@ -192,7 +192,8 @@ public enum MarketPlace {
     EPOCA("Época"),
     VANTICO_PENTEST("VANTICO-PENTEST"),
     FARMADELIVERY("FarmaDelivery"),
-    GRUPO_MATEUS("Grupo Mateus");
+    GRUPO_MATEUS("Grupo Mateus"),
+    DIGIGROW("Digigrow");
 
     private String name;
 
