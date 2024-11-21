@@ -193,7 +193,8 @@ public enum MarketPlace {
     VANTICO_PENTEST("VANTICO-PENTEST"),
     FARMADELIVERY("FarmaDelivery"),
     GRUPO_MATEUS("Grupo Mateus"),
-    DIGIGROW("Digigrow");
+    DIGIGROW("Digigrow"),
+    VOCE("Você");
 
     private String name;
 
