@@ -43,6 +43,13 @@ public class HttpService {
         return post.body(writeValueAsJson(body));
     }
 
+    protected HttpRequest postFile(String url, Map<String, Object> fields, IntegrationHeader... headers) {
+        HttpRequestWithBody post = Unirest.post(url);
+        addHeaders(post, headers);
+        post.fields(fields);
+        return post;
+    }
+
     protected HttpRequestWithBody delete(String url, IntegrationHeader... headers) {
         HttpRequestWithBody delete = Unirest.delete(url);
         addHeaders(delete, headers);
