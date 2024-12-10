@@ -26,6 +26,7 @@
     <module>anymarket-sdk-profile</module>
     <module>anymarket-sdk-automatic-message</module>
     <module>anymarket-sdk-parameter</module>
+    <module>anymarket-sdk-fileimport</module>
   </modules>
 
   <packaging>pom</packaging>
@@ -104,6 +105,11 @@
       <dependency>
         <groupId>br.com.anymarket.sdk</groupId>
         <artifactId>anymarket-sdk-profile</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>anymarket-sdk-fileimport</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
