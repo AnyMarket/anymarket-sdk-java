@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
+import org.joda.time.DateTime;
 
 import java.util.Date;
 import java.util.List;
@@ -57,20 +58,16 @@ public class OrderReturn {
     private ReturnType type;
 
     @JsonProperty("closedAt")
-    @JsonSerialize(using = SDKDateSerializer.class)
-    private Date closedAt;
+    private DateTime closedAt;
 
     @JsonProperty("createdAt")
-    @JsonSerialize(using = SDKDateSerializer.class)
-    private Date createdAt;
+    private DateTime createdAt;
 
     @JsonProperty("updatedAt")
-    @JsonSerialize(using = SDKDateSerializer.class)
-    private Date updatedAt;
+    private DateTime updatedAt;
 
     @JsonProperty("checkedAt")
-    @JsonSerialize(using = SDKDateSerializer.class)
-    private Date checkedAt;
+    private DateTime checkedAt;
 
     @JsonProperty("items")
     private List<OrderReturnItemResource> items = Lists.newArrayList();
