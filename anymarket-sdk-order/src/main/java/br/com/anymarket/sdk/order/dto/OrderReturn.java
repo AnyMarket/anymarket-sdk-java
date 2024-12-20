@@ -57,15 +57,19 @@ public class OrderReturn {
     private ReturnType type;
 
     @JsonProperty("closedAt")
+    @JsonSerialize(using = SDKDateSerializer.class)
     private Date closedAt;
 
     @JsonProperty("createdAt")
+    @JsonSerialize(using = SDKDateSerializer.class)
     private Date createdAt;
 
     @JsonProperty("updatedAt")
+    @JsonSerialize(using = SDKDateSerializer.class)
     private Date updatedAt;
 
     @JsonProperty("checkedAt")
+    @JsonSerialize(using = SDKDateSerializer.class)
     private Date checkedAt;
 
     @JsonProperty("items")

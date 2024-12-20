@@ -30,6 +30,7 @@ public class OrderReturnShippingResource {
     private String trackingNumber;
 
     @JsonProperty("estimatedDelivery")
+    @JsonSerialize(using = SDKDateSerializer.class)
     private Date estimatedDelivery;
 
     @JsonProperty("transportServiceName")
@@ -75,5 +76,6 @@ public class OrderReturnShippingResource {
     private String destination;
 
     @JsonProperty("createdAt")
+    @JsonSerialize(using = SDKDateSerializer.class)
     private Date createdAt;
 }
