@@ -27,6 +27,5 @@ public class OrderReturnHistoryResource {
     private String shippingSubStatus;
 
     @JsonProperty("createdAt")
-    @JsonSerialize(using = SDKDateSerializer.class)
     private Date createdAt;
 }
