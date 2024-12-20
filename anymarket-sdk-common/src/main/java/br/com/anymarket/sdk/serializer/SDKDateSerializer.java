@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class SDKDateSerializer extends JsonSerializer<Date> {
 
-    public static final String FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    public static final String FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";
 
     @Override
     public void serialize(Date value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
