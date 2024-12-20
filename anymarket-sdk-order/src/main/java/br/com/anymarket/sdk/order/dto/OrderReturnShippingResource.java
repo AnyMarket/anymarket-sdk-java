@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
-import org.joda.time.DateTime;
 
 import java.util.Date;
 
@@ -31,7 +30,8 @@ public class OrderReturnShippingResource {
     private String trackingNumber;
 
     @JsonProperty("estimatedDelivery")
-    private DateTime estimatedDelivery;
+    @JsonSerialize(using = SDKDateSerializer.class)
+    private Date estimatedDelivery;
 
     @JsonProperty("transportServiceName")
     private String transportServiceName;
@@ -76,5 +76,6 @@ public class OrderReturnShippingResource {
     private String destination;
 
     @JsonProperty("createdAt")
-    private DateTime createdAt;
+    @JsonSerialize(using = SDKDateSerializer.class)
+    private Date createdAt;
 }
