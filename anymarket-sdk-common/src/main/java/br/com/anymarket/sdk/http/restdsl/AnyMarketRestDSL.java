@@ -18,4 +18,8 @@ public class AnyMarketRestDSL {
     public static RestRequestWithBody put(String url) {
         return new RestRequestWithBody(Unirest.put(url));
     }
+
+    public static RestRequestWithBody patch(String url) {
+        return new RestRequestWithBody(Unirest.patch(url));
+    }
 }

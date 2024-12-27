@@ -5,6 +5,7 @@ import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.order.dto.OrderReturn;
 
 import static br.com.anymarket.sdk.http.headers.AnymarketHeaderUtils.addModuleOriginHeader;
+import static br.com.anymarket.sdk.http.restdsl.AnyMarketRestDSL.patch;
 import static br.com.anymarket.sdk.http.restdsl.AnyMarketRestDSL.post;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -35,5 +36,15 @@ public class OrderReturnService {
                 .routeParam("id", idOrder.toString())
                 .getResponse()
                 .to(OrderReturn.class);
+    }
+
+    public void updateOrderReturn(Long idOrderReturn, OrderReturn orderReturn, IntegrationHeader... headers) {
+        checkNotNull(idOrderReturn, "Erro ao atualizar devolução: Id da devolução não informado");
+        checkNotNull(orderReturn, "Erro ao atualizar devolução: Dados da devolução não informado");
+        patch(apiEndPointForResource.concat("/orders/returns/{returnId}"))
+                .body(orderReturn)
+                .headers(addModuleOriginHeader(headers, this.moduleOrigin))
+                .routeParam("returnId", idOrderReturn.toString())
+                .getResponse();
     }
 }
