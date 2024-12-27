@@ -80,4 +80,7 @@ public class OrderReturn {
 
     @JsonProperty("history")
     private List<OrderReturnHistoryResource> history = Lists.newArrayList();
+
+    @JsonProperty("conference")
+    private OrderReturnConferenceResource conference;
 }
