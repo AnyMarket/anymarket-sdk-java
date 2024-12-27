@@ -38,14 +38,13 @@ public class OrderReturnService {
                 .to(OrderReturn.class);
     }
 
-    public OrderReturn updateOrderReturn(Long idOrderReturn, OrderReturn orderReturn, IntegrationHeader... headers) {
+    public void updateOrderReturn(Long idOrderReturn, OrderReturn orderReturn, IntegrationHeader... headers) {
         checkNotNull(idOrderReturn, "Erro ao atualizar devolução: Id da devolução não informado");
         checkNotNull(orderReturn, "Erro ao atualizar devolução: Dados da devolução não informado");
-        return patch(apiEndPointForResource.concat("/orders/returns/{returnId}"))
+        patch(apiEndPointForResource.concat("/orders/returns/{returnId}"))
                 .body(orderReturn)
                 .headers(addModuleOriginHeader(headers, this.moduleOrigin))
                 .routeParam("returnId", idOrderReturn.toString())
-                .getResponse()
-                .to(OrderReturn.class);
+                .getResponse();
     }
 }
