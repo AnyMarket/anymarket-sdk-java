@@ -1,12 +1,14 @@
 package br.com.anymarket.sdk.util;
 
+import java.util.Optional;
+
 public final class LongUtils {
 
-    public static Long parse(String s) {
+    public static Optional<Long> parse(String s) {
         try {
-            return Long.parseLong(s);
+            return Optional.of(Long.parseLong(s));
         } catch (NumberFormatException ignore) {
-            return null;
+            return Optional.empty();
         }
     }
 
