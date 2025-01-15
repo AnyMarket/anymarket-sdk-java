@@ -22,8 +22,9 @@ import static java.lang.String.format;
 
 public abstract class AbstractTemplateService<T extends GenericTemplate> extends HttpService {
 
-    private final String templateUri;
     public static final String SEPARATOR = "/";
+
+    private final String templateUri;
     private final String apiEndPoint;
     private String moduleOrigin;
 
@@ -52,9 +53,8 @@ public abstract class AbstractTemplateService<T extends GenericTemplate> extends
     }
 
     public List<T> getTemplatesByMarketPlace(final MarketPlace marketPlace, IntegrationHeader... headers) {
-        return getTemplateList(apiEndPoint.concat(templateUri).concat("/list/")
-            .concat(SDKUrlEncoder.encodeParameterToUTF8(marketPlace.name())),
-            addModuleOriginHeader(headers, this.moduleOrigin));
+        String path = "/list/".concat(SDKUrlEncoder.encodeParameterToUTF8(marketPlace.name()));
+        return getList(path, "Template", headers);
     }
 
     public String renderTemplate(Long templateId, Long skuMpId, IntegrationHeader... headers) {
@@ -66,19 +66,18 @@ public abstract class AbstractTemplateService<T extends GenericTemplate> extends
         throw new HttpClientException(format("Could not render template with id %d for sku id %d", templateId, skuMpId));
     }
 
-
-    private List<T> getTemplateList(final String url, IntegrationHeader... headers) {
-        final List<T> templates = Lists.newArrayList();
+    protected <L> List<L> getList(String path, String id, IntegrationHeader... headers) {
+        final List<L> items = Lists.newArrayList();
+        final String url = apiEndPoint.concat(templateUri).concat(path);
         final GetRequest getRequest = get(url, addModuleOriginHeader(headers, this.moduleOrigin));
         final Response response = execute(getRequest);
         if (response.getStatus() == HttpStatus.SC_OK) {
-            List<T> rootResponse = response.to(new TypeReference<List<T>>() {
-            });
-            templates.addAll(rootResponse);
+            List<L> rootResponse = response.to(new TypeReference<List<L>>() {});
+            items.addAll(rootResponse);
         } else {
-            throw new NotFoundException("Template not found.");
+            throw new NotFoundException(String.format("%s not found.", id));
         }
-        return templates;
+        return items;
     }
 
 }
