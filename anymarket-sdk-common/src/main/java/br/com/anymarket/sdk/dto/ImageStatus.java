@@ -1,4 +1,4 @@
-package br.com.anymarket.sdk.product.dto;
+package br.com.anymarket.sdk.dto;
 
 public enum ImageStatus {
 

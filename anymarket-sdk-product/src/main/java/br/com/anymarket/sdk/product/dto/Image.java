@@ -1,5 +1,6 @@
 package br.com.anymarket.sdk.product.dto;
 
+import br.com.anymarket.sdk.dto.ImageStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 
