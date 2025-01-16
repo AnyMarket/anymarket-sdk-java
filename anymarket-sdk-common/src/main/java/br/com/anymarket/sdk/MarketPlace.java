@@ -194,7 +194,8 @@ public enum MarketPlace {
     FARMADELIVERY("FarmaDelivery"),
     GRUPO_MATEUS("Grupo Mateus"),
     DIGIGROW("Digigrow"),
-    VOCE("Você");
+    VOCE("Você"),
+    PNEUBEST("pneubest");
 
     private String name;
 
