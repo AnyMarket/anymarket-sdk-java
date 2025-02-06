@@ -195,7 +195,8 @@ public enum MarketPlace {
     GRUPO_MATEUS("Grupo Mateus"),
     DIGIGROW("Digigrow"),
     VOCE("Você"),
-    PNEUBEST("PneuBest");
+    PNEUBEST("PneuBest"),
+    DB1_MARKETPLACE("DB1 Marketplace");
 
     private String name;
 
