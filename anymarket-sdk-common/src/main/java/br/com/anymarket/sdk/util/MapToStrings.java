@@ -57,7 +57,7 @@ public class MapToStrings {
     }
 
     private static boolean isClosedByBrackets(String string) {
-        return (string.startsWith("[") && string.endsWith("]")) || (string.startsWith("\"[") && string.endsWith("]\""));
+        return string.startsWith("[") && string.endsWith("]");
     }
 
 }
