@@ -15,12 +15,49 @@ public class MapToStrings {
             return EMPTY_ARRAY_OF_STRINGS;
         }
 
-        try {
-            return objectMapper.readValue(string, String[].class);
-        } catch (IOException e) {
-            return new String[]{string};
+        string = removeExternalQuotes(string);
+
+        if (!isClosedByBrackets(string)) {
+            return EMPTY_ARRAY_OF_STRINGS;
         }
 
+        try {
+            Object[] objects = objectMapper.readValue(string, Object[].class);
+            return toStringsIfAllItemsAreStrings(objects);
+        } catch (IOException e) {
+            return EMPTY_ARRAY_OF_STRINGS;
+        }
+    }
+
+    private static String[] toStringsIfAllItemsAreStrings(Object[] objects) {
+        if (objects.length < 1) {
+            return EMPTY_ARRAY_OF_STRINGS;
+        }
+
+        String[] strings = new String[objects.length];
+        for (int i = 0; i < objects.length; i++) {
+            Object object = objects[i];
+            if (!(object instanceof String)) {
+                return EMPTY_ARRAY_OF_STRINGS;
+            }
+            strings[i] = object.toString();
+        }
+        return strings;
+    }
+
+    private static String removeExternalQuotes(String string) {
+        if (isClosedByQuotes(string)) {
+            return string.substring(1, string.length() - 1);
+        }
+        return string;
+    }
+
+    private static boolean isClosedByQuotes(String string) {
+        return (string.startsWith("\"") && string.endsWith("\""));
+    }
+
+    private static boolean isClosedByBrackets(String string) {
+        return (string.startsWith("[") && string.endsWith("]")) || (string.startsWith("\"[") && string.endsWith("]\""));
     }
 
 }
