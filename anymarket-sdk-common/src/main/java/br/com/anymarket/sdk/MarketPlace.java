@@ -196,7 +196,8 @@ public enum MarketPlace {
     DIGIGROW("Digigrow"),
     VOCE("Você"),
     PNEUBEST("PneuBest"),
-    DB1_MARKETPLACE("DB1 Marketplace");
+    DB1_MARKETPLACE("DB1 Marketplace"),
+    TIKTOK_SHOP("TIKTOK SHOP");
 
     private String name;
 
