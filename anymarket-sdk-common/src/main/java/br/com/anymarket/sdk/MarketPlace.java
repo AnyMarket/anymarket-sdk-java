@@ -198,6 +198,7 @@ public enum MarketPlace {
     PNEUBEST("PneuBest"),
     DB1_MARKETPLACE("DB1 Marketplace"),
     TIKTOK_SHOP("TIKTOK SHOP"),
+    LOJAS_IMPERIO("Lojas Imperio"),
     MARTINS_ATACADO("Martins Atacado");
 
     private String name;
