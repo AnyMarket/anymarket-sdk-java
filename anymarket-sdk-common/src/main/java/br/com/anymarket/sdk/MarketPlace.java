@@ -198,6 +198,7 @@ public enum MarketPlace {
     PNEUBEST("PneuBest"),
     DB1_MARKETPLACE("DB1 Marketplace"),
     TIKTOK_SHOP("TIKTOK SHOP"),
+    BELEZA_NA_WEB_NEW_API("Beleza na Web"),
     LOJAS_IMPERIO("Lojas Imperio"),
     MARTINS_ATACADO("Martins Atacado");
 
