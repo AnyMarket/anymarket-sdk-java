@@ -200,7 +200,8 @@ public enum MarketPlace {
     TIKTOK_SHOP("TIKTOK SHOP"),
     BELEZA_NA_WEB_NEW_API("Beleza na Web"),
     LOJAS_IMPERIO("Lojas Imperio"),
-    MARTINS_ATACADO("Martins Atacado");
+    MARTINS_ATACADO("Martins Atacado"),
+    CSU_DIGITAL("CSU Digital");
 
     private String name;
 
