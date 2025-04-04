@@ -2,7 +2,7 @@ variables:
   APP_TYPE: "java"
   JAVA_VERSION: 8
   MR_BUILD_ENABLED: "true"
-  MAVEN_BUILD_IMAGE_GOAL : "clean install deploy"
+  MAVEN_BUILD_IMAGE_GOAL : "clean source:jar install deploy"
 
 include:
   - project: anymarket/pipelines-anymarket
