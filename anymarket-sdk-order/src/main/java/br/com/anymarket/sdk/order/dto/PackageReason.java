@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PackageReason {
 
-    private Long reasonId;
+    private String reasonId;
     private String description;
 }
