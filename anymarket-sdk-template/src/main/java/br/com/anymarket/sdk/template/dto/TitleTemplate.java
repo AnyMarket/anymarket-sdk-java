@@ -1,20 +1,8 @@
 package br.com.anymarket.sdk.template.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.List;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TitleTemplate extends GenericTemplate {
-
-    @JsonProperty("fields")
-    private List<String> fields;
-
-    public List<String> getFields() {
-        return fields;
-    }
-
-    public void setFields(List<String> fields) {
-        this.fields = fields;
-    }
 
 }
