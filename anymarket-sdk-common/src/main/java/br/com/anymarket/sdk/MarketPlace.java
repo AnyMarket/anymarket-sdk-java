@@ -202,7 +202,8 @@ public enum MarketPlace {
     LOJAS_IMPERIO("Lojas Imperio"),
     MARTINS_ATACADO("Martins Atacado"),
     CSU_DIGITAL("CSU Digital"),
-    SICOOB("Sicoob");
+    SICOOB("Sicoob"),
+    SUBLIMITY("Sublimity");
 
     private String name;
 
