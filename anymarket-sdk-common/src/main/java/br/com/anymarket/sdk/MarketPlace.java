@@ -201,7 +201,9 @@ public enum MarketPlace {
     BELEZA_NA_WEB_NEW_API("Beleza na Web"),
     LOJAS_IMPERIO("Lojas Imperio"),
     MARTINS_ATACADO("Martins Atacado"),
-    CSU_DIGITAL("CSU Digital");
+    CSU_DIGITAL("CSU Digital"),
+    SICOOB("Sicoob"),
+    SUBLIMITY("Sublimity");
 
     private String name;
 
