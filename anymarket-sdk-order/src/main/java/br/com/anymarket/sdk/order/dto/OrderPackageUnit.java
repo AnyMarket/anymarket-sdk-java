@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderPackage {
+public class OrderPackageUnit {
 
     private Long packageId;
     private String externalId;
