@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -13,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderPackageUnit {
 
-    private Long packageId;
+    private UUID packageIdItem;
     private String externalId;
     private List<ItemsPackage> items;
     private DimensionsPackage dimensions;

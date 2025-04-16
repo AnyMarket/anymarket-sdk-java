@@ -14,9 +14,9 @@ import java.util.List;
 public class OrderPackageMarketplace {
 
     private Long orderId;
+    private Long packageId;
     private String oi;
     private String orderIdInMarketplace;
     private PackageReasonMarketplace packageReasonMarketplace;
     private List<OrderPackageUnit> packages;
-    private String externalId;
 }
