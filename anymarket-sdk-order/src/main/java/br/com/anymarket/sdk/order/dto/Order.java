@@ -182,6 +182,9 @@ public class Order {
     @JsonSerialize(using = SDKDateSerializer.class)
     private Date printTagDate;
 
+    @JsonProperty("discountMetadata")
+    private List<DiscountMetadata> discountMetadata = new ArrayList<>();
+
     public boolean isFrozen() {
         return MarketPlace.NETSHOES.equals(marketPlace) && FROZEN.equalsIgnoreCase(Strings.nullToEmpty(marketPlaceStatus));
     }
@@ -600,6 +603,14 @@ public class Order {
 
     public void setPrintTagDate(Date printTagDate) {
         this.printTagDate = printTagDate;
+    }
+
+    public List<DiscountMetadata> getDiscountMetadata() {
+        return discountMetadata;
+    }
+
+    public void setDiscountMetadata(List<DiscountMetadata> discountMetadata) {
+        this.discountMetadata = discountMetadata;
     }
 
     @Override
