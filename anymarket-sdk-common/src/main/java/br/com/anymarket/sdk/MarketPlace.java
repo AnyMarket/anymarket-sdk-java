@@ -204,7 +204,8 @@ public enum MarketPlace {
     CSU_DIGITAL("CSU Digital"),
     SICOOB("Sicoob"),
     SUBLIMITY("Sublimity"),
-    CASSOL("CASSOL");
+    CASSOL("CASSOL"),
+    BANDSHOP("Bandshop");
 
     private String name;
 
