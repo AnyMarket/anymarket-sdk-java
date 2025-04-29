@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
-import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -646,6 +645,7 @@ public class Order {
                 .add("metadata", metadata)
                 .add("orderTypeName", orderTypeName)
                 .add("printTagDate", printTagDate)
+                .add("discountMetadata", discountMetadata)
                 .toString();
     }
 }

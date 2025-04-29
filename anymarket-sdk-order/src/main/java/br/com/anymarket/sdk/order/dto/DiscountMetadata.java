@@ -1,12 +1,10 @@
 package br.com.anymarket.sdk.order.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class DiscountMetadata {
 
     List<DiscountType> type;
