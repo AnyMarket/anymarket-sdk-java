@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PackageReason {
+public class PackageReasonMarketplace {
 
-    private Long reasonId;
+    private String reasonId;
     private String description;
 }
