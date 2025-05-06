@@ -83,4 +83,7 @@ public class OrderReturn {
 
     @JsonProperty("conference")
     private OrderReturnConferenceResource conference;
+
+    @JsonProperty("invoice")
+    private OrderReturnInvoiceResource invoice;
 }
