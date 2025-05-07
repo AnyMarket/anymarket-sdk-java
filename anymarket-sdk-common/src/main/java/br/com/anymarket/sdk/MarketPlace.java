@@ -206,7 +206,7 @@ public enum MarketPlace {
     SUBLIMITY("Sublimity"),
     CASSOL("CASSOL"),
     BANDSHOP("Bandshop"),
-    MAIS_CORREIOS("MAIS CORREIOS");
+    MAIS_CORREIOS("Mais Correios");
 
     private String name;
 
