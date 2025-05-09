@@ -203,7 +203,10 @@ public enum MarketPlace {
     MARTINS_ATACADO("Martins Atacado"),
     CSU_DIGITAL("CSU Digital"),
     SICOOB("Sicoob"),
-    SUBLIMITY("Sublimity");
+    SUBLIMITY("Sublimity"),
+    CASSOL("CASSOL"),
+    BANDSHOP("Bandshop"),
+    MAIS_CORREIOS("Mais Correios");
 
     private String name;
 
