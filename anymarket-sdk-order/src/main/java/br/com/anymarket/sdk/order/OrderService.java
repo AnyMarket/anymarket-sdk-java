@@ -15,7 +15,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.collect.Lists;
 
 import java.util.List;
-import java.util.Optional;
 
 import static br.com.anymarket.sdk.http.headers.AnymarketHeaderUtils.addModuleOriginHeader;
 import static br.com.anymarket.sdk.http.restdsl.AnyMarketRestDSL.*;
@@ -227,6 +226,17 @@ public class OrderService {
             .body(resource)
             .headers(addModuleOriginHeader(headers, this.moduleOrigin))
             .routeParam("id", idOrder.toString())
+            .getResponse()
+            .to(Order.class);
+    }
+
+    public Order updatePrices(Order order, IntegrationHeader... headers) {
+        checkNotNull(order, "Erro ao atualizar pedido: Dados não encontrados.");
+        checkNotNull(order.getId(), "Erro ao atualizar pedido: Id não informado");
+        return put(apiEndPointForResource.concat("/orders/{id}/updatePrices"))
+            .body(order)
+            .headers(addModuleOriginHeader(headers, this.moduleOrigin))
+            .routeParam("id", order.getId().toString())
             .getResponse()
             .to(Order.class);
     }
