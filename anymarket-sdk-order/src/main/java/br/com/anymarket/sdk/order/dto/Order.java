@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
-import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -181,6 +180,9 @@ public class Order {
     @JsonProperty("printTagDate")
     @JsonSerialize(using = SDKDateSerializer.class)
     private Date printTagDate;
+
+    @JsonProperty("discountMetadata")
+    private List<DiscountMetadata> discountMetadata = new ArrayList<>();
 
     public boolean isFrozen() {
         return MarketPlace.NETSHOES.equals(marketPlace) && FROZEN.equalsIgnoreCase(Strings.nullToEmpty(marketPlaceStatus));
@@ -602,6 +604,14 @@ public class Order {
         this.printTagDate = printTagDate;
     }
 
+    public List<DiscountMetadata> getDiscountMetadata() {
+        return discountMetadata;
+    }
+
+    public void setDiscountMetadata(List<DiscountMetadata> discountMetadata) {
+        this.discountMetadata = discountMetadata;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -635,6 +645,7 @@ public class Order {
                 .add("metadata", metadata)
                 .add("orderTypeName", orderTypeName)
                 .add("printTagDate", printTagDate)
+                .add("discountMetadata", discountMetadata)
                 .toString();
     }
 }
