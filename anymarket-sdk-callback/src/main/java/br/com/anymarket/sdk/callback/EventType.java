@@ -1,0 +1,24 @@
+package br.com.anymarket.sdk.callback;
+
+public enum EventType {
+    CREATE,
+    UPDATE,
+    DELETE,
+    CANCELED,
+    CONCLUDED,
+    DELIVERY_ISSUE,
+    INVOICED,
+    PAID_WAITING_DELIVERY,
+    PAID_WAITING_SHIP,
+    PENDING,
+    TRACK_DELAY,
+    DELIVERY_DELAY,
+    DUPLICATE_PURCHASE,
+    SKU_BLOCK,
+    OPEN_SAC,
+    ORDER_NOT_DELIVERED,
+    TRACK_BLOCK,
+    NOT_DELIVERED,
+    TRACKING,
+    ERROR
+}

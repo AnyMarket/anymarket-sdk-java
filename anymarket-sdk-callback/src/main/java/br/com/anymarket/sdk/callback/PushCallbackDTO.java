@@ -14,11 +14,18 @@ public class PushCallbackDTO {
     @JsonProperty("type")
     private PushType type;
 
+    @JsonProperty("event")
+    private EventType event;
+
     @JsonProperty("content")
     private PushCallbackContentDTO contentDTO;
 
     public PushType getType() {
         return type;
+    }
+
+    public EventType getEvent() {
+        return event;
     }
 
     public PushCallbackContentDTO getContentDTO() {
@@ -29,6 +36,10 @@ public class PushCallbackDTO {
         this.type = type;
     }
 
+    public void setEvent(EventType event) {
+        this.event = event;
+    }
+
     public void setContentDTO(PushCallbackContentDTO contentDTO) {
         this.contentDTO = contentDTO;
     }
@@ -37,6 +48,7 @@ public class PushCallbackDTO {
     public String toString() {
         return "br.com.anymarket.sdk.callback.PushCallbackDTO{" +
             "type=" + type +
+            ", event=" + event +
             ", contentDTO=" + contentDTO +
             '}';
     }
