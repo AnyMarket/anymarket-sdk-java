@@ -15,11 +15,13 @@ import br.com.anymarket.sdk.product.filters.ProductFilter;
 import br.com.anymarket.sdk.resource.Link;
 import br.com.anymarket.sdk.util.SDKUrlEncoder;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import org.apache.http.HttpStatus;
 
+import java.io.IOException;
 import java.util.*;
 
 import static br.com.anymarket.sdk.http.headers.AnymarketHeaderUtils.addModuleOriginHeader;
@@ -59,32 +61,43 @@ public class ProductService extends HttpService {
         return response.to(Product.class);
     }
 
-    public Product updateProductAndImages(Product product, IntegrationHeader... headers) {
+    public Product updateProductAndImages(Product product, IntegrationHeader... headers) throws IOException {
         RequestBodyEntity put = put(apiEndPoint.concat(PRODUCTS_URI).concat("/")
             .concat(product.getId().toString()), product, addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(put);
         if (response.getStatus() == HttpStatus.SC_OK) {
-            if (product.getImages() != null) {
-                for (Image image : product.getImages()) {
-                    if (image.getId() == null) {
-                        RequestBodyEntity post = post(apiEndPoint.concat(PRODUCTS_URI).concat("/")
-                            .concat(product.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
-                        execute(post);
-                    }
-                }
-            }
 
             if (product.getImagesForDelete() != null) {
                 for (Image image : product.getImagesForDelete()) {
                     if (image.getId() != null) {
                         HttpRequestWithBody delete = delete(apiEndPoint.concat(PRODUCTS_URI).concat("/")
                             .concat(product.getId().toString()).concat("/images/").concat(image.getId().toString()), addModuleOriginHeader(headers, this.moduleOrigin));
-                        execute(delete);
+                        Response responseImageDelete = execute(delete);
+                        if (responseImageDelete.getStatus() == HttpStatus.SC_OK) {
+                            product.setImagesForDelete(null);
+                        }
                     }
                 }
             }
+
+            if (product.getImages() != null) {
+                List<Image> updatedImages = new ArrayList<>();
+                for (Image image : product.getImages()) {
+                    if (image.getId() == null) {
+                        RequestBodyEntity post = post(apiEndPoint.concat(PRODUCTS_URI).concat("/")
+                                .concat(product.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
+                        Response responseImageResource = execute(post);
+                        if (responseImageResource.getStatus() == HttpStatus.SC_OK) {
+                            ObjectMapper mapper = new ObjectMapper();
+                            Image savedImage = mapper.readValue(responseImageResource.getMessage(), Image.class);
+                            updatedImages.add(savedImage);
+                        }
+                    }
+                }
+                product.setImages(updatedImages);
+            }
         }
-        return getProduct(product.getId(), headers);
+        return product;
     }
 
     public Product updateProductAndCreateAndUpdateImages(Product product, IntegrationHeader... headers) {
