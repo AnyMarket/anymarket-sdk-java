@@ -65,27 +65,28 @@ public class ProductService extends HttpService {
         RequestBodyEntity put = put(apiEndPoint.concat(PRODUCTS_URI).concat("/")
             .concat(product.getId().toString()), product, addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(put);
+        Product resultProduct = response.to(Product.class);
         if (response.getStatus() == HttpStatus.SC_OK) {
 
-            if (product.getImagesForDelete() != null) {
-                for (Image image : product.getImagesForDelete()) {
+            if (resultProduct.getImagesForDelete() != null) {
+                for (Image image : resultProduct.getImagesForDelete()) {
                     if (image.getId() != null) {
                         HttpRequestWithBody delete = delete(apiEndPoint.concat(PRODUCTS_URI).concat("/")
-                            .concat(product.getId().toString()).concat("/images/").concat(image.getId().toString()), addModuleOriginHeader(headers, this.moduleOrigin));
+                            .concat(resultProduct.getId().toString()).concat("/images/").concat(image.getId().toString()), addModuleOriginHeader(headers, this.moduleOrigin));
                         Response responseImageDelete = execute(delete);
                         if (responseImageDelete.getStatus() == HttpStatus.SC_OK) {
-                            product.setImagesForDelete(null);
+                            resultProduct.setImagesForDelete(null);
                         }
                     }
                 }
             }
 
-            if (product.getImages() != null) {
+            if (resultProduct.getImages() != null) {
                 List<Image> updatedImages = new ArrayList<>();
-                for (Image image : product.getImages()) {
+                for (Image image : resultProduct.getImages()) {
                     if (image.getId() == null) {
                         RequestBodyEntity post = post(apiEndPoint.concat(PRODUCTS_URI).concat("/")
-                                .concat(product.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
+                                .concat(resultProduct.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
                         Response responseImageResource = execute(post);
                         if (responseImageResource.getStatus() == HttpStatus.SC_OK) {
                             ObjectMapper mapper = new ObjectMapper();
@@ -94,10 +95,10 @@ public class ProductService extends HttpService {
                         }
                     }
                 }
-                product.setImages(updatedImages);
+                resultProduct.setImages(updatedImages);
             }
         }
-        return product;
+        return resultProduct;
     }
 
     public Product updateProductAndCreateAndUpdateImages(Product product, IntegrationHeader... headers) {
