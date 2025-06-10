@@ -85,14 +85,7 @@ public class ProductService extends HttpService {
                 List<Image> updatedImages = new ArrayList<>();
                 for (Image image : resultProduct.getImages()) {
                     if (image.getId() == null) {
-                        RequestBodyEntity post = post(apiEndPoint.concat(PRODUCTS_URI).concat("/")
-                                .concat(resultProduct.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
-                        Response responseImageResource = execute(post);
-                        if (responseImageResource.getStatus() == HttpStatus.SC_OK) {
-                            ObjectMapper mapper = new ObjectMapper();
-                            Image savedImage = mapper.readValue(responseImageResource.getMessage(), Image.class);
-                            updatedImages.add(savedImage);
-                        }
+                        sendProduct(resultProduct, updatedImages, image, headers);
                     }
                 }
                 resultProduct.setImages(updatedImages);
@@ -101,30 +94,46 @@ public class ProductService extends HttpService {
         return resultProduct;
     }
 
-    public Product updateProductAndCreateAndUpdateImages(Product product, IntegrationHeader... headers) {
+    public Product updateProductAndCreateAndUpdateImages(Product product, IntegrationHeader... headers) throws IOException {
         RequestBodyEntity put = put(apiEndPoint.concat(PRODUCTS_URI).concat("/")
             .concat(product.getId().toString()), product, addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(put);
+        Product resultProduct = response.to(Product.class);
         if (response.getStatus() == HttpStatus.SC_OK) {
 
-            if (product.getImagesForDelete() != null) {
-                imageForDelete(product, headers);
+            if (resultProduct.getImagesForDelete() != null) {
+                imageForDelete(resultProduct, headers);
             }
-            if (product.getImages() != null) {
-                for (Image image : product.getImages()) {
+            if (resultProduct.getImages() != null) {
+                List<Image> imageList = new ArrayList<>();
+                for (Image image : resultProduct.getImages()) {
                     if (image.getId() == null) {
-                        RequestBodyEntity post = post(apiEndPoint.concat(PRODUCTS_URI).concat("/")
-                            .concat(product.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
-                        execute(post);
+                        sendProduct(resultProduct, imageList, image, headers);
                     } else {
                         RequestBodyEntity puts = put(apiEndPoint.concat(PRODUCTS_URI).concat("/")
-                            .concat(product.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
-                        execute(puts);
+                            .concat(resultProduct.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
+                        Response responseImageResource = execute(puts);
+                        if (responseImageResource.getStatus() == HttpStatus.SC_OK) {
+                            ObjectMapper mapper = new ObjectMapper();
+                            Image savedImage = mapper.readValue(responseImageResource.getMessage(), Image.class);
+                            imageList.add(savedImage);
+                        }
                     }
                 }
             }
         }
-        return getProduct(product.getId(), headers);
+        return resultProduct;
+    }
+
+    private void sendProduct(Product resultProduct, List<Image> imageList, Image image, IntegrationHeader[] headers) throws IOException {
+        RequestBodyEntity post = post(apiEndPoint.concat(PRODUCTS_URI).concat("/")
+            .concat(resultProduct.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
+        Response responseImageResource = execute(post);
+        if (responseImageResource.getStatus() == HttpStatus.SC_OK) {
+            ObjectMapper mapper = new ObjectMapper();
+            Image savedImage = mapper.readValue(responseImageResource.getMessage(), Image.class);
+            imageList.add(savedImage);
+        }
     }
 
     private void imageForDelete(Product product, IntegrationHeader... headers) {
