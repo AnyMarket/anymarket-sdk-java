@@ -85,7 +85,7 @@ public class ProductService extends HttpService {
                 List<Image> updatedImages = new ArrayList<>();
                 for (Image image : resultProduct.getImages()) {
                     if (image.getId() == null) {
-                        sendProduct(resultProduct, updatedImages, image, headers);
+                        sendProductImage(resultProduct, updatedImages, image, headers);
                     }
                 }
                 resultProduct.setImages(updatedImages);
@@ -108,7 +108,7 @@ public class ProductService extends HttpService {
                 List<Image> imageList = new ArrayList<>();
                 for (Image image : resultProduct.getImages()) {
                     if (image.getId() == null) {
-                        sendProduct(resultProduct, imageList, image, headers);
+                        sendProductImage(resultProduct, imageList, image, headers);
                     } else {
                         RequestBodyEntity puts = put(apiEndPoint.concat(PRODUCTS_URI).concat("/")
                             .concat(resultProduct.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
@@ -125,7 +125,7 @@ public class ProductService extends HttpService {
         return resultProduct;
     }
 
-    private void sendProduct(Product resultProduct, List<Image> imageList, Image image, IntegrationHeader[] headers) throws IOException {
+    private void sendProductImage(Product resultProduct, List<Image> imageList, Image image, IntegrationHeader[] headers) throws IOException {
         RequestBodyEntity post = post(apiEndPoint.concat(PRODUCTS_URI).concat("/")
             .concat(resultProduct.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
         Response responseImageResource = execute(post);
