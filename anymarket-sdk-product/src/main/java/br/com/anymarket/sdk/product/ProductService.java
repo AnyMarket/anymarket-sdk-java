@@ -125,7 +125,7 @@ public class ProductService extends HttpService {
         return resultProduct;
     }
 
-    private void sendProductImage(Product resultProduct, List<Image> imageList, Image image, IntegrationHeader[] headers) throws IOException {
+    void sendProductImage(Product resultProduct, List<Image> imageList, Image image, IntegrationHeader[] headers) throws IOException {
         RequestBodyEntity post = post(apiEndPoint.concat(PRODUCTS_URI).concat("/")
             .concat(resultProduct.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
         Response responseImageResource = execute(post);
@@ -136,7 +136,7 @@ public class ProductService extends HttpService {
         }
     }
 
-    private void imageForDelete(Product product, IntegrationHeader... headers) {
+    void imageForDelete(Product product, IntegrationHeader... headers) {
         for (Image image : product.getImagesForDelete()) {
             if (image.getId() != null) {
                 HttpRequestWithBody delete = delete(apiEndPoint.concat(PRODUCTS_URI).concat("/")
