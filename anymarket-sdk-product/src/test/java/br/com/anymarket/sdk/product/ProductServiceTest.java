@@ -86,7 +86,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void should_update_product_and_create_and_update_image_success() throws Exception {
+    public void should_update_product_and_create_and_update_image_success() {
         Product inputProduct = new Product();
         inputProduct.setId(1L);
 
@@ -143,7 +143,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void should_send_image_success() throws Exception {
+    public void should_send_image_success() {
         Product product = new Product();
         product.setId(123L);
 
@@ -172,7 +172,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void should_not_add_image_status_not_200() throws Exception {
+    public void should_not_add_image_status_not_200() {
         Product product = new Product();
         product.setId(123L);
 
@@ -218,7 +218,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void should_not_update_product_nor_image_if_put_status_not_200() throws Exception {
+    public void should_not_update_product_nor_image_if_put_status_not_200() {
         Product inputProduct = new Product();
         inputProduct.setId(1L);
 
@@ -240,7 +240,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void should_not_add_image_if_put_returns_error() throws Exception {
+    public void should_not_add_image_if_put_returns_error() {
         Product inputProduct = new Product();
         inputProduct.setId(1L);
 
@@ -274,8 +274,8 @@ public class ProductServiceTest {
         verify(service, never()).sendProductImage(any(), anyList(), any(), any());
     }
 
-    @Test(expected = IOException.class)
-    public void should_throw_exception_if_invalid_image_json() throws Exception {
+    @Test(expected = RuntimeException.class)
+    public void should_throw_exception_if_invalid_image_json() {
         Product inputProduct = new Product();
         inputProduct.setId(1L);
 
@@ -332,7 +332,7 @@ public class ProductServiceTest {
         }
 
         @Override
-        protected void sendProductImage(Product resultProduct, List<Image> updatedImages, Image image, IntegrationHeader... headers) throws IOException {
+        protected void sendProductImage(Product resultProduct, List<Image> updatedImages, Image image, IntegrationHeader... headers) {
             super.sendProductImage(resultProduct, updatedImages, image, headers);
         }
     }

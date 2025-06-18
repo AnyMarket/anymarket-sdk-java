@@ -94,7 +94,7 @@ public class ProductService extends HttpService {
         return resultProduct;
     }
 
-    public Product updateProductAndCreateAndUpdateImages(Product product, IntegrationHeader... headers) throws IOException {
+    public Product updateProductAndCreateAndUpdateImages(Product product, IntegrationHeader... headers) {
         RequestBodyEntity put = put(apiEndPoint.concat(PRODUCTS_URI).concat("/")
             .concat(product.getId().toString()), product, addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(put);
@@ -115,7 +115,12 @@ public class ProductService extends HttpService {
                         Response responseImageResource = execute(puts);
                         if (responseImageResource.getStatus() == HttpStatus.SC_OK) {
                             ObjectMapper mapper = new ObjectMapper();
-                            Image savedImage = mapper.readValue(responseImageResource.getMessage(), Image.class);
+                            Image savedImage = null;
+                            try {
+                                savedImage = mapper.readValue(responseImageResource.getMessage(), Image.class);
+                            } catch (IOException e) {
+                                throw new RuntimeException("Erro ao desserializar imagem do produto:", e);
+                            }
                             imageList.add(savedImage);
                         }
                     }
@@ -125,14 +130,18 @@ public class ProductService extends HttpService {
         return resultProduct;
     }
 
-    void sendProductImage(Product resultProduct, List<Image> imageList, Image image, IntegrationHeader[] headers) throws IOException {
+    void sendProductImage(Product resultProduct, List<Image> imageList, Image image, IntegrationHeader[] headers) {
         RequestBodyEntity post = post(apiEndPoint.concat(PRODUCTS_URI).concat("/")
             .concat(resultProduct.getId().toString()).concat("/images/"), image, addModuleOriginHeader(headers, this.moduleOrigin));
         Response responseImageResource = execute(post);
         if (responseImageResource.getStatus() == HttpStatus.SC_OK) {
-            ObjectMapper mapper = new ObjectMapper();
-            Image savedImage = mapper.readValue(responseImageResource.getMessage(), Image.class);
-            imageList.add(savedImage);
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                Image savedImage = mapper.readValue(responseImageResource.getMessage(), Image.class);
+                imageList.add(savedImage);
+            } catch (IOException e) {
+                throw new RuntimeException("Erro ao desserializar imagem do produto:", e);
+            }
         }
     }
 
