@@ -61,7 +61,7 @@ public class ProductService extends HttpService {
         return response.to(Product.class);
     }
 
-    public Product updateProductAndImages(Product product, IntegrationHeader... headers) throws IOException {
+    public Product updateProductAndImages(Product product, IntegrationHeader... headers) {
         RequestBodyEntity put = put(apiEndPoint.concat(PRODUCTS_URI).concat("/")
             .concat(product.getId().toString()), product, addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(put);
