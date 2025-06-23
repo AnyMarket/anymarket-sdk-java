@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SkuMarketPlace implements Serializable {
@@ -82,6 +83,9 @@ public class SkuMarketPlace implements Serializable {
     @JsonProperty("origin")
     private SKUMpOrigin origin;
 
+    @JsonProperty("warnings")
+    private Set<String> warnings;
+
     @JsonProperty("idCampaign")
     private Long idCampaign;
 
@@ -111,6 +115,7 @@ public class SkuMarketPlace implements Serializable {
         setAccountName(builder.accountName);
         setSkuMarketPlaceMessage(builder.skuMarketPlaceMessage);
         setOrigin(builder.origin);
+        setWarnings(builder.warnings);
         setIdCampaign(builder.idCampaign);
     }
 
@@ -298,6 +303,14 @@ public class SkuMarketPlace implements Serializable {
         this.origin = origin;
     }
 
+    public Set<String> getWarnings() {
+        return warnings;
+    }
+
+    public void setWarnings(Set<String> warnings) {
+        this.warnings = warnings;
+    }
+
     public Long getIdCampaign() {
         return idCampaign;
     }
@@ -324,6 +337,7 @@ public class SkuMarketPlace implements Serializable {
             ", idAccount=" + idAccount +
             ", idAccount=" + accountName +
             ", origin=" + origin +
+            ", warnings=" + warnings +
             ", idCampaign=" + idCampaign +
             '}';
     }
@@ -350,6 +364,7 @@ public class SkuMarketPlace implements Serializable {
         private String accountName;
         private SkuMarketPlaceMessage skuMarketPlaceMessage;
         private SKUMpOrigin origin;
+        private Set<String> warnings;
         private Long idCampaign;
 
         private Builder() {
@@ -457,6 +472,11 @@ public class SkuMarketPlace implements Serializable {
 
         public Builder withOrigin(SKUMpOrigin origin) {
             this.origin = origin;
+            return this;
+        }
+
+        public Builder withWarnings(Set<String> warnings) {
+            this.warnings = warnings;
             return this;
         }
 
