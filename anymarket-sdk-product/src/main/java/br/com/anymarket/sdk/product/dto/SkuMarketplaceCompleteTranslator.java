@@ -73,6 +73,7 @@ public class SkuMarketplaceCompleteTranslator {
                 .withAccountName(skuMarketplaceComplete.getAccountName())
                 .withSkuMarketPlaceMessage(skuMarketplaceComplete.getSkuMarketPlaceMessage())
                 .withOrigin(skuMarketplaceComplete.getOrigin())
+                .withWarnings(skuMarketplaceComplete.getWarnings())
                 .build();
 
         skuMarketPlace.setIndividualAvailableStocks(skuMarketplaceComplete.getIndividualAvailableStocks());
