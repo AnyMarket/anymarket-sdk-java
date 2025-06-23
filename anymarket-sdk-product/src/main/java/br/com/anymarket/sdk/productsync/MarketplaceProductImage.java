@@ -1,17 +1,14 @@
 package br.com.anymarket.sdk.productsync;
 
 import br.com.anymarket.sdk.product.dto.Image;
-import lombok.Getter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-@Getter
 public class MarketplaceProductImage extends Image {
 
-    @lombok.Builder
     public MarketplaceProductImage(String url, String variation) {
-        URL formattedUrl = toUrl(url);
+        URL formattedUrl = this.toUrl(url);
         super.setUrl(formattedUrl);
         super.setVariation(variation);
     }
@@ -19,9 +16,36 @@ public class MarketplaceProductImage extends Image {
     private URL toUrl(String url) {
         try {
             return new URL(url);
-        } catch (MalformedURLException e) {
+        } catch (MalformedURLException var3) {
             return null;
         }
+    }
+
+    public static MarketplaceProductImageBuilder builder() {
+        return new MarketplaceProductImageBuilder();
+    }
+
+    public static class MarketplaceProductImageBuilder {
+
+        private String url;
+        private String variation;
+
+        MarketplaceProductImageBuilder() {}
+
+        public MarketplaceProductImageBuilder url(final String url) {
+            this.url = url;
+            return this;
+        }
+
+        public MarketplaceProductImageBuilder variation(final String variation) {
+            this.variation = variation;
+            return this;
+        }
+
+        public MarketplaceProductImage build() {
+            return new MarketplaceProductImage(this.url, this.variation);
+        }
+
     }
 
 }
