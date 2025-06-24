@@ -208,7 +208,8 @@ public enum MarketPlace {
     BANDSHOP("Bandshop"),
     MAIS_CORREIOS("Mais Correios"),
     ITAU("Itaú"),
-    GAZIN_MARKETPLACE("Gazin Marketplace");
+    GAZIN_MARKETPLACE("Gazin Marketplace"),
+    VIK("VIK");
 
 
     private String name;
