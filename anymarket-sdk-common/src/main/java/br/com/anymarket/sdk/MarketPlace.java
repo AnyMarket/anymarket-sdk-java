@@ -209,7 +209,8 @@ public enum MarketPlace {
     MAIS_CORREIOS("Mais Correios"),
     ITAU("Itaú"),
     GAZIN_MARKETPLACE("Gazin Marketplace"),
-    VIK("VIK");
+    VIK("VIK"),
+    ANGELONI_NEW_API("Angeloni New Api");
 
 
     private String name;
