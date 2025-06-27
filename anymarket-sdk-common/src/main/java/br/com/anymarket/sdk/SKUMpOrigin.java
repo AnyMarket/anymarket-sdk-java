@@ -1,5 +1,5 @@
 package br.com.anymarket.sdk;
 
 public enum SKUMpOrigin {
-    BIND, CREATE;
+    BIND, CREATE, MATCH;
 }
