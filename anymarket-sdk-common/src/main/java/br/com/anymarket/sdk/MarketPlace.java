@@ -151,7 +151,7 @@ public enum MarketPlace {
     VENTURESHOP("Ventureshop"),
     TROCAFONE("Trocafone"),
     LOJAS_QUERO_QUERO("Lojas Quero-Quero"),
-    HOUSE_OF_GAMERS("House Of Gamers"),
+    HOUSE_OF_GAMERS("MKPlace"),
     CORPO_PERFEITO("Corpo Perfeito"),
     MUNDO_YOUPLAY("Mundo YouPlay"),
     TENDA_ATACADO("Tenda Atacado"),
@@ -209,7 +209,8 @@ public enum MarketPlace {
     MAIS_CORREIOS("Mais Correios"),
     ITAU("Itaú"),
     GAZIN_MARKETPLACE("Gazin Marketplace"),
-    VIK("VIK");
+    VIK("VIK"),
+    ANGELONI_NEW_API("Angeloni 2.0");
 
 
     private String name;
