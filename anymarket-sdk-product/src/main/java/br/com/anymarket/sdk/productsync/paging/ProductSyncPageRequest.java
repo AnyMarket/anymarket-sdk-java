@@ -41,6 +41,10 @@ public class ProductSyncPageRequest {
         return offset;
     }
 
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
     public int getPageSize() {
         return pageSize;
     }
