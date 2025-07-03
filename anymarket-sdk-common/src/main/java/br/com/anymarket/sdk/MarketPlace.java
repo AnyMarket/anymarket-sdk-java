@@ -210,7 +210,7 @@ public enum MarketPlace {
     ITAU("Itaú"),
     GAZIN_MARKETPLACE("Gazin Marketplace"),
     VIK("VIK"),
-    ANGELONI_NEW_API("Angeloni 2.0"),
+    STECK("Steck"),
     EXTREME_SIMRACING("Extreme Simracing");
 
 
