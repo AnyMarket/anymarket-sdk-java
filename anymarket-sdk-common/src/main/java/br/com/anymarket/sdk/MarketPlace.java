@@ -151,7 +151,7 @@ public enum MarketPlace {
     VENTURESHOP("Ventureshop"),
     TROCAFONE("Trocafone"),
     LOJAS_QUERO_QUERO("Lojas Quero-Quero"),
-    HOUSE_OF_GAMERS("House Of Gamers"),
+    HOUSE_OF_GAMERS("MKPlace"),
     CORPO_PERFEITO("Corpo Perfeito"),
     MUNDO_YOUPLAY("Mundo YouPlay"),
     TENDA_ATACADO("Tenda Atacado"),
@@ -210,7 +210,8 @@ public enum MarketPlace {
     ITAU("Itaú"),
     GAZIN_MARKETPLACE("Gazin Marketplace"),
     VIK("VIK"),
-    STECK("Steck");
+    STECK("Steck"),
+    EXTREME_SIMRACING("Extreme Simracing");
 
 
     private String name;
