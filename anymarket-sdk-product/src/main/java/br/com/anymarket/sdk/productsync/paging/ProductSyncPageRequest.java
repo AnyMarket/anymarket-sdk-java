@@ -37,6 +37,10 @@ public class ProductSyncPageRequest {
         return metadata.get(metadataKey);
     }
 
+    public Integer getCurrentPage() {
+        return offset / pageSize;
+    }
+
     public int getOffset() {
         return offset;
     }
