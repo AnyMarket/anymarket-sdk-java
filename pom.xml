@@ -4,7 +4,7 @@
 
   <groupId>br.com.anymarket.sdk</groupId>
   <artifactId>anymarket-sdk-java</artifactId>
-  <version>0.90.24</version>
+  <version>0.90.25</version>
   <modules>
     <module>anymarket-sdk-stock</module>
     <module>anymarket-sdk-order</module>
@@ -231,15 +231,15 @@
 
   <distributionManagement>
     <repository>
-      <id>nexus</id>
+      <id>nexus-new</id>
       <name>RepositoryProxy</name>
-      <url>http://nexus.anymarket.vpc:8081/nexus/content/repositories/releases/</url>
+      <url>http://10.119.10.193:8081/repository/maven-releases/</url>
     </repository>
 
     <snapshotRepository>
-      <id>nexus</id>
+      <id>nexus-new</id>
       <name>RepositoryProxy</name>
-      <url>http://nexus.anymarket.vpc:8081/nexus/content/repositories/snapshots/</url>
+      <url>http://10.119.10.193:8081/repository/maven-snapshots/</url>
     </snapshotRepository>
 
   </distributionManagement>
