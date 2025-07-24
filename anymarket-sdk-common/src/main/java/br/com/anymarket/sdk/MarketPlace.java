@@ -1,24 +1,34 @@
 package br.com.anymarket.sdk;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+/**
+ * Dados do MarketPlace no banco de dados
+ */
 public enum MarketPlace {
-    CNOVA("Via Varejo"),
+
+    CNOVA("Via Varejo", true),
     MAGENTO("Magento"),
-    MERCADO_LIVRE("Mercado Livre"),
-    B2W("B2W"),
+    MERCADO_LIVRE("Mercado Livre", true, true),
+    B2W("B2W", true),
     ECOMMERCE("E-Commerce"),
     VTEX("VTEX"),
-    GFG("GFG - Dafiti"),
+    GFG("GFG - Dafiti", false, true),
     LINIO("Linio"),
-    NETSHOES("Netshoes"),
+    NETSHOES("Netshoes", false, true),
     MAGAZINE_LUIZA("Magazine Luiza"),
     CARREFOUR("Carrefour"),
-    AMAZON("Amazon"),
-    AMAZON_GLOBAL_API("Amazon Global Api"),
+    AMAZON("Amazon", false, true),
+    AMAZON_SPDS("Amazon SPDS"),
+    AMAZON_GLOBAL_API("Amazon Global Api", false, true),
     BUSCAPE("Buscapé"),
     ORACLECOMMERCE("Oracle Commerce Cloud"),
     MADEIRA_MADEIRA("Madeira Madeira"),
     CISSA_MAGAZINE("Cissa Magazine"),
-    B2W_NEW_API("B2W Nova API"),
+    B2W_NEW_API("B2W Nova API", false, true),
     SARAIVA("Saraiva"),
     HUB_SALES("Hub Sales"),
     ZOOM("Zoom"),
@@ -34,7 +44,7 @@ public enum MarketPlace {
     ELETRUM("Eletrum"),
     OPTEMAIS("Optemais"),
     EFACIL("eFácil"),
-    LEROY_MERLIN("Leroy Merlin"),
+    LEROY_MERLIN("Leroy Merlin", false, true),
     COBASI("Cobasi"),
     CATWALK("Catwalk"),
     CASA_SHOW("BRHC"),
@@ -83,7 +93,7 @@ public enum MarketPlace {
     RENNER("Renner e Camicado"),
     AJPLACE("AJPlace"),
     CREDITAS("Creditas"),
-    SHOPEE("Shopee"),
+    SHOPEE("Shopee", false, true, true),
     CASSOL_CENTERLAR("Cassol Centerlar"),
     MAXMANIA("Maxmania"),
     ONSTORES("ONSTORES"),
@@ -97,11 +107,11 @@ public enum MarketPlace {
     SUPERCAMPO("SuperCampo"),
     FRAVEGA_MARKET("FravegaMarket"),
     MEGATONE("MEGATONE"),
-    BAIANAO("Baianao"),
+    BAIANAO("Baianão"),
     MARISA("Marisa"),
     LOJA_DO_MECANICO("Loja do Mecânico"),
     TA_TASHOP("ta-taShop"),
-    ALIEXPRESS("AliExpress"),
+    ALIEXPRESS("AliExpress", false, true),
     WOOD_PRIME("Wood Prime"),
     LOJA_SUMUP("Loja SumUp"),
     OLIST_NEW_API("OLIST New Api"),
@@ -109,7 +119,7 @@ public enum MarketPlace {
     SUA_COMPRA("Sua Compra"),
     SHOPHUB("Shophub"),
     POSTHAUS_NEW_API("Posthaus Nova Api"),
-    LOJAS_LEBES_NEW_API("Lojas Lebes"),
+    LOJAS_LEBES_NEW_API("Lojas Lebes Nova Api"),
     PHILIPS_STORE("Philips Store"),
     VINKLO_BY_FESTALAB("Vinklo by Festalab"),
     RAMARIM("Ramarim"),
@@ -131,21 +141,21 @@ public enum MarketPlace {
     RAIA_DROGASIL("Raia Drogasil"),
     MCF_SHOP("MCF Shop"),
     SHOPPING_LIVELO("Shopping Livelo"),
-    PRIVALIA("PRIVALIA"),
-    AMARO("AMARO"),
+    PRIVALIA("Privalia"),
+    AMARO("Amaro"),
     OI_PLACE("Oi Place"),
     KPLACE("Kplace"),
-    LOJAS_COLOMBO("Lojas Colombo Nova API"),
+    LOJAS_COLOMBO("Lojas Colombo Nova API", false, true),
     SHOPIFY("Shopify"),
     SICREDI("Sicredi"),
-    FALABELLA("Falabella"),
+    FALABELLA("Falabella", false, true),
     ANGELONI("Angeloni"),
     WOOCOMMERCE("Woocommerce"),
     GOATPLACE("Goatplace"),
     COMFORTFLEX_NOVA_API("Comfortflex Nova Api"),
     RAMARIM_NOVA_API("Ramarim Nova Api"),
-    RIPLEY("Ripley"),
-    SHEIN("Shein"),
+    RIPLEY("Ripley", false, true),
+    SHEIN("Shein", false, true, true),
     COPPEL("Coppel"),
     SHOPPING_BB("Shopping BB"),
     VENTURESHOP("Ventureshop"),
@@ -155,12 +165,12 @@ public enum MarketPlace {
     CORPO_PERFEITO("Corpo Perfeito"),
     MUNDO_YOUPLAY("Mundo YouPlay"),
     TENDA_ATACADO("Tenda Atacado"),
-    PARIS("Paris"),
+    PARIS("Paris", false,true),
     MARCA_SELETA("Marca Seleta"),
     WEB_CONTINENTAL_V2("Web Continental V2"),
     LE_BISCUIT("Le Biscuit"),
     LL_LOYALTY("LL Loyalty"),
-    ITAU_SHOP("Itau Shop"),
+    ITAU_SHOP("Itaú Shop"),
     IGA("IGA"),
     AKIN_SHOP("Akin Shop"),
     ELEKTRA("Elektra"),
@@ -168,9 +178,9 @@ public enum MarketPlace {
     KOERICH("Koerich"),
     CLARO_SHOP("Claro Shop"),
     THE_HOME_DEPOT("The Home Depot"),
-    WOOCOMMERCE2("Woocommerce2"),
+    WOOCOMMERCE2("WooCommerce2"),
     POLISHOP("Polishop"),
-    VALE_BONUS("Vale Bonus"),
+    VALE_BONUS("Vale Bônus"),
     JUMPSELLER("Jumpseller"),
     HELP_SELLER("Help Seller"),
     WEHOUSE("Wehouse"),
@@ -182,6 +192,7 @@ public enum MarketPlace {
     SELLER_TEST_USA("Seller Test USA"),
     BABYBIZ("Babybiz"),
     CLAROSHOP_MEXICO("Claroshop México"),
+    WAKE("Wake"),
     WAKE_MARKETPLACE("Wake Marketplace"),
     PAGUE_MENOS("Pague Menos"),
     SENFF_SHOPPING("Senff Shopping"),
@@ -197,7 +208,7 @@ public enum MarketPlace {
     VOCE("Você"),
     PNEUBEST("PneuBest"),
     DB1_MARKETPLACE("DB1 Marketplace"),
-    TIKTOK_SHOP("TIKTOK SHOP"),
+    TIKTOK_SHOP("TIKTOK SHOP", false, true),
     BELEZA_NA_WEB_NEW_API("Beleza na Web"),
     LOJAS_IMPERIO("Lojas Imperio"),
     MARTINS_ATACADO("Martins Atacado"),
@@ -211,17 +222,92 @@ public enum MarketPlace {
     GAZIN_MARKETPLACE("Gazin Marketplace"),
     VIK("VIK"),
     STECK("Steck"),
-    EXTREME_SIMRACING("Extreme Simracing");
-
+    EXTREME_SIMRACING("Extreme Simracing"),
+    ANGELONI_NEW_API("Angeloni 2.0"),
+    WALMART("Walmart", false, true);
 
     private String name;
+    private final boolean specificConsumer;
+    private final boolean anyBindEnabled;
+    private final boolean allowsChangeIdInMarketplace;
 
-    private MarketPlace(String name) {
+    MarketPlace(String name) {
         this.name = name;
+        this.specificConsumer = false;
+        this.anyBindEnabled = false;
+        this.allowsChangeIdInMarketplace = false;
+    }
+
+    MarketPlace(String name, boolean specificConsumer) {
+        this.name = name;
+        this.specificConsumer = specificConsumer;
+        this.anyBindEnabled = false;
+        this.allowsChangeIdInMarketplace = false;
+    }
+
+    MarketPlace(String name, boolean specificConsumer, boolean anyBindEnabled) {
+        this.name = name;
+        this.specificConsumer = specificConsumer;
+        this.anyBindEnabled = anyBindEnabled;
+        this.allowsChangeIdInMarketplace = false;
+    }
+
+    MarketPlace(String name, boolean specificConsumer, boolean anyBindEnabled, boolean allowsChangeIdInMarketplace) {
+        this.name = name;
+        this.specificConsumer = specificConsumer;
+        this.anyBindEnabled = anyBindEnabled;
+        this.allowsChangeIdInMarketplace = allowsChangeIdInMarketplace;
     }
 
     public String getDescription() {
-        return this.name;
+        return name;
+    }
+
+    public void setDescription(String description) {
+        this.name = description;
+    }
+
+    public static MarketPlace fromName(String name) {
+        if (Objects.nonNull(name)) {
+            for (MarketPlace marketplace : MarketPlace.values()) {
+                if (name.equalsIgnoreCase(marketplace.getDescription())) {
+                    return marketplace;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static List<MarketPlace> nameContaining(String searchParam) {
+        return Arrays.stream(values()).filter(marketplace ->
+            marketplaceDescriptionContains(marketplace, searchParam)
+        ).collect(Collectors.toList());
+    }
+
+    private static boolean marketplaceDescriptionContains(MarketPlace marketplace, String searchParam) {
+        String uppercaseDescription = marketplace.getDescription().toUpperCase();
+        return uppercaseDescription.contains(searchParam.toUpperCase());
+    }
+
+    public String getQueueName() {
+        return this.name().replace("_", "");
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isSpecificConsumer() {
+        return specificConsumer;
+    }
+
+    public boolean isAnyBindEnabled() {
+        return anyBindEnabled;
+    }
+
+    public boolean isAllowsChangeIdInMarketplace() {
+        return allowsChangeIdInMarketplace;
     }
 
 }
