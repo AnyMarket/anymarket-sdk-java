@@ -86,4 +86,7 @@ public class OrderReturn {
 
     @JsonProperty("invoice")
     private OrderReturnInvoiceResource invoice;
+
+    @JsonProperty("fulfillment")
+    private Boolean fulfillment;
 }
