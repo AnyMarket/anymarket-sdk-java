@@ -1,5 +1,6 @@
 package br.com.anymarket.sdk.product;
 
+import br.com.anymarket.sdk.exception.HttpClientException;
 import br.com.anymarket.sdk.http.Response;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.http.headers.ModuleOriginHeader;
@@ -14,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +34,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void should_update_product_and_images_success() throws Exception {
+    public void should_update_product_and_images_success() {
         Product inputProduct = new Product();
         inputProduct.setId(1L);
 
@@ -43,9 +43,11 @@ public class ProductServiceTest {
 
         Image imgToDelete = new Image();
         imgToDelete.setId(10L);
-        returnedProduct.setImagesForDelete(Collections.singletonList(imgToDelete));
+        inputProduct.setImagesForDelete(Collections.singletonList(imgToDelete));
+        returnedProduct.setImagesForDelete(null);
 
         Image newImage = new Image();
+        newImage.setId(99L);
         returnedProduct.setImages(Collections.singletonList(newImage));
 
         RequestBodyEntity mockedPut = mock(RequestBodyEntity.class);
@@ -57,19 +59,13 @@ public class ProductServiceTest {
         doReturn(mockedResponse).when(service).execute(mockedPut);
 
         HttpRequestWithBody mockedDelete = mock(HttpRequestWithBody.class);
-        doReturn(mockedDelete).when(service).delete(contains("/images/10"), any());
+        doReturn(mockedDelete).when(service).delete(contains("/images/multi"), any());
+        RequestBodyEntity mockedDeleteBodyEntity = mock(RequestBodyEntity.class);
+        when(mockedDelete.body("[10]")).thenReturn(mockedDeleteBodyEntity);
 
         Response mockedDeleteResponse = mock(Response.class);
         when(mockedDeleteResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
-        doReturn(mockedDeleteResponse).when(service).execute(mockedDelete);
-
-        doAnswer(invocation -> {
-            List<Image> updatedImages = invocation.getArgument(1);
-            Image uploaded = new Image();
-            uploaded.setId(99L);
-            updatedImages.add(uploaded);
-            return null;
-        }).when(service).sendProductImage(any(), anyList(), any(), any());
+        doReturn(mockedDeleteResponse).when(service).execute(mockedDeleteBodyEntity);
 
         Product result = service.updateProductAndImages(inputProduct, new ModuleOriginHeader("ECOMMERCE"));
 
@@ -81,8 +77,7 @@ public class ProductServiceTest {
 
         verify(service).put(anyString(), eq(inputProduct), any());
         verify(service).execute(mockedPut);
-        verify(service).execute(mockedDelete);
-        verify(service).sendProductImage(eq(returnedProduct), anyList(), eq(newImage), any());
+        verify(service).execute(mockedDeleteBodyEntity);
     }
 
     @Test
@@ -100,6 +95,7 @@ public class ProductServiceTest {
         existingImages.add(newImage);
         existingImages.add(existingImage);
         returnedProduct.setImages(existingImages);
+        inputProduct.setImages(existingImages);
 
         Image imgToDelete = new Image();
         imgToDelete.setId(99L);
@@ -112,22 +108,19 @@ public class ProductServiceTest {
         when(mockedProductResponse.to(Product.class)).thenReturn(returnedProduct);
         doReturn(mockedProductResponse).when(service).execute(mockedPutProduct);
 
-        doAnswer(invocation -> {
-            List<Image> imageList = invocation.getArgument(1);
-            Image img = new Image();
-            img.setId(123L);
-            imageList.add(img);
-            return null;
-        }).when(service).sendProductImage(eq(returnedProduct), anyList(), eq(newImage), any());
+        RequestBodyEntity mockedPostImage = mock(RequestBodyEntity.class);
+        doReturn(mockedPostImage).when(service).post(contains("/images/multi"), eq(Collections.singletonList(newImage)), any());
+        Response mockedPostImageResponse = mock(Response.class);
+        when(mockedPostImageResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
+        when(mockedPostImageResponse.getMessage()).thenReturn("{\"id\":21}");
+        doReturn(mockedPostImageResponse).when(service).execute(mockedPostImage);
 
         RequestBodyEntity mockedPutImage = mock(RequestBodyEntity.class);
-        doReturn(mockedPutImage).when(service).put(contains("/images/"), eq(existingImage), any());
+        doReturn(mockedPutImage).when(service).put(contains("/images/multi"), eq(Collections.singletonList(existingImage)), any());
         Response mockedPutImageResponse = mock(Response.class);
         when(mockedPutImageResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
         when(mockedPutImageResponse.getMessage()).thenReturn("{\"id\":20}");
         doReturn(mockedPutImageResponse).when(service).execute(mockedPutImage);
-
-        doNothing().when(service).imageForDelete(eq(returnedProduct), any());
 
         Product result = service.updateProductAndCreateAndUpdateImages(inputProduct, new ModuleOriginHeader("ECOMMERCE"));
 
@@ -136,66 +129,14 @@ public class ProductServiceTest {
 
         verify(service).put(contains("/products/1"), eq(inputProduct), any());
         verify(service).execute(mockedPutProduct);
-        verify(service).sendProductImage(eq(returnedProduct), anyList(), eq(newImage), any());
-        verify(service).put(contains("/images/"), eq(existingImage), any());
+        verify(service).post(contains("/images/multi"), eq(Collections.singletonList(newImage)), any());
+        verify(service).execute(mockedPostImage);
+        verify(service).put(contains("/images/multi"), eq(Collections.singletonList(existingImage)), any());
         verify(service).execute(mockedPutImage);
-        verify(service).imageForDelete(eq(returnedProduct), any());
     }
 
-    @Test
-    public void should_send_image_success() {
-        Product product = new Product();
-        product.setId(123L);
-
-        Image image = new Image();
-        Image imageResponse = new Image();
-        imageResponse.setId(999L);
-
-        List<Image> imageList = new ArrayList<>();
-
-        RequestBodyEntity mockedPost = mock(RequestBodyEntity.class);
-        doReturn(mockedPost).when(service).post(contains("/images/"), eq(image), any());
-
-        Response mockedResponse = mock(Response.class);
-        when(mockedResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
-        when(mockedResponse.getMessage()).thenReturn("{\"id\":999}");
-
-        doReturn(mockedResponse).when(service).execute(mockedPost);
-
-        service.sendProductImage(product, imageList, image, new ModuleOriginHeader[]{new ModuleOriginHeader("ECOMMERCE")});
-
-        assertEquals(1, imageList.size());
-        assertEquals(Long.valueOf(999), imageList.get(0).getId());
-
-        verify(service).post(contains("/images/"), eq(image), any());
-        verify(service).execute(mockedPost);
-    }
-
-    @Test
-    public void should_not_add_image_status_not_200() {
-        Product product = new Product();
-        product.setId(123L);
-
-        Image image = new Image();
-        List<Image> imageList = new ArrayList<>();
-
-        RequestBodyEntity mockedPost = mock(RequestBodyEntity.class);
-        doReturn(mockedPost).when(service).post(anyString(), eq(image), any());
-
-        Response mockedResponse = mock(Response.class);
-        when(mockedResponse.getStatus()).thenReturn(HttpStatus.SC_BAD_REQUEST);
-
-        doReturn(mockedResponse).when(service).execute(mockedPost);
-
-        service.sendProductImage(product, imageList, image, new ModuleOriginHeader[]{new ModuleOriginHeader("ECOMMERCE")});
-
-        assertTrue(imageList.isEmpty());
-        verify(service).post(anyString(), eq(image), any());
-        verify(service).execute(mockedPost);
-    }
-
-    @Test
-    public void should_not_update_product_status_not_200() throws Exception {
+    @Test(expected = HttpClientException.class)
+    public void should_not_update_product_status_not_200() {
         Product inputProduct = new Product();
         inputProduct.setId(1L);
 
@@ -214,32 +155,9 @@ public class ProductServiceTest {
         verify(service).put(anyString(), eq(inputProduct), any());
         verify(service).execute(mockedPut);
         verify(service, never()).delete(anyString(), any());
-        verify(service, never()).sendProductImage(any(), anyList(), any(), any());
     }
 
-    @Test
-    public void should_not_update_product_nor_image_if_put_status_not_200() {
-        Product inputProduct = new Product();
-        inputProduct.setId(1L);
-
-        RequestBodyEntity mockedPut = mock(RequestBodyEntity.class);
-        doReturn(mockedPut).when(service).put(anyString(), eq(inputProduct), any());
-
-        Response mockedPutResponse = mock(Response.class);
-        when(mockedPutResponse.getStatus()).thenReturn(HttpStatus.SC_BAD_REQUEST);
-        when(mockedPutResponse.to(Product.class)).thenReturn(new Product());
-
-        doReturn(mockedPutResponse).when(service).execute(mockedPut);
-
-        Product result = service.updateProductAndCreateAndUpdateImages(inputProduct, new ModuleOriginHeader("ECOMMERCE"));
-
-        assertNotNull(result);
-        verify(service).put(anyString(), eq(inputProduct), any());
-        verify(service).execute(mockedPut);
-        verify(service, never()).sendProductImage(any(), anyList(), any(), any());
-    }
-
-    @Test
+    @Test(expected = HttpClientException.class)
     public void should_not_add_image_if_put_returns_error() {
         Product inputProduct = new Product();
         inputProduct.setId(1L);
@@ -248,7 +166,9 @@ public class ProductServiceTest {
         imageWithId.setId(10L);
         Product returnedProduct = new Product();
         returnedProduct.setId(1L);
-        returnedProduct.setImages(Collections.singletonList(imageWithId));
+        List<Image> imagesWithId = Collections.singletonList(imageWithId);
+        returnedProduct.setImages(imagesWithId);
+        inputProduct.setImages(imagesWithId);
 
         RequestBodyEntity mockedProductPut = mock(RequestBodyEntity.class);
         doReturn(mockedProductPut).when(service).put(anyString(), eq(inputProduct), any());
@@ -260,7 +180,7 @@ public class ProductServiceTest {
         doReturn(mockedResponse).when(service).execute(mockedProductPut);
 
         RequestBodyEntity mockedImagePut = mock(RequestBodyEntity.class);
-        doReturn(mockedImagePut).when(service).put(contains("/images/"), eq(imageWithId), any());
+        doReturn(mockedImagePut).when(service).put(contains("/images/multi"), eq(imagesWithId), any());
 
         Response imagePutResponse = mock(Response.class);
         when(imagePutResponse.getStatus()).thenReturn(HttpStatus.SC_INTERNAL_SERVER_ERROR);
@@ -271,39 +191,6 @@ public class ProductServiceTest {
 
         assertNotNull(result);
         verify(service).execute(mockedImagePut);
-        verify(service, never()).sendProductImage(any(), anyList(), any(), any());
-    }
-
-    @Test(expected = RuntimeException.class)
-    public void should_throw_exception_if_invalid_image_json() {
-        Product inputProduct = new Product();
-        inputProduct.setId(1L);
-
-        Image imageWithId = new Image();
-        imageWithId.setId(10L);
-        Product returnedProduct = new Product();
-        returnedProduct.setId(1L);
-        returnedProduct.setImages(Collections.singletonList(imageWithId));
-
-        RequestBodyEntity mockedProductPut = mock(RequestBodyEntity.class);
-        doReturn(mockedProductPut).when(service).put(anyString(), eq(inputProduct), any());
-
-        Response mockedResponse = mock(Response.class);
-        when(mockedResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
-        when(mockedResponse.to(Product.class)).thenReturn(returnedProduct);
-
-        doReturn(mockedResponse).when(service).execute(mockedProductPut);
-
-        RequestBodyEntity mockedImagePut = mock(RequestBodyEntity.class);
-        doReturn(mockedImagePut).when(service).put(contains("/images/"), eq(imageWithId), any());
-
-        Response imagePutResponse = mock(Response.class);
-        when(imagePutResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
-        when(imagePutResponse.getMessage()).thenReturn("invalid json");
-
-        doReturn(imagePutResponse).when(service).execute(mockedImagePut);
-
-        service.updateProductAndCreateAndUpdateImages(inputProduct, new ModuleOriginHeader("ECOMMERCE"));
     }
 
     private static class ProductServiceFake extends ProductService {
@@ -329,11 +216,6 @@ public class ProductServiceTest {
         @Override
         protected Response execute(com.mashape.unirest.request.BaseRequest request) {
             return super.execute(request);
-        }
-
-        @Override
-        protected void sendProductImage(Product resultProduct, List<Image> updatedImages, Image image, IntegrationHeader... headers) {
-            super.sendProductImage(resultProduct, updatedImages, image, headers);
         }
     }
 }
