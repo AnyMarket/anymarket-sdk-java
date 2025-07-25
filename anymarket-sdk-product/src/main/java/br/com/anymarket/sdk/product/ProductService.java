@@ -70,14 +70,14 @@ public class ProductService extends HttpService {
     public Product updateProductAndImages(Product product, IntegrationHeader... headers) {
         insertImagesForInsert(product, headers);
         deleteImagesForDelete(product, headers);
-        return updateProduct(product);
+        return updateProduct(product, headers);
     }
 
     public Product updateProductAndCreateAndUpdateImages(Product product, IntegrationHeader... headers) {
         deleteImagesForDelete(product, headers);
         insertImagesForInsert(product, headers);
         updateImagesForUpdate(product, headers);
-        return updateProduct(product);
+        return updateProduct(product, headers);
     }
 
     private void insertImagesForInsert(Product product, IntegrationHeader[] headers) {
