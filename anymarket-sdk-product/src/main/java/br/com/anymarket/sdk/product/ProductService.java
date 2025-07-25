@@ -63,7 +63,7 @@ public class ProductService extends HttpService {
                 .concat("/")
                 .concat(productId.toString());
         RequestBodyEntity put = put(url, product, addModuleOriginHeader(headers, this.moduleOrigin));
-        Response response = execute(put, () -> format("Failed to update product - id %s", productId));
+        Response response = execute(put, HttpStatus.SC_OK, () -> format("Failed to update product - id %s", productId));
         return response.to(Product.class);
     }
 
@@ -121,7 +121,7 @@ public class ProductService extends HttpService {
                 .concat(productId.toString())
                 .concat(IMAGES_MULTI);
         RequestBodyEntity post = post(url, images, addModuleOriginHeader(headers, moduleOrigin));
-        execute(post, () -> format("Failed to insert images of product - id %s", productId));
+        execute(post, HttpStatus.SC_OK, () -> format("Failed to insert images of product - id %s", productId));
     }
 
     private void updateImages(Long productId, List<Image> images, IntegrationHeader... headers) {
@@ -130,7 +130,7 @@ public class ProductService extends HttpService {
                 .concat(productId.toString())
                 .concat(IMAGES_MULTI);
         RequestBodyEntity put = put(url, images, addModuleOriginHeader(headers, this.moduleOrigin));
-        execute(put, () -> format("Failed to update images of product - id %s", productId));
+        execute(put, HttpStatus.SC_OK, () -> format("Failed to update images of product - id %s", productId));
     }
 
     private void deleteImages(Long productId, List<Image> images, IntegrationHeader... headers) {
@@ -141,12 +141,12 @@ public class ProductService extends HttpService {
         List<Long> imageIds = images.stream().map(Image::getId).collect(Collectors.toList());
         RequestBodyEntity delete = delete(url, addModuleOriginHeader(headers, moduleOrigin))
                 .body(writeValueAsJson(imageIds));
-        execute(delete, () -> format("Failed to delete images - ids %s", imageIds));
+        execute(delete, HttpStatus.SC_NO_CONTENT, () -> format("Failed to delete images - ids %s", imageIds));
     }
 
-    private Response execute(RequestBodyEntity request, Supplier<String> failureMessagePrefixSupplier) {
+    private Response execute(RequestBodyEntity request, int expectedHttpStatus, Supplier<String> failureMessagePrefixSupplier) {
         Response response = execute(request);
-        if (response.getStatus() == HttpStatus.SC_OK) {
+        if (response.getStatus() == expectedHttpStatus) {
             return response;
         }
         String failureMessagePrefix = failureMessagePrefixSupplier.get();
