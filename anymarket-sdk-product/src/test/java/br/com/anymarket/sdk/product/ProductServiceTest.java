@@ -64,7 +64,7 @@ public class ProductServiceTest {
         when(mockedDelete.body("[10]")).thenReturn(mockedDeleteBodyEntity);
 
         Response mockedDeleteResponse = mock(Response.class);
-        when(mockedDeleteResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
+        when(mockedDeleteResponse.getStatus()).thenReturn(HttpStatus.SC_NO_CONTENT);
         doReturn(mockedDeleteResponse).when(service).execute(mockedDeleteBodyEntity);
 
         Product result = service.updateProductAndImages(inputProduct, new ModuleOriginHeader("ECOMMERCE"));
