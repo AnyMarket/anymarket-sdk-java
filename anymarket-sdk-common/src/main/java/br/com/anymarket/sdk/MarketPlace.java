@@ -211,7 +211,8 @@ public enum MarketPlace {
     GAZIN_MARKETPLACE("Gazin Marketplace"),
     VIK("VIK"),
     STECK("Steck"),
-    EXTREME_SIMRACING("Extreme Simracing");
+    EXTREME_SIMRACING("Extreme Simracing"),
+    FC_MARKETPLACE("FC Marketplace");
 
 
     private String name;
