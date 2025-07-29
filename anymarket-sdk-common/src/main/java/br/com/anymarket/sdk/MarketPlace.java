@@ -224,7 +224,8 @@ public enum MarketPlace {
     STECK("Steck"),
     EXTREME_SIMRACING("Extreme Simracing"),
     ANGELONI_NEW_API("Angeloni 2.0"),
-    WALMART("Walmart", false, true);
+    WALMART("Walmart", false, true),
+    FC_MARKETPLACE("FC Marketplace");
 
     private String name;
     private final boolean specificConsumer;
