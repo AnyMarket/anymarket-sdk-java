@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderReturnInvoiceResource {
-
     @JsonProperty("accessKey")
     private String accessKey;
 }
