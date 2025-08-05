@@ -1,14 +1,14 @@
 package br.com.anymarket.sdk.i18any;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BulkTranslationMessage {
 
     private String tenantId;
     private Long publicationId;
     private String targetLanguage;
-    private List<BulkTranslationErrorMessage> messages = new ArrayList<>();
+    private Set<BulkTranslationErrorMessage> messages = new HashSet<>();
 
     public BulkTranslationMessage() {}
 
@@ -16,7 +16,7 @@ public class BulkTranslationMessage {
         String tenantId,
         Long publicationId,
         String targetLanguage,
-        List<BulkTranslationErrorMessage> messages
+        Set<BulkTranslationErrorMessage> messages
     ) {
         this.tenantId = tenantId;
         this.publicationId = publicationId;
@@ -36,7 +36,7 @@ public class BulkTranslationMessage {
         return this.targetLanguage;
     }
 
-    public List<BulkTranslationErrorMessage> getMessages() {
+    public Set<BulkTranslationErrorMessage> getMessages() {
         return this.messages;
     }
 
@@ -52,7 +52,7 @@ public class BulkTranslationMessage {
         this.targetLanguage = targetLanguage;
     }
 
-    public void setMessages(List<BulkTranslationErrorMessage> messages) {
+    public void setMessages(Set<BulkTranslationErrorMessage> messages) {
         this.messages = messages;
     }
 
@@ -64,7 +64,7 @@ public class BulkTranslationMessage {
         private String tenantId;
         private Long publicationId;
         private String targetLanguage;
-        private List<BulkTranslationErrorMessage> messages;
+        private Set<BulkTranslationErrorMessage> messages;
 
         BulkTranslationMessageBuilder() {}
 
@@ -83,7 +83,7 @@ public class BulkTranslationMessage {
             return this;
         }
 
-        public BulkTranslationMessageBuilder messages(List<BulkTranslationErrorMessage> messages) {
+        public BulkTranslationMessageBuilder messages(Set<BulkTranslationErrorMessage> messages) {
             this.messages = messages;
             return this;
         }

@@ -1,20 +1,20 @@
 package br.com.anymarket.sdk.i18any;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BulkTranslationResultMessage {
 
     private String tenantId;
     private Long publicationId;
-    private List<BulkTranslationResultErrorMessage> messages = new ArrayList<>();
+    private Set<BulkTranslationResultErrorMessage> messages = new HashSet<>();
 
     public BulkTranslationResultMessage() {}
 
     public BulkTranslationResultMessage(
         String tenantId,
         Long publicationId,
-        List<BulkTranslationResultErrorMessage> messages
+        Set<BulkTranslationResultErrorMessage> messages
     ) {
         this.tenantId = tenantId;
         this.publicationId = publicationId;
@@ -29,7 +29,7 @@ public class BulkTranslationResultMessage {
         return this.publicationId;
     }
 
-    public List<BulkTranslationResultErrorMessage> getMessages() {
+    public Set<BulkTranslationResultErrorMessage> getMessages() {
         return messages;
     }
 
@@ -41,7 +41,7 @@ public class BulkTranslationResultMessage {
         this.publicationId = publicationId;
     }
 
-    public void setMessages(List<BulkTranslationResultErrorMessage> messages) {
+    public void setMessages(Set<BulkTranslationResultErrorMessage> messages) {
         this.messages = messages;
     }
 
@@ -52,7 +52,7 @@ public class BulkTranslationResultMessage {
     public static class BulkTranslationResultMessageBuilder {
         private String tenantId;
         private Long publicationId;
-        private List<BulkTranslationResultErrorMessage> messages = new ArrayList<>();
+        private Set<BulkTranslationResultErrorMessage> messages = new HashSet<>();
 
         BulkTranslationResultMessageBuilder() {}
 
@@ -66,7 +66,7 @@ public class BulkTranslationResultMessage {
             return this;
         }
 
-        public BulkTranslationResultMessageBuilder messages(List<BulkTranslationResultErrorMessage> messages) {
+        public BulkTranslationResultMessageBuilder messages(Set<BulkTranslationResultErrorMessage> messages) {
             this.messages = messages;
             return this;
         }
