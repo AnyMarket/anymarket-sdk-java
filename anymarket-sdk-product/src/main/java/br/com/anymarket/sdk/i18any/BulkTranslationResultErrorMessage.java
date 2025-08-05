@@ -166,7 +166,10 @@ public class BulkTranslationResultErrorMessage {
                 this.isApproved
             );
         }
+    }
 
+    public String toString() {
+        return "BulkTranslationResultErrorMessage(transmissionErrorId=" + this.getTransmissionErrorId() + ", origin=" + this.getOrigin() + ", internationalizedMessage=" + this.getInternationalizedMessage() + ", internationalizedReason=" + this.getInternationalizedReason() + ", internationalizedActionToFix=" + this.getInternationalizedActionToFix() + ", internationalizedArticleLink=" + this.getInternationalizedArticleLink() + ", internationalizedErrorCategory=" + this.getInternationalizedErrorCategory() + ", isApproved=" + this.getIsApproved() + ")";
     }
 
 }

@@ -94,7 +94,10 @@ public class BulkTranslationErrorMessage {
                 this.message
             );
         }
+    }
 
+    public String toString() {
+        return "BulkTranslationErrorMessage(transmissionErrorId=" + this.getTransmissionErrorId() + ", targetLanguage=" + this.getTargetLanguage() + ", origin=" + this.getOrigin() + ", message=" + this.getMessage() + ")";
     }
 
 }

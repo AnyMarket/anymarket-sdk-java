@@ -78,7 +78,10 @@ public class BulkTranslationResultMessage {
                 this.messages
             );
         }
+    }
 
+    public String toString() {
+        return "BulkTranslationResultMessage(tenantId=" + this.getTenantId() + ", publicationId=" + this.getPublicationId() + ", messages=" + this.getMessages() + ")";
     }
 
 }

@@ -96,7 +96,10 @@ public class BulkTranslationMessage {
                 this.messages
             );
         }
+    }
 
+    public String toString() {
+        return "BulkTranslationMessage(tenantId=" + this.getTenantId() + ", publicationId=" + this.getPublicationId() + ", targetLanguage=" + this.getTargetLanguage() + ", messages=" + this.getMessages() + ")";
     }
 
 }
