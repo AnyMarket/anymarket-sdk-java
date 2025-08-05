@@ -1,42 +1,24 @@
 package br.com.anymarket.sdk.i18any;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BulkTranslationResultMessage {
 
     private String tenantId;
     private Long publicationId;
-    private Long transmissionErrorId;
-    private String origin;
-    private String internationalizedMessage;
-    private String internationalizedReason;
-    private String internationalizedActionToFix;
-    private String internationalizedArticleLink;
-    private TransmissionMessageCategory internationalizedErrorCategory;
-    private Boolean isApproved;
+    private List<BulkTranslationResultErrorMessage> messages = new ArrayList<>();
 
     public BulkTranslationResultMessage() {}
 
     public BulkTranslationResultMessage(
         String tenantId,
         Long publicationId,
-        Long transmissionErrorId,
-        String origin,
-        String internationalizedMessage,
-        String internationalizedReason,
-        String internationalizedActionToFix,
-        String internationalizedArticleLink,
-        TransmissionMessageCategory internationalizedErrorCategory,
-        Boolean isApproved
+        List<BulkTranslationResultErrorMessage> messages
     ) {
         this.tenantId = tenantId;
         this.publicationId = publicationId;
-        this.transmissionErrorId = transmissionErrorId;
-        this.origin = origin;
-        this.internationalizedMessage = internationalizedMessage;
-        this.internationalizedReason = internationalizedReason;
-        this.internationalizedActionToFix = internationalizedActionToFix;
-        this.internationalizedArticleLink = internationalizedArticleLink;
-        this.internationalizedErrorCategory = internationalizedErrorCategory;
-        this.isApproved = isApproved;
+        this.messages = messages;
     }
 
     public String getTenantId() {
@@ -47,36 +29,8 @@ public class BulkTranslationResultMessage {
         return this.publicationId;
     }
 
-    public Long getTransmissionErrorId() {
-        return this.transmissionErrorId;
-    }
-
-    public String getOrigin() {
-        return this.origin;
-    }
-
-    public String getInternationalizedMessage() {
-        return this.internationalizedMessage;
-    }
-
-    public String getInternationalizedReason() {
-        return this.internationalizedReason;
-    }
-
-    public String getInternationalizedActionToFix() {
-        return this.internationalizedActionToFix;
-    }
-
-    public String getInternationalizedArticleLink() {
-        return this.internationalizedArticleLink;
-    }
-
-    public TransmissionMessageCategory getInternationalizedErrorCategory() {
-        return this.internationalizedErrorCategory;
-    }
-
-    public Boolean getIsApproved() {
-        return this.isApproved;
+    public List<BulkTranslationResultErrorMessage> getMessages() {
+        return messages;
     }
 
     public void setTenantId(String tenantId) {
@@ -87,36 +41,8 @@ public class BulkTranslationResultMessage {
         this.publicationId = publicationId;
     }
 
-    public void setTransmissionErrorId(Long transmissionErrorId) {
-        this.transmissionErrorId = transmissionErrorId;
-    }
-
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
-
-    public void setInternationalizedMessage(String internationalizedMessage) {
-        this.internationalizedMessage = internationalizedMessage;
-    }
-
-    public void setInternationalizedReason(String internationalizedReason) {
-        this.internationalizedReason = internationalizedReason;
-    }
-
-    public void setInternationalizedActionToFix(String internationalizedActionToFix) {
-        this.internationalizedActionToFix = internationalizedActionToFix;
-    }
-
-    public void setInternationalizedArticleLink(String internationalizedArticleLink) {
-        this.internationalizedArticleLink = internationalizedArticleLink;
-    }
-
-    public void setInternationalizedErrorCategory(TransmissionMessageCategory internationalizedErrorCategory) {
-        this.internationalizedErrorCategory = internationalizedErrorCategory;
-    }
-
-    public void setIsApproved(Boolean isApproved) {
-        this.isApproved = isApproved;
+    public void setMessages(List<BulkTranslationResultErrorMessage> messages) {
+        this.messages = messages;
     }
 
     public static BulkTranslationResultMessageBuilder builder() {
@@ -126,14 +52,7 @@ public class BulkTranslationResultMessage {
     public static class BulkTranslationResultMessageBuilder {
         private String tenantId;
         private Long publicationId;
-        private Long transmissionErrorId;
-        private String origin;
-        private String internationalizedMessage;
-        private String internationalizedReason;
-        private String internationalizedActionToFix;
-        private String internationalizedArticleLink;
-        private TransmissionMessageCategory internationalizedErrorCategory;
-        private Boolean isApproved;
+        private List<BulkTranslationResultErrorMessage> messages = new ArrayList<>();
 
         BulkTranslationResultMessageBuilder() {}
 
@@ -147,43 +66,8 @@ public class BulkTranslationResultMessage {
             return this;
         }
 
-        public BulkTranslationResultMessageBuilder transmissionErrorId(Long transmissionErrorId) {
-            this.transmissionErrorId = transmissionErrorId;
-            return this;
-        }
-
-        public BulkTranslationResultMessageBuilder origin(String origin) {
-            this.origin = origin;
-            return this;
-        }
-
-        public BulkTranslationResultMessageBuilder internationalizedMessage(String internationalizedMessage) {
-            this.internationalizedMessage = internationalizedMessage;
-            return this;
-        }
-
-        public BulkTranslationResultMessageBuilder internationalizedReason(String internationalizedReason) {
-            this.internationalizedReason = internationalizedReason;
-            return this;
-        }
-
-        public BulkTranslationResultMessageBuilder internationalizedActionToFix(String internationalizedActionToFix) {
-            this.internationalizedActionToFix = internationalizedActionToFix;
-            return this;
-        }
-
-        public BulkTranslationResultMessageBuilder internationalizedArticleLink(String internationalizedArticleLink) {
-            this.internationalizedArticleLink = internationalizedArticleLink;
-            return this;
-        }
-
-        public BulkTranslationResultMessageBuilder internationalizedErrorCategory(TransmissionMessageCategory internationalizedErrorCategory) {
-            this.internationalizedErrorCategory = internationalizedErrorCategory;
-            return this;
-        }
-
-        public BulkTranslationResultMessageBuilder isApproved(Boolean isApproved) {
-            this.isApproved = isApproved;
+        public BulkTranslationResultMessageBuilder messages(List<BulkTranslationResultErrorMessage> messages) {
+            this.messages = messages;
             return this;
         }
 
@@ -191,14 +75,7 @@ public class BulkTranslationResultMessage {
             return new BulkTranslationResultMessage(
                 this.tenantId,
                 this.publicationId,
-                this.transmissionErrorId,
-                this.origin,
-                this.internationalizedMessage,
-                this.internationalizedReason,
-                this.internationalizedActionToFix,
-                this.internationalizedArticleLink,
-                this.internationalizedErrorCategory,
-                this.isApproved
+                this.messages
             );
         }
 
