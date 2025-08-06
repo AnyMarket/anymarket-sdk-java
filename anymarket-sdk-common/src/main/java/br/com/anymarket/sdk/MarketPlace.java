@@ -1,8 +1,9 @@
 package br.com.anymarket.sdk;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -269,12 +270,11 @@ public enum MarketPlace {
     }
 
     public static MarketPlace fromName(String name) {
-        if (Objects.nonNull(name)) {
-            for (MarketPlace marketplace : MarketPlace.values()) {
-                if (name.equalsIgnoreCase(marketplace.getDescription())) {
-                    return marketplace;
-                }
-            }
+        if (StringUtils.isNotBlank(name)) {
+            return Arrays.stream(MarketPlace.values())
+                .filter(marketplace -> name.equalsIgnoreCase(marketplace.getDescription()))
+                .findFirst()
+                .orElse(null);
         }
 
         return null;

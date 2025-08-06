@@ -168,8 +168,19 @@ public class BulkTranslationResultErrorMessage {
         }
     }
 
+    @Override
     public String toString() {
-        return "BulkTranslationResultErrorMessage(transmissionErrorId=" + this.getTransmissionErrorId() + ", origin=" + this.getOrigin() + ", internationalizedMessage=" + this.getInternationalizedMessage() + ", internationalizedReason=" + this.getInternationalizedReason() + ", internationalizedActionToFix=" + this.getInternationalizedActionToFix() + ", internationalizedArticleLink=" + this.getInternationalizedArticleLink() + ", internationalizedErrorCategory=" + this.getInternationalizedErrorCategory() + ", isApproved=" + this.getIsApproved() + ")";
+        return String.format(
+            "BulkTranslationResultErrorMessage(transmissionErrorId=%s, origin=%s, internationalizedMessage=%s, internationalizedReason=%s, internationalizedActionToFix=%s, internationalizedArticleLink=%s, internationalizedErrorCategory=%s, isApproved=%s)",
+            transmissionErrorId,
+            origin,
+            internationalizedMessage,
+            internationalizedReason,
+            internationalizedActionToFix,
+            internationalizedArticleLink,
+            internationalizedErrorCategory,
+            isApproved
+        );
     }
 
 }

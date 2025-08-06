@@ -98,8 +98,15 @@ public class BulkTranslationMessage {
         }
     }
 
+    @Override
     public String toString() {
-        return "BulkTranslationMessage(tenantId=" + this.getTenantId() + ", publicationId=" + this.getPublicationId() + ", targetLanguage=" + this.getTargetLanguage() + ", messages=" + this.getMessages() + ")";
+        return String.format(
+            "BulkTranslationMessage(tenantId=%s, publicationId=%d, targetLanguage=%s, messages=%s)",
+            tenantId,
+            publicationId,
+            targetLanguage,
+            messages
+        );
     }
 
 }

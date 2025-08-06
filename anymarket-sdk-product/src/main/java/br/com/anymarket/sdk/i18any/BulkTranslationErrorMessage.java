@@ -96,8 +96,15 @@ public class BulkTranslationErrorMessage {
         }
     }
 
+    @Override
     public String toString() {
-        return "BulkTranslationErrorMessage(transmissionErrorId=" + this.getTransmissionErrorId() + ", targetLanguage=" + this.getTargetLanguage() + ", origin=" + this.getOrigin() + ", message=" + this.getMessage() + ")";
+        return String.format(
+            "BulkTranslationErrorMessage(transmissionErrorId=%s, targetLanguage=%s, origin=%s, message=%s)",
+            transmissionErrorId,
+            targetLanguage,
+            origin,
+            message
+        );
     }
 
 }
