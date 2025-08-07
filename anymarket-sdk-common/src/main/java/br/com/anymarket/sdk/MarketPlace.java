@@ -212,7 +212,8 @@ public enum MarketPlace {
     VIK("VIK"),
     STECK("Steck"),
     EXTREME_SIMRACING("Extreme Simracing"),
-    FC_MARKETPLACE("FC Marketplace");
+    FC_MARKETPLACE("FC Marketplace"),
+    DIMERC("Dimerc");
 
 
     private String name;
