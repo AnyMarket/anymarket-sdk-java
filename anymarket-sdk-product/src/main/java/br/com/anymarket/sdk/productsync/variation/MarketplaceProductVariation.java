@@ -15,6 +15,7 @@ public class MarketplaceProductVariation implements ProductWithMandatoryInfo {
     private BigDecimal price;
     private BigDecimal stock;
     private List<MarketplaceProductVariationAttribute> attributes = new ArrayList<>();
+    private String ean;
 
     public MarketplaceProductVariation() {}
 
@@ -22,12 +23,14 @@ public class MarketplaceProductVariation implements ProductWithMandatoryInfo {
         String sku,
         BigDecimal price,
         BigDecimal stock,
-        List<MarketplaceProductVariationAttribute> attributes
+        List<MarketplaceProductVariationAttribute> attributes,
+        String ean
     ) {
         this.sku = sku;
         this.price = price;
         this.stock = stock;
         this.attributes = attributes;
+        this.ean = ean;
     }
 
     @Override
@@ -59,6 +62,7 @@ public class MarketplaceProductVariation implements ProductWithMandatoryInfo {
         private BigDecimal price;
         private BigDecimal stock;
         private List<MarketplaceProductVariationAttribute> attributes = new ArrayList<>();
+        private String ean;
 
         MarketplaceProductVariationBuilder() {}
 
@@ -82,12 +86,18 @@ public class MarketplaceProductVariation implements ProductWithMandatoryInfo {
             return this;
         }
 
+        public MarketplaceProductVariationBuilder ean(String ean) {
+            this.ean = ean;
+            return this;
+        }
+
         public MarketplaceProductVariation build() {
             return new MarketplaceProductVariation(
                 this.sku,
                 this.price,
                 this.stock,
-                getValues(this.attributes)
+                getValues(this.attributes),
+                this.ean
             );
         }
 
