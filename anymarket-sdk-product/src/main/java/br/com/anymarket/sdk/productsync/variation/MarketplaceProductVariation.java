@@ -48,6 +48,10 @@ public class MarketplaceProductVariation implements ProductWithMandatoryInfo {
         return stock;
     }
 
+    public String getEan() {
+        return ean;
+    }
+
     public List<MarketplaceProductVariationAttribute> getAttributes() {
         return attributes;
     }
