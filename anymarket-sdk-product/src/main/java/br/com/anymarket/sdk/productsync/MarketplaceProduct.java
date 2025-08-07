@@ -2,6 +2,7 @@ package br.com.anymarket.sdk.productsync;
 
 import br.com.anymarket.sdk.product.dto.ProductGender;
 import br.com.anymarket.sdk.productsync.variation.MarketplaceProductVariation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.stream.Collectors;
 import static java.util.Collections.emptyList;
 
 public class MarketplaceProduct implements ProductWithMandatoryInfo {
-
     private String marketplaceIdentifier;
     private String sku;
     private String title;
@@ -37,14 +37,15 @@ public class MarketplaceProduct implements ProductWithMandatoryInfo {
     private List<MarketplaceProductImage> images = new ArrayList<>();
     private List<MarketplaceProductVariation> variations = new ArrayList<>();
 
+    @JsonIgnore
     public boolean hasMultipleVariations() {
         return hasVariations() && variations.size() > 1;
     }
-
+    @JsonIgnore
     public boolean hasSingleVariation() {
         return hasVariations() && variations.size() == 1;
     }
-
+    @JsonIgnore
     public MarketplaceProductVariation getFirstVariation() {
         if (hasVariations()) {
             return variations.stream()
@@ -54,11 +55,11 @@ public class MarketplaceProduct implements ProductWithMandatoryInfo {
 
         return null;
     }
-
+    @JsonIgnore
     private boolean hasVariations() {
         return Objects.nonNull(variations) && !variations.isEmpty();
     }
-
+    @JsonIgnore
     public List<String> getCategoryTreeNames() {
         return categoryTree.stream()
             .map(MarketplaceProductCategory::getName)
