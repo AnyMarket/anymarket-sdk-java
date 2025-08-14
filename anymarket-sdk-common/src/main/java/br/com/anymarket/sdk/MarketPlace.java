@@ -227,7 +227,8 @@ public enum MarketPlace {
     ANGELONI_NEW_API("Angeloni 2.0"),
     WALMART("Walmart", false, true),
     FC_MARKETPLACE("FC Marketplace"),
-    DIMERC("Dimerc");
+    DIMERC("Dimerc"),
+    EXTREME("Extreme");
 
     private String name;
     private final boolean specificConsumer;
