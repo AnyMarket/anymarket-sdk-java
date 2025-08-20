@@ -235,13 +235,11 @@
       <name>RepositoryProxy</name>
       <url>http://10.119.10.193:8081/repository/maven-releases/</url>
     </repository>
-
     <snapshotRepository>
       <id>nexus-new</id>
       <name>RepositoryProxy</name>
       <url>http://10.119.10.193:8081/repository/maven-snapshots/</url>
     </snapshotRepository>
-
   </distributionManagement>
 
 </project>
