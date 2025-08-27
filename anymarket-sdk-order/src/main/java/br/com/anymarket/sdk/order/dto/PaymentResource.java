@@ -48,6 +48,18 @@ public class PaymentResource {
     @JsonProperty("orderAuthorizationCardCode")
     private String orderAuthorizationCardCode;
 
+    @JsonProperty("documentPaymentInstitution")
+    private String documentPaymentInstitution;
+
+    public String getDocumentPaymentInstitution() {
+        return documentPaymentInstitution;
+    }
+
+    public void setDocumentPaymentInstitution(String documentPaymentInstitution) {
+        this.documentPaymentInstitution = documentPaymentInstitution;
+    }
+
+
     public String getCardOperator() {
         return cardOperator;
     }
