@@ -228,7 +228,8 @@ public enum MarketPlace {
     WALMART("Walmart", false, true),
     FC_MARKETPLACE("FC Marketplace"),
     DIMERC("Dimerc"),
-    EXTREME("Extreme");
+    EXTREME("Extreme"),
+    INTER_SHOP("Inter Shop");
 
     private String name;
     private final boolean specificConsumer;
