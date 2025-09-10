@@ -45,6 +45,10 @@ public class TrackingResource {
     @JsonProperty("deliveryMethodName")
     private String deliveryMethodName;
 
+    @JsonProperty("bufferingDate")
+    @JsonSerialize(using = SDKDateSerializer.class)
+    private Date bufferingDate;
+
     public String getUrl() {
         return url;
     }
@@ -125,6 +129,14 @@ public class TrackingResource {
         this.deliveryMethodName = deliveryMethodName;
     }
 
+    public Date getBufferingDate() {
+        return bufferingDate;
+    }
+
+    public void setBufferingDate(Date bufferingDate) {
+        this.bufferingDate = bufferingDate;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -136,6 +148,7 @@ public class TrackingResource {
             .add("estimateDate", estimateDate)
             .add("shippedDate", shippedDate)
             .add("deliveredDate", deliveredDate)
+            .add("bufferingDate", bufferingDate)
             .add("deliveryMethodId", deliveryMethodId)
             .add("deliveryMethodName", deliveryMethodName)
             .toString();
