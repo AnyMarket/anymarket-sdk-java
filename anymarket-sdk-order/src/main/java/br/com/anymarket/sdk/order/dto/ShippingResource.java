@@ -20,6 +20,10 @@ public class ShippingResource extends AbstractAddressResource{
     @JsonProperty("receiverName")
     private String receiverName;
 
+    @JsonProperty("promisedDispatchTime")
+    @JsonSerialize(using = SDKDateSerializer.class)
+    private Date promisedDispatchTime;
+
     public String getAddress() {
         return address;
     }
@@ -42,5 +46,13 @@ public class ShippingResource extends AbstractAddressResource{
 
     public void setReceiverName(String receiverName) {
         this.receiverName = receiverName;
+    }
+
+    public Date getPromisedDispatchTime() {
+        return promisedDispatchTime;
+    }
+
+    public void setPromisedDispatchTime(Date promisedDispatchTime) {
+        this.promisedDispatchTime = promisedDispatchTime;
     }
 }
