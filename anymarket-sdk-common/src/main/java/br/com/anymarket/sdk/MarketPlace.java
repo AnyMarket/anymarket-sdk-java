@@ -229,7 +229,8 @@ public enum MarketPlace {
     FC_MARKETPLACE("FC Marketplace"),
     DIMERC("Dimerc"),
     EXTREME("Extreme"),
-    INTER_SHOP("Inter Shop");
+    INTER_SHOP("Inter Shop"),
+    PICPAY_SHOP("PicPay Shop");
 
     private String name;
     private final boolean specificConsumer;
