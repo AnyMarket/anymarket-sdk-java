@@ -43,7 +43,8 @@
     <jackson.version>2.6.2</jackson.version>
     <junit.version>4.12</junit.version>
     <mockito.version>1.10.17</mockito.version>
-
+    <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+    <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
     <sonar.coverage.exclusions>
       src/main/java/br/com/db1/anymarket/gateway/parameter/valuedefault/dto/*
     </sonar.coverage.exclusions>
@@ -239,6 +240,30 @@
           <allowSnapshots>true</allowSnapshots>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>jacoco-report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>${sonar-maven-plugin.version}</version>
+      </plugin>
     </plugins>
   </build>
 
@@ -252,6 +277,7 @@
         <sonar.host.url>http://sonar.anymarket.vpc:9000</sonar.host.url>
         <sonar.login>9cf7b83353b61cee26d1924db31937fecf6c669f</sonar.login>
         <sonar.coverage.jacoco.xmlReportPaths>
+          ${project.basedir}/target/site/jacoco/jacoco.xml
           ${project.basedir}/anymarket-api/target/site/jacoco-aggregate/jacoco.xml,
           ${project.basedir}/../anymarket-api/target/site/jacoco-aggregate/jacoco.xml,
           ${project.basedir}/../../anymarket-api/target/site/jacoco-aggregate/jacoco.xml,
@@ -261,6 +287,7 @@
           ${project.basedir}/../../../anymarket-api/target/site/jacoco/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <sonar.exclusions>
+          **/dto/**
           br/com/db1/anymarket/infrastructure/**/*,
           br/com/db1/anymarket/presentation/config/**/*
           **/webapp/*
@@ -273,6 +300,9 @@
           **/anymarket/imposter/**
           **/webapp/*
         </sonar.coverage.exclusions>
+        <sonar.cpd.exclusions>
+          **/dto/**
+        </sonar.cpd.exclusions>
       </properties>
     </profile>
   </profiles>
