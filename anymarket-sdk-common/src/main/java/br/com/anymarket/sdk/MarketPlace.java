@@ -230,7 +230,8 @@ public enum MarketPlace {
     DIMERC("Dimerc"),
     EXTREME("Extreme"),
     INTER_SHOP("Inter Shop"),
-    PICPAY_SHOP("PicPay Shop");
+    PICPAY_SHOP("PicPay Shop"),
+    ZEMA_NOVA_API("Zema nova api");
 
     private String name;
     private final boolean specificConsumer;
