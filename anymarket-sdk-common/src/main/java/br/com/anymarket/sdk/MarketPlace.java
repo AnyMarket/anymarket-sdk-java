@@ -231,7 +231,8 @@ public enum MarketPlace {
     EXTREME("Extreme"),
     INTER_SHOP("Inter Shop"),
     PICPAY_SHOP("PicPay Shop"),
-    ZEMA_NOVA_API("Zema nova api");
+    ZEMA_NOVA_API("Zema nova api"),
+    ZOOM_NOVA_API("Zoom Nova Api");
 
     private String name;
     private final boolean specificConsumer;
