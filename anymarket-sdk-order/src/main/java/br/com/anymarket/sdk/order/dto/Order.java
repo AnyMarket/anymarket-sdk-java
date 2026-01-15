@@ -184,6 +184,10 @@ public class Order {
     @JsonProperty("discountMetadata")
     private List<DiscountMetadata> discountMetadata = new ArrayList<>();
 
+    @JsonProperty("lastUpdate")
+    @JsonSerialize(using = SDKDateSerializer.class)
+    private Date lastUpdate;
+
     public boolean isFrozen() {
         return MarketPlace.NETSHOES.equals(marketPlace) && FROZEN.equalsIgnoreCase(Strings.nullToEmpty(marketPlaceStatus));
     }
@@ -612,6 +616,14 @@ public class Order {
         this.discountMetadata = discountMetadata;
     }
 
+    public Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -646,6 +658,7 @@ public class Order {
                 .add("orderTypeName", orderTypeName)
                 .add("printTagDate", printTagDate)
                 .add("discountMetadata", discountMetadata)
+                .add("lastUpdate", lastUpdate)
                 .toString();
     }
 }
