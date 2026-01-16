@@ -5,7 +5,6 @@ import br.com.anymarket.sdk.exception.NotFoundException;
 import br.com.anymarket.sdk.http.Response;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.http.headers.ModuleOriginHeader;
-import br.com.anymarket.sdk.paging.Page;
 import br.com.anymarket.sdk.product.dto.Sku;
 import br.com.anymarket.sdk.product.dto.SkuResource;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -21,7 +20,8 @@ import org.mockito.Spy;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
