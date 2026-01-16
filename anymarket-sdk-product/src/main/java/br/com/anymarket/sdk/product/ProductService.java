@@ -6,18 +6,22 @@ import br.com.anymarket.sdk.exception.HttpClientException;
 import br.com.anymarket.sdk.exception.NotFoundException;
 import br.com.anymarket.sdk.http.HttpService;
 import br.com.anymarket.sdk.http.Response;
+import br.com.anymarket.sdk.http.headers.AnymarketContentTypes;
+import br.com.anymarket.sdk.http.headers.ContentTypeHeader;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.http.restdsl.AnyMarketRestDSL;
 import br.com.anymarket.sdk.paging.Page;
 import br.com.anymarket.sdk.product.dto.Image;
 import br.com.anymarket.sdk.product.dto.Product;
 import br.com.anymarket.sdk.product.dto.ProductComplete;
+import br.com.anymarket.sdk.product.dto.marketplace.JsonPatchOperation;
 import br.com.anymarket.sdk.product.filters.ProductFilter;
 import br.com.anymarket.sdk.resource.Link;
 import br.com.anymarket.sdk.util.SDKUrlEncoder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 
 import java.util.*;
@@ -35,6 +39,8 @@ public class ProductService extends HttpService {
     public static final TypeReference<Page<Product>> PAGED_TYPE_REFERENCE = new TypeReference<Page<Product>>() {
     };
     private static final String PRODUCTS_URI = "/products";
+    private static final String PRODUCT_PATCH_URI = "/products/patch/%s";
+
     private static final String IMAGES_MULTI = "/images/multi";
     private final String apiEndPoint;
     public static final String NEXT = "next";
@@ -42,7 +48,7 @@ public class ProductService extends HttpService {
 
     public ProductService(String apiEndPoint) {
         this.apiEndPoint = !isNullOrEmpty(apiEndPoint) ? apiEndPoint :
-            SDKConstants.ANYMARKET_HOMOLOG_API_ENDPOINT;
+                SDKConstants.ANYMARKET_HOMOLOG_API_ENDPOINT;
     }
 
     public ProductService(String apiEndPoint, String origin) {
@@ -184,7 +190,7 @@ public class ProductService extends HttpService {
 
     private String getUrlForProductsWithSku(String sku) {
         return apiEndPoint.concat(PRODUCTS_URI).concat("?sku=")
-            .concat(SDKUrlEncoder.encodeParameterToUTF8(sku));
+                .concat(SDKUrlEncoder.encodeParameterToUTF8(sku));
     }
 
     public List<Product> getAllProducts(final String url, IntegrationHeader... headers) {
@@ -217,10 +223,10 @@ public class ProductService extends HttpService {
 
     public Page<Product> getProductPaged(List<ProductFilter> filters, IntegrationHeader... headers) {
         return AnyMarketRestDSL.get(apiEndPoint.concat(PRODUCTS_URI))
-            .headers(addModuleOriginHeader(headers, this.moduleOrigin))
-            .filters(filters)
-            .getResponse()
-            .to(PAGED_TYPE_REFERENCE);
+                .headers(addModuleOriginHeader(headers, this.moduleOrigin))
+                .filters(filters)
+                .getResponse()
+                .to(PAGED_TYPE_REFERENCE);
     }
 
     public Page<Product> getProductPaged(IntegrationHeader... headers) {
@@ -277,4 +283,58 @@ public class ProductService extends HttpService {
         }
         return results;
     }
+
+    private List<JsonPatchOperation> buildProductPatchOperations(Product product) {
+        Map<String, Object> map = br.com.anymarket.sdk.http.Mapper.get()
+                .convertValue(product, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
+                });
+
+        map.remove("id");
+        map.remove("skus");
+        map.remove("images");
+        map.remove("marketplaceImages");
+        map.remove("characteristics");
+        map.remove("kitComponents");
+
+        List<JsonPatchOperation> ops = new ArrayList<>();
+
+        for (Map.Entry<String, Object> e : map.entrySet()) {
+            if (e.getValue() != null) {
+                ops.add(JsonPatchOperation.replace("/" + e.getKey(), e.getValue()));
+            }
+        }
+
+        return ops;
+    }
+
+
+    public Product patchProduct(Product product, IntegrationHeader... headers) {
+        Objects.requireNonNull(product, "Informe o produto a ser atualizado via patch.");
+        Objects.requireNonNull(product.getId(), "Informe o id do produto.");
+
+        Long productId = product.getId();
+
+        List<JsonPatchOperation> ops = buildProductPatchOperations(product);
+
+        if (ops.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum campo para atualizar via patch (todos null/ignorados).");
+        }
+
+        String url = String.format(apiEndPoint.concat(PRODUCT_PATCH_URI), productId.toString());
+
+        IntegrationHeader[] withOrigin = addModuleOriginHeader(headers, this.moduleOrigin);
+
+        IntegrationHeader[] finalHeaders = ArrayUtils.add(
+                withOrigin,
+                new ContentTypeHeader(AnymarketContentTypes.JSON_PATCH)
+        );
+
+        RequestBodyEntity patchReq = patch(url, ops, finalHeaders);
+
+        Response response = execute(patchReq, HttpStatus.SC_OK, () -> format("Failed to patch product - id %s", productId));
+
+        return response.to(Product.class);
+    }
+
+
 }
