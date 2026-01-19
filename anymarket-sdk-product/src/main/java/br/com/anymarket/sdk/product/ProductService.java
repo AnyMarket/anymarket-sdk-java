@@ -267,46 +267,6 @@ public class ProductService extends HttpService {
         throw new NotFoundException(format("Product(id: %s) active attributes not found to this marketplace(%s).", idProduct, marketPlace.name()));
     }
 
-    public List<String> findByOiAndIdsInClient(List<String> skus, IntegrationHeader... headers) {
-        List<String> results = new ArrayList<>();
-
-        Objects.requireNonNull(skus, "Informe no minimo um sku");
-
-        String url = apiEndPoint.concat(PRODUCTS_URI).concat("/").concat("byOiAndIdsInClient");
-
-        final RequestBodyEntity postRequest = post(url, skus, addModuleOriginHeader(headers, this.moduleOrigin));
-        final Response response = execute(postRequest);
-        if (response.getStatus() == HttpStatus.SC_OK) {
-            List<String> rootResponse = response.to(new TypeReference<List<String>>() {
-            });
-            results.addAll(rootResponse);
-        }
-        return results;
-    }
-
-    private List<JsonPatchOperation> buildProductPatchOperations(Product product) {
-        Map<String, Object> map = br.com.anymarket.sdk.http.Mapper.get()
-                .convertValue(product, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
-                });
-
-        map.remove("id");
-        map.remove("skus");
-        map.remove("images");
-        map.remove("marketplaceImages");
-        map.remove("characteristics");
-        map.remove("kitComponents");
-
-        List<JsonPatchOperation> ops = new ArrayList<>();
-
-        for (Map.Entry<String, Object> e : map.entrySet()) {
-            if (e.getValue() != null) {
-                ops.add(JsonPatchOperation.replace("/" + e.getKey(), e.getValue()));
-            }
-        }
-
-        return ops;
-    }
-
 
     public Product patchProduct(Product product, IntegrationHeader... headers) {
         Objects.requireNonNull(product, "Informe o produto a ser atualizado via patch.");
@@ -334,6 +294,69 @@ public class ProductService extends HttpService {
         Response response = execute(patchReq, HttpStatus.SC_OK, () -> format("Failed to patch product - id %s", productId));
 
         return response.to(Product.class);
+    }
+
+    private List<JsonPatchOperation> buildProductPatchOperations(Product product) {
+        Map<String, Object> map = br.com.anymarket.sdk.http.Mapper.get()
+                .convertValue(product, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
+
+        map.remove("id");
+        map.remove("skus");
+        map.remove("images");
+        map.remove("marketplaceImages");
+        map.remove("characteristics");
+        map.remove("kitComponents");
+
+        map.remove("category");
+        map.remove("brand");
+        map.remove("nbm");
+        map.remove("origin");
+
+        map.remove("imagesForDelete");
+
+        List<JsonPatchOperation> ops = new ArrayList<>();
+
+        if (product.getCategory() != null && product.getCategory().getId() != null) {
+            ops.add(JsonPatchOperation.replace("/category/id", product.getCategory().getId()));
+        }
+
+        if (product.getBrand() != null && product.getBrand().getId() != null) {
+            ops.add(JsonPatchOperation.replace("/brand/id", product.getBrand().getId()));
+        }
+
+        if (product.getNbm() != null && product.getNbm().getId() != null) {
+            ops.add(JsonPatchOperation.replace("/nbm/id", product.getNbm().getId()));
+        }
+
+        if (product.getOrigin() != null) {
+            ops.add(JsonPatchOperation.replace("/origin", product.getOrigin().getId()));
+        }
+
+        for (Map.Entry<String, Object> e : map.entrySet()) {
+            if (e.getValue() != null) {
+                ops.add(JsonPatchOperation.replace("/" + e.getKey(), e.getValue()));
+            }
+        }
+
+        return ops;
+    }
+
+
+    public List<String> findByOiAndIdsInClient(List<String> skus, IntegrationHeader... headers) {
+        List<String> results = new ArrayList<>();
+
+        Objects.requireNonNull(skus, "Informe no minimo um sku");
+
+        String url = apiEndPoint.concat(PRODUCTS_URI).concat("/").concat("byOiAndIdsInClient");
+
+        final RequestBodyEntity postRequest = post(url, skus, addModuleOriginHeader(headers, this.moduleOrigin));
+        final Response response = execute(postRequest);
+        if (response.getStatus() == HttpStatus.SC_OK) {
+            List<String> rootResponse = response.to(new TypeReference<List<String>>() {
+            });
+            results.addAll(rootResponse);
+        }
+        return results;
     }
 
 
