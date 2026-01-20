@@ -12,7 +12,6 @@ import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.http.restdsl.AnyMarketRestDSL;
 import br.com.anymarket.sdk.paging.Page;
 import br.com.anymarket.sdk.product.dto.Image;
-import br.com.anymarket.sdk.product.dto.Origin;
 import br.com.anymarket.sdk.product.dto.Product;
 import br.com.anymarket.sdk.product.dto.ProductComplete;
 import br.com.anymarket.sdk.product.dto.marketplace.JsonPatchOperation;
@@ -25,9 +24,10 @@ import com.mashape.unirest.request.body.RequestBodyEntity;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 
-import java.lang.reflect.Method;
 import java.util.*;
-import java.util.function.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static br.com.anymarket.sdk.http.headers.AnymarketHeaderUtils.addModuleOriginHeader;
@@ -40,6 +40,8 @@ public class ProductService extends HttpService {
     };
     private static final String PRODUCTS_URI = "/products";
     private static final String PRODUCT_PATCH_URI = "/products/patch/%s";
+    private static final String PRODUCT_MERGE_PATCH_URI = "/products/%s";
+
 
     private static final String IMAGES_MULTI = "/images/multi";
     private final String apiEndPoint;
@@ -268,71 +270,111 @@ public class ProductService extends HttpService {
     }
 
 
-    public Product patchProduct(Product product, IntegrationHeader... headers) {
-        Objects.requireNonNull(product, "Informe o produto a ser atualizado via patch.");
+    public Product mergePatchProduct(Product product, IntegrationHeader... headers) {
+        Objects.requireNonNull(product, "Informe o produto a ser atualizado via merge patch.");
         Objects.requireNonNull(product.getId(), "Informe o id do produto.");
 
         Long productId = product.getId();
 
-        List<JsonPatchOperation> ops = buildProductPatchOperations(product);
-        if (ops.isEmpty()) {
-            throw new IllegalArgumentException("Nenhum campo para atualizar via patch (todos null/ignorados).");
+        Map<String, Object> body = buildProductMergePatchBody(product);
+
+        if (body.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum campo para atualizar via merge patch (todos null/ignorados).");
         }
 
-        String url = String.format(apiEndPoint.concat(PRODUCT_PATCH_URI), productId.toString());
+        String url = String.format(apiEndPoint.concat(PRODUCT_MERGE_PATCH_URI), productId.toString());
 
         IntegrationHeader[] withOrigin = addModuleOriginHeader(headers, this.moduleOrigin);
-        IntegrationHeader[] finalHeaders = ArrayUtils.add(withOrigin, new ContentTypeHeader(AnymarketContentTypes.JSON_PATCH));
 
-        RequestBodyEntity patchReq = patch(url, ops, finalHeaders);
+        IntegrationHeader[] finalHeaders = org.apache.commons.lang3.ArrayUtils.add(
+                withOrigin,
+                new ContentTypeHeader("application/merge-patch+json")
+        );
 
-        Response response = execute(patchReq, HttpStatus.SC_OK, () -> format("Failed to patch product - id %s", productId));
+        RequestBodyEntity patchReq = patch(url, body, finalHeaders);
+
+        Response response = execute(patchReq, HttpStatus.SC_OK, () -> format("Failed to merge patch product - id %s", productId));
+
         return response.to(Product.class);
     }
 
-    private List<JsonPatchOperation> buildProductPatchOperations(Product product) {
-        List<JsonPatchOperation> ops = new ArrayList<>();
 
-        addReplace(ops, "/title", product.getTitle());
-        addReplace(ops, "/description", product.getDescription());
-        addReplace(ops, "/model", product.getModel());
-        addReplace(ops, "/videoUrl", product.getYoutubeVideoUrl() != null ? product.getYoutubeVideoUrl().toString() : null);
-        addReplace(ops, "/definitionPriceScope", product.getDefinitionPriceScope());
-        addReplace(ops, "/height", product.getHeight());
-        addReplace(ops, "/width", product.getWidth());
-        addReplace(ops, "/length", product.getLength());
-        addReplace(ops, "/weight", product.getWeight());
-        addReplace(ops, "/warrantyTime", product.getWarrantyTime());
-        addReplace(ops, "/warrantyText", product.getWarrantyText());
-        addReplace(ops, "/priceFactor", product.getPriceFactor());
-        addReplace(ops, "/calculatedPrice", product.isCalculatedPrice());
-        addReplace(ops, "/hasVariations", product.isHasVariations());
-        addReplace(ops, "/allowAutomaticSkuMarketplaceCreation", product.isAllowAutomaticSkuMarketplaceCreation());
+    private Map<String, Object> buildProductMergePatchBody(Product product) {
+        Map<String, Object> map = br.com.anymarket.sdk.http.Mapper.get()
+                .convertValue(product, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
 
-        if (product.getCategory() != null && product.getCategory().getId() != null) {
-            addReplace(ops, "/category/id", product.getCategory().getId());
+        map.remove("id");
+        map.remove("skus");
+        map.remove("images");
+        map.remove("marketplaceImages");
+        map.remove("imagesForDelete");
+        map.remove("kitComponents");
+
+        Object category = map.get("category");
+        if (category instanceof Map) {
+            Object id = ((Map) category).get("id");
+            if (id != null) {
+                Map<String, Object> cat = new HashMap<>();
+                cat.put("id", id);
+                map.put("category", cat);
+            } else {
+                map.remove("category");
+            }
         }
 
-        if (product.getBrand() != null) {
-            if (product.getBrand().getId() != null) addReplace(ops, "/brand/id", product.getBrand().getId());
-            if (product.getBrand().getPartnerId() != null) addReplace(ops, "/brand/partnerId", product.getBrand().getPartnerId());
-            if (product.getBrand().getName() != null) addReplace(ops, "/brand/name", product.getBrand().getName());
+        Object brand = map.get("brand");
+        if (brand instanceof Map) {
+            Map b = (Map) brand;
+            Object id = b.get("id");
+            Object name = b.get("name");
+            Object partnerId = b.get("partnerId");
+
+            boolean hasAny = id != null || name != null || partnerId != null;
+            if (hasAny) {
+                Map<String, Object> br = new HashMap<>();
+                if (id != null) br.put("id", id);
+                if (partnerId != null) br.put("partnerId", partnerId);
+                if (name != null) br.put("name", name);
+                map.put("brand", br);
+            } else {
+                map.remove("brand");
+            }
         }
 
-        if (product.getNbm() != null && product.getNbm().getId() != null) {
-            addReplace(ops, "/nbm/id", product.getNbm().getId());
+        Object nbm = map.get("nbm");
+        if (nbm instanceof Map) {
+            Object id = ((Map) nbm).get("id");
+            if (id != null) {
+                Map<String, Object> n = new HashMap<>();
+                n.put("id", id);
+                map.put("nbm", n);
+            } else {
+                map.remove("nbm");
+            }
         }
 
-        if (product.getOrigin() != null && product.getOrigin().getId() != null) {
-            addReplace(ops, "/origin/id", product.getOrigin().getId());
+        Object origin = map.get("origin");
+        if (origin instanceof Map) {
+            Object id = ((Map) origin).get("id");
+            if (id != null) {
+                Map<String, Object> o = new HashMap<>();
+                o.put("id", id);
+                map.put("origin", o);
+            } else {
+                map.remove("origin");
+            }
         }
 
-        if (product.getCharacteristics() != null) {
-            addReplace(ops, "/characteristics", product.getCharacteristics());
+        Map<String, Object> cleaned = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> e : map.entrySet()) {
+            if (e.getValue() != null) {
+                cleaned.put(e.getKey(), e.getValue());
+            }
         }
 
-        return ops;
+        return cleaned;
     }
+
 
     private void addReplace(List<JsonPatchOperation> ops, String path, Object value) {
         if (value != null) {
