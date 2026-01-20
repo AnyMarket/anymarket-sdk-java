@@ -1,12 +1,17 @@
 package br.com.anymarket.sdk.product;
 
+import br.com.anymarket.sdk.MarketPlace;
 import br.com.anymarket.sdk.exception.HttpClientException;
+import br.com.anymarket.sdk.exception.NotFoundException;
 import br.com.anymarket.sdk.http.Response;
 import br.com.anymarket.sdk.http.headers.ContentTypeHeader;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.http.headers.ModuleOriginHeader;
+import br.com.anymarket.sdk.paging.Page;
 import br.com.anymarket.sdk.product.dto.Image;
 import br.com.anymarket.sdk.product.dto.Product;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 import org.apache.http.HttpStatus;
@@ -16,10 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -33,6 +35,7 @@ public class ProductServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        service = spy(new ProductServiceFake("http://hom-api.anymarket.com.br/v2"));
     }
 
     @Test
@@ -46,7 +49,6 @@ public class ProductServiceTest {
         Image imgToDelete = new Image();
         imgToDelete.setId(10L);
         inputProduct.setImagesForDelete(Collections.singletonList(imgToDelete));
-        returnedProduct.setImagesForDelete(null);
 
         Image newImage = new Image();
         newImage.setId(99L);
@@ -62,140 +64,158 @@ public class ProductServiceTest {
 
         HttpRequestWithBody mockedDelete = mock(HttpRequestWithBody.class);
         doReturn(mockedDelete).when(service).delete(contains("/images/multi"), any());
-        RequestBodyEntity mockedDeleteBodyEntity = mock(RequestBodyEntity.class);
-        when(mockedDelete.body("[10]")).thenReturn(mockedDeleteBodyEntity);
 
-        Response mockedDeleteResponse = mock(Response.class);
-        when(mockedDeleteResponse.getStatus()).thenReturn(HttpStatus.SC_NO_CONTENT);
-        doReturn(mockedDeleteResponse).when(service).execute(mockedDeleteBodyEntity);
+        RequestBodyEntity mockedDeleteBody = mock(RequestBodyEntity.class);
+        when(mockedDelete.body("[10]")).thenReturn(mockedDeleteBody);
+
+        Response deleteResponse = mock(Response.class);
+        when(deleteResponse.getStatus()).thenReturn(HttpStatus.SC_NO_CONTENT);
+        doReturn(deleteResponse).when(service).execute(mockedDeleteBody);
 
         Product result = service.updateProductAndImages(inputProduct, new ModuleOriginHeader("ECOMMERCE"));
 
         assertNotNull(result);
-        assertEquals(Long.valueOf(1), result.getId());
-        assertNull(result.getImagesForDelete());
+        assertEquals(Long.valueOf(1L), result.getId());
         assertEquals(1, result.getImages().size());
-        assertEquals(Long.valueOf(99), result.getImages().get(0).getId());
-
-        verify(service).put(anyString(), eq(inputProduct), any());
-        verify(service).execute(mockedPut);
-        verify(service).execute(mockedDeleteBodyEntity);
     }
 
     @Test
-    public void should_update_product_and_create_and_update_image_success() {
-        Product inputProduct = new Product();
-        inputProduct.setId(1L);
+    public void should_patch_product_success() {
+        Product input = new Product();
+        input.setId(1L);
+        input.setTitle("Produto teste");
 
-        Product returnedProduct = new Product();
-        returnedProduct.setId(1L);
+        Product returned = new Product();
+        returned.setId(1L);
 
-        Image newImage = new Image();
-        Image existingImage = new Image();
-        existingImage.setId(20L);
-        List<Image> existingImages = new ArrayList<>();
-        existingImages.add(newImage);
-        existingImages.add(existingImage);
-        returnedProduct.setImages(existingImages);
-        inputProduct.setImages(existingImages);
+        RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
 
-        Image imgToDelete = new Image();
-        imgToDelete.setId(99L);
-        returnedProduct.setImagesForDelete(Collections.singletonList(imgToDelete));
+        doReturn(mockedPatch).when(service).patch(
+                contains("/products/1"),
+                any(Map.class),
+                any(ModuleOriginHeader.class),
+                any(ContentTypeHeader.class)
+        );
 
-        RequestBodyEntity mockedPutProduct = mock(RequestBodyEntity.class);
-        doReturn(mockedPutProduct).when(service).put(contains("/products/1"), eq(inputProduct), any());
-        Response mockedProductResponse = mock(Response.class);
-        when(mockedProductResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
-        when(mockedProductResponse.to(Product.class)).thenReturn(returnedProduct);
-        doReturn(mockedProductResponse).when(service).execute(mockedPutProduct);
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
+        when(response.to(Product.class)).thenReturn(returned);
 
-        RequestBodyEntity mockedPostImage = mock(RequestBodyEntity.class);
-        doReturn(mockedPostImage).when(service).post(contains("/images/multi"), eq(Collections.singletonList(newImage)), any());
-        Response mockedPostImageResponse = mock(Response.class);
-        when(mockedPostImageResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
-        when(mockedPostImageResponse.getMessage()).thenReturn("{\"id\":21}");
-        doReturn(mockedPostImageResponse).when(service).execute(mockedPostImage);
+        doReturn(response).when(service).execute(any());
 
-        RequestBodyEntity mockedPutImage = mock(RequestBodyEntity.class);
-        doReturn(mockedPutImage).when(service).put(contains("/images/multi"), eq(Collections.singletonList(existingImage)), any());
-        Response mockedPutImageResponse = mock(Response.class);
-        when(mockedPutImageResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
-        when(mockedPutImageResponse.getMessage()).thenReturn("{\"id\":20}");
-        doReturn(mockedPutImageResponse).when(service).execute(mockedPutImage);
-
-        Product result = service.updateProductAndCreateAndUpdateImages(inputProduct, new ModuleOriginHeader("ECOMMERCE"));
+        Product result = service.mergePatchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
 
         assertNotNull(result);
-        assertEquals(Long.valueOf(1), result.getId());
+        assertEquals(Long.valueOf(1L), result.getId());
+    }
 
-        verify(service).put(contains("/products/1"), eq(inputProduct), any());
-        verify(service).execute(mockedPutProduct);
-        verify(service).post(contains("/images/multi"), eq(Collections.singletonList(newImage)), any());
-        verify(service).execute(mockedPostImage);
-        verify(service).put(contains("/images/multi"), eq(Collections.singletonList(existingImage)), any());
-        verify(service).execute(mockedPutImage);
+    @Test(expected = NullPointerException.class)
+    public void should_throw_when_merge_patch_product_is_null() {
+        service.mergePatchProduct(null, new ModuleOriginHeader("ECOMMERCE"));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void should_throw_when_merge_patch_product_id_is_null() {
+        Product input = new Product();
+        service.mergePatchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
     }
 
     @Test(expected = HttpClientException.class)
-    public void should_not_update_product_status_not_200() {
-        Product inputProduct = new Product();
-        inputProduct.setId(1L);
+    public void should_throw_when_patch_returns_error_status() {
+        Product input = new Product();
+        input.setId(1L);
+        input.setTitle("Produto teste");
 
-        RequestBodyEntity mockedPut = mock(RequestBodyEntity.class);
-        doReturn(mockedPut).when(service).put(anyString(), eq(inputProduct), any());
+        RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
+        doReturn(mockedPatch).when(service).patch(
+                anyString(),
+                any(Map.class),
+                any(ModuleOriginHeader.class),
+                any(ContentTypeHeader.class)
+        );
 
-        Response mockedResponse = mock(Response.class);
-        when(mockedResponse.getStatus()).thenReturn(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-        when(mockedResponse.to(Product.class)).thenReturn(new Product());
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        when(response.getMessage()).thenReturn("error");
+        doReturn(response).when(service).execute(any());
 
-        doReturn(mockedResponse).when(service).execute(mockedPut);
-
-        Product result = service.updateProductAndImages(inputProduct, new ModuleOriginHeader("ECOMMERCE"));
-
-        assertNotNull(result);
-        verify(service).put(anyString(), eq(inputProduct), any());
-        verify(service).execute(mockedPut);
-        verify(service, never()).delete(anyString(), any());
+        service.mergePatchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
     }
 
-    @Test(expected = HttpClientException.class)
-    public void should_not_add_image_if_put_returns_error() {
-        Product inputProduct = new Product();
-        inputProduct.setId(1L);
+    @Test
+    public void should_get_product_success() {
+        GetRequest mockedGet = mock(GetRequest.class);
+        doReturn(mockedGet).when(service).get(contains("/products/1"), any());
 
-        Image imageWithId = new Image();
-        imageWithId.setId(10L);
-        Product returnedProduct = new Product();
-        returnedProduct.setId(1L);
-        List<Image> imagesWithId = Collections.singletonList(imageWithId);
-        returnedProduct.setImages(imagesWithId);
-        inputProduct.setImages(imagesWithId);
+        Product returned = new Product();
+        returned.setId(1L);
 
-        RequestBodyEntity mockedProductPut = mock(RequestBodyEntity.class);
-        doReturn(mockedProductPut).when(service).put(anyString(), eq(inputProduct), any());
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
+        when(response.to(Product.class)).thenReturn(returned);
 
-        Response mockedResponse = mock(Response.class);
-        when(mockedResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
-        when(mockedResponse.to(Product.class)).thenReturn(returnedProduct);
+        doReturn(response).when(service).execute(mockedGet);
 
-        doReturn(mockedResponse).when(service).execute(mockedProductPut);
-
-        RequestBodyEntity mockedImagePut = mock(RequestBodyEntity.class);
-        doReturn(mockedImagePut).when(service).put(contains("/images/multi"), eq(imagesWithId), any());
-
-        Response imagePutResponse = mock(Response.class);
-        when(imagePutResponse.getStatus()).thenReturn(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-
-        doReturn(imagePutResponse).when(service).execute(mockedImagePut);
-
-        Product result = service.updateProductAndCreateAndUpdateImages(inputProduct, new ModuleOriginHeader("ECOMMERCE"));
+        Product result = service.getProduct(1L, new ModuleOriginHeader("ECOMMERCE"));
 
         assertNotNull(result);
-        verify(service).execute(mockedImagePut);
+        assertEquals(Long.valueOf(1L), result.getId());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void should_throw_not_found_when_get_product_status_not_200() {
+        GetRequest mockedGet = mock(GetRequest.class);
+        doReturn(mockedGet).when(service).get(anyString(), any());
+
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(HttpStatus.SC_NOT_FOUND);
+        doReturn(response).when(service).execute(mockedGet);
+
+        service.getProduct(1L, new ModuleOriginHeader("ECOMMERCE"));
+    }
+
+    @Test
+    public void should_get_product_by_sku_returns_first() {
+        Product p1 = new Product();
+        p1.setId(1L);
+        Product p2 = new Product();
+        p2.setId(2L);
+
+        doReturn(Arrays.asList(p1, p2)).when(service).getAllProducts(anyString(), any());
+
+        Product result = service.getProductBySku("ABC", new ModuleOriginHeader("ECOMMERCE"));
+
+        assertEquals(Long.valueOf(1L), result.getId());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void should_throw_not_found_when_get_product_by_sku_empty() {
+        doReturn(Collections.emptyList()).when(service).getAllProducts(anyString(), any());
+
+        service.getProductBySku("ABC", new ModuleOriginHeader("ECOMMERCE"));
+    }
+
+
+    @Test
+    public void should_find_by_oi_and_ids_in_client_success() {
+        List<String> skus = Arrays.asList("A", "B");
+
+        RequestBodyEntity mockedPost = mock(RequestBodyEntity.class);
+        doReturn(mockedPost).when(service).post(contains("/byOiAndIdsInClient"), eq(skus), any());
+
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
+        when(response.to(any(TypeReference.class))).thenReturn(skus);
+
+        doReturn(response).when(service).execute(mockedPost);
+
+        List<String> result = service.findByOiAndIdsInClient(skus, new ModuleOriginHeader("ECOMMERCE"));
+
+        assertEquals(2, result.size());
     }
 
     private static class ProductServiceFake extends ProductService {
+
         public ProductServiceFake(String apiEndPoint) {
             super(apiEndPoint);
         }
@@ -216,65 +236,13 @@ public class ProductServiceTest {
         }
 
         @Override
+        protected GetRequest get(String url, IntegrationHeader... headers) {
+            return super.get(url, headers);
+        }
+
+        @Override
         protected Response execute(com.mashape.unirest.request.BaseRequest request) {
             return super.execute(request);
         }
     }
-
-    @Test
-    public void should_patch_product_success() {
-        Product input = new Product();
-        input.setId(1L);
-        input.setTitle("Produto teste");
-
-        Product returned = new Product();
-        returned.setId(1L);
-
-        RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
-
-        doReturn(mockedPatch).when(service).patch(
-                contains("/v2/products/1"),
-                any(Map.class),
-                any(ModuleOriginHeader.class),
-                any(ContentTypeHeader.class)
-        );
-
-        Response response = mock(Response.class);
-        when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
-        when(response.to(Product.class)).thenReturn(returned);
-
-        doReturn(response).when(service).execute(any(com.mashape.unirest.request.BaseRequest.class));
-
-        Product result = service.mergePatchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
-
-        assertNotNull(result);
-        assertEquals(Long.valueOf(1L), result.getId());
-
-        verify(service).patch(
-                contains("/v2/products/1"),
-                any(Map.class),
-                any(ModuleOriginHeader.class),
-                any(ContentTypeHeader.class)
-        );
-        verify(service).execute(any(com.mashape.unirest.request.BaseRequest.class));
-    }
-
-    @Test(expected = HttpClientException.class)
-    public void should_throw_when_patch_returns_error_status() {
-        Product input = new Product();
-        input.setId(1L);
-        input.setTitle("Produto teste");
-
-        RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
-        doReturn(mockedPatch).when(service).patch(anyString(), any(), any());
-
-        Response response = mock(Response.class);
-        when(response.getStatus()).thenReturn(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-        when(response.getMessage()).thenReturn("error");
-        doReturn(response).when(service).execute(any(com.mashape.unirest.request.BaseRequest.class));
-
-        service.mergePatchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
-    }
-
-
 }

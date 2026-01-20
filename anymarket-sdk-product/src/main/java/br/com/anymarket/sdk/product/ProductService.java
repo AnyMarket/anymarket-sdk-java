@@ -13,7 +13,6 @@ import br.com.anymarket.sdk.paging.Page;
 import br.com.anymarket.sdk.product.dto.Image;
 import br.com.anymarket.sdk.product.dto.Product;
 import br.com.anymarket.sdk.product.dto.ProductComplete;
-import br.com.anymarket.sdk.product.dto.marketplace.JsonPatchOperation;
 import br.com.anymarket.sdk.product.filters.ProductFilter;
 import br.com.anymarket.sdk.resource.Link;
 import br.com.anymarket.sdk.util.SDKUrlEncoder;
@@ -37,7 +36,6 @@ public class ProductService extends HttpService {
     public static final TypeReference<Page<Product>> PAGED_TYPE_REFERENCE = new TypeReference<Page<Product>>() {
     };
     private static final String PRODUCTS_URI = "/products";
-    private static final String PRODUCT_PATCH_URI = "/products/patch/%s";
     private static final String PRODUCT_MERGE_PATCH_URI = "/products/%s";
 
 
@@ -275,7 +273,6 @@ public class ProductService extends HttpService {
         Long productId = product.getId();
 
         Map<String, Object> body = buildProductMergePatchBody(product);
-
         if (body.isEmpty()) {
             throw new IllegalArgumentException("Nenhum campo para atualizar via merge patch (todos null/ignorados).");
         }
@@ -291,95 +288,100 @@ public class ProductService extends HttpService {
 
         RequestBodyEntity patchReq = patch(url, body, finalHeaders);
 
-        Response response = execute(patchReq, HttpStatus.SC_OK, () -> format("Failed to merge patch product - id %s", productId));
+        Response response = execute(
+                patchReq,
+                HttpStatus.SC_OK,
+                () -> format("Failed to merge patch product - id %s", productId)
+        );
 
         return response.to(Product.class);
     }
-
 
     private Map<String, Object> buildProductMergePatchBody(Product product) {
         Map<String, Object> map = br.com.anymarket.sdk.http.Mapper.get()
                 .convertValue(product, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
                 });
 
+        removeIgnoredFields(map);
+
+        normalizeIdOnlyObject(map, "category");
+        normalizeBrand(map);
+        normalizeIdOnlyObject(map, "nbm");
+        normalizeIdOnlyObject(map, "origin");
+
+        return removeNullValues(map);
+    }
+
+    private void removeIgnoredFields(Map<String, Object> map) {
         map.remove("id");
         map.remove("skus");
         map.remove("images");
         map.remove("marketplaceImages");
         map.remove("imagesForDelete");
         map.remove("kitComponents");
+    }
 
-        Object category = map.get("category");
-        if (category instanceof Map) {
-            Object id = ((Map) category).get("id");
-            if (id != null) {
-                Map<String, Object> cat = new HashMap<>();
-                cat.put("id", id);
-                map.put("category", cat);
-            } else {
-                map.remove("category");
-            }
+    private void normalizeIdOnlyObject(Map<String, Object> map, String key) {
+        Optional<Map<String, Object>> opt = asMap(map.get(key));
+        if (!opt.isPresent()) {
+            return;
         }
 
-        Object brand = map.get("brand");
-        if (brand instanceof Map) {
-            Map b = (Map) brand;
-            Object id = b.get("id");
-            Object name = b.get("name");
-            Object partnerId = b.get("partnerId");
+        Map<String, Object> nested = opt.get();
+        Object id = nested.get("id");
 
-            boolean hasAny = id != null || name != null || partnerId != null;
-            if (hasAny) {
-                Map<String, Object> br = new HashMap<>();
-                if (id != null) br.put("id", id);
-                if (partnerId != null) br.put("partnerId", partnerId);
-                if (name != null) br.put("name", name);
-                map.put("brand", br);
-            } else {
-                map.remove("brand");
-            }
+        if (id != null) {
+            Map<String, Object> idOnly = new HashMap<>(1);
+            idOnly.put("id", id);
+            map.put(key, idOnly);
+        } else {
+            map.remove(key);
+        }
+    }
+
+    private void normalizeBrand(Map<String, Object> map) {
+        Optional<Map<String, Object>> opt = asMap(map.get("brand"));
+        if (!opt.isPresent()) {
+            return;
         }
 
-        Object nbm = map.get("nbm");
-        if (nbm instanceof Map) {
-            Object id = ((Map) nbm).get("id");
-            if (id != null) {
-                Map<String, Object> n = new HashMap<>();
-                n.put("id", id);
-                map.put("nbm", n);
-            } else {
-                map.remove("nbm");
-            }
+        Map<String, Object> nested = opt.get();
+        Object id = nested.get("id");
+        Object name = nested.get("name");
+        Object partnerId = nested.get("partnerId");
+
+        boolean hasAny = id != null || name != null || partnerId != null;
+        if (!hasAny) {
+            map.remove("brand");
+            return;
         }
 
-        Object origin = map.get("origin");
-        if (origin instanceof Map) {
-            Object id = ((Map) origin).get("id");
-            if (id != null) {
-                Map<String, Object> o = new HashMap<>();
-                o.put("id", id);
-                map.put("origin", o);
-            } else {
-                map.remove("origin");
-            }
-        }
+        Map<String, Object> br = new HashMap<>(3);
+        if (id != null) br.put("id", id);
+        if (partnerId != null) br.put("partnerId", partnerId);
+        if (name != null) br.put("name", name);
 
+        map.put("brand", br);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Optional<Map<String, Object>> asMap(Object value) {
+        if (value instanceof Map) {
+            return Optional.of((Map<String, Object>) value);
+        }
+        return Optional.empty();
+    }
+
+    private Map<String, Object> removeNullValues(Map<String, Object> map) {
         Map<String, Object> cleaned = new LinkedHashMap<>();
         for (Map.Entry<String, Object> e : map.entrySet()) {
             if (e.getValue() != null) {
                 cleaned.put(e.getKey(), e.getValue());
             }
         }
-
         return cleaned;
     }
 
-
-    private void addReplace(List<JsonPatchOperation> ops, String path, Object value) {
-        if (value != null) {
-            ops.add(JsonPatchOperation.replace(path, value));
-        }
-    }
 
     public List<String> findByOiAndIdsInClient(List<String> skus, IntegrationHeader... headers) {
         List<String> results = new ArrayList<>();
