@@ -2,6 +2,7 @@ package br.com.anymarket.sdk.product;
 
 import br.com.anymarket.sdk.exception.HttpClientException;
 import br.com.anymarket.sdk.http.Response;
+import br.com.anymarket.sdk.http.headers.ContentTypeHeader;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.http.headers.ModuleOriginHeader;
 import br.com.anymarket.sdk.product.dto.Image;
@@ -18,6 +19,7 @@ import org.mockito.Spy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -219,48 +221,60 @@ public class ProductServiceTest {
         }
     }
 
-//    @Test
-//    public void should_patch_product_success() {
-//        Product input = new Product();
-//        input.setId(1L);
-//        input.setTitle("Produto teste");
-//
-//        Product returned = new Product();
-//        returned.setId(1L);
-//
-//        RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
-//        doReturn(mockedPatch).when(service).patch(contains("/products/patch/1"), any(), any());
-//
-//        Response response = mock(Response.class);
-//        when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
-//        when(response.to(Product.class)).thenReturn(returned);
-//        doReturn(response).when(service).execute(any(com.mashape.unirest.request.BaseRequest.class));
-//
-//        Product result = service.patchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
-//
-//        assertNotNull(result);
-//        assertEquals(Long.valueOf(1L), result.getId());
-//
-//        verify(service).patch(contains("/products/patch/1"), any(), any());
-//        verify(service).execute(any(com.mashape.unirest.request.BaseRequest.class));
-//    }
-//
-//    @Test(expected = HttpClientException.class)
-//    public void should_throw_when_patch_returns_error_status() {
-//        Product input = new Product();
-//        input.setId(1L);
-//        input.setTitle("Produto teste");
-//
-//        RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
-//        doReturn(mockedPatch).when(service).patch(anyString(), any(), any());
-//
-//        Response response = mock(Response.class);
-//        when(response.getStatus()).thenReturn(HttpStatus.SC_INTERNAL_SERVER_ERROR);
-//        when(response.getMessage()).thenReturn("error");
-//        doReturn(response).when(service).execute(any(com.mashape.unirest.request.BaseRequest.class));
-//
-//        service.patchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
-//    }
+    @Test
+    public void should_patch_product_success() {
+        Product input = new Product();
+        input.setId(1L);
+        input.setTitle("Produto teste");
+
+        Product returned = new Product();
+        returned.setId(1L);
+
+        RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
+
+        doReturn(mockedPatch).when(service).patch(
+                contains("/v2/products/1"),
+                any(Map.class),
+                any(ModuleOriginHeader.class),
+                any(ContentTypeHeader.class)
+        );
+
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
+        when(response.to(Product.class)).thenReturn(returned);
+
+        doReturn(response).when(service).execute(any(com.mashape.unirest.request.BaseRequest.class));
+
+        Product result = service.mergePatchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
+
+        assertNotNull(result);
+        assertEquals(Long.valueOf(1L), result.getId());
+
+        verify(service).patch(
+                contains("/v2/products/1"),
+                any(Map.class),
+                any(ModuleOriginHeader.class),
+                any(ContentTypeHeader.class)
+        );
+        verify(service).execute(any(com.mashape.unirest.request.BaseRequest.class));
+    }
+
+    @Test(expected = HttpClientException.class)
+    public void should_throw_when_patch_returns_error_status() {
+        Product input = new Product();
+        input.setId(1L);
+        input.setTitle("Produto teste");
+
+        RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
+        doReturn(mockedPatch).when(service).patch(anyString(), any(), any());
+
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        when(response.getMessage()).thenReturn("error");
+        doReturn(response).when(service).execute(any(com.mashape.unirest.request.BaseRequest.class));
+
+        service.mergePatchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
+    }
 
 
 }

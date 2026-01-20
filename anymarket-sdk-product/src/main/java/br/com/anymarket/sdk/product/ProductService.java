@@ -6,7 +6,6 @@ import br.com.anymarket.sdk.exception.HttpClientException;
 import br.com.anymarket.sdk.exception.NotFoundException;
 import br.com.anymarket.sdk.http.HttpService;
 import br.com.anymarket.sdk.http.Response;
-import br.com.anymarket.sdk.http.headers.AnymarketContentTypes;
 import br.com.anymarket.sdk.http.headers.ContentTypeHeader;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.http.restdsl.AnyMarketRestDSL;
@@ -21,7 +20,6 @@ import br.com.anymarket.sdk.util.SDKUrlEncoder;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 
 import java.util.*;
@@ -301,7 +299,8 @@ public class ProductService extends HttpService {
 
     private Map<String, Object> buildProductMergePatchBody(Product product) {
         Map<String, Object> map = br.com.anymarket.sdk.http.Mapper.get()
-                .convertValue(product, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
+                .convertValue(product, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
+                });
 
         map.remove("id");
         map.remove("skus");
