@@ -12,6 +12,7 @@ import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.http.restdsl.AnyMarketRestDSL;
 import br.com.anymarket.sdk.paging.Page;
 import br.com.anymarket.sdk.product.dto.Image;
+import br.com.anymarket.sdk.product.dto.Origin;
 import br.com.anymarket.sdk.product.dto.Product;
 import br.com.anymarket.sdk.product.dto.ProductComplete;
 import br.com.anymarket.sdk.product.dto.marketplace.JsonPatchOperation;
@@ -274,7 +275,6 @@ public class ProductService extends HttpService {
         Long productId = product.getId();
 
         List<JsonPatchOperation> ops = buildProductPatchOperations(product);
-
         if (ops.isEmpty()) {
             throw new IllegalArgumentException("Nenhum campo para atualizar via patch (todos null/ignorados).");
         }
@@ -282,118 +282,110 @@ public class ProductService extends HttpService {
         String url = String.format(apiEndPoint.concat(PRODUCT_PATCH_URI), productId.toString());
 
         IntegrationHeader[] withOrigin = addModuleOriginHeader(headers, this.moduleOrigin);
-
-        IntegrationHeader[] finalHeaders = ArrayUtils.add(
-                withOrigin,
-                new ContentTypeHeader(AnymarketContentTypes.JSON_PATCH)
-        );
+        IntegrationHeader[] finalHeaders = ArrayUtils.add(withOrigin, new ContentTypeHeader(AnymarketContentTypes.JSON_PATCH));
 
         RequestBodyEntity patchReq = patch(url, ops, finalHeaders);
 
         Response response = execute(patchReq, HttpStatus.SC_OK, () -> format("Failed to patch product - id %s", productId));
-
         return response.to(Product.class);
     }
 
     private List<JsonPatchOperation> buildProductPatchOperations(Product product) {
-        Map<String, Object> root = br.com.anymarket.sdk.http.Mapper.get()
-                .convertValue(product, new TypeReference<Object>() {
-                });
-
         List<JsonPatchOperation> ops = new ArrayList<>();
 
-        BiConsumer<String, Object> addReplace = (path, value) -> {
-            if (value != null) {
-                ops.add(JsonPatchOperation.replace(path, value));
-            }
-        };
+        Map<String, Object> root = br.com.anymarket.sdk.http.Mapper.get()
+                .convertValue(product, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
 
-        Function<String, Map<String, Object>> asMap = (key) -> {
-            Object v = root.get(key);
-            if (!(v instanceof Map)) return null;
-            return (Map<String, Object>) v;
-        };
+        root.remove("id");
+        root.remove("skus");
+        root.remove("images");
+        root.remove("marketplaceImages");
+        root.remove("kitComponents");
 
-        Function<String, List<Object>> asList = (key) -> {
-            Object v = root.get(key);
-            if (!(v instanceof List)) return null;
-            return (List<Object>) v;
-        };
+        Object characteristics = root.remove("characteristics");
+        Object category = root.remove("category");
+        Object brand = root.remove("brand");
+        Object nbm = root.remove("nbm");
+        Object origin = root.remove("origin");
 
-        Set<String> ignoredRootFields = new HashSet<>(Arrays.asList(
-                "id",
-                "skus",
-                "images",
-                "marketplaceImages",
-                "imagesForDelete",
-                "kitComponents"
-        ));
-
-        Map<String, String> directFields = new LinkedHashMap<>();
-        directFields.put("title", "/title");
-        directFields.put("description", "/description");
-        directFields.put("model", "/model");
-        directFields.put("videoUrl", "/videoUrl");
-        directFields.put("youtubeVideoUrl", "/videoUrl");
-        directFields.put("definitionPriceScope", "/definitionPriceScope");
-        directFields.put("height", "/height");
-        directFields.put("width", "/width");
-        directFields.put("length", "/length");
-        directFields.put("weight", "/weight");
-        directFields.put("warrantyTime", "/warrantyTime");
-        directFields.put("warrantyText", "/warrantyText");
-        directFields.put("priceFactor", "/priceFactor");
-        directFields.put("calculatedPrice", "/calculatedPrice");
-        directFields.put("hasVariations", "/hasVariations");
-        directFields.put("gender", "/gender");
-        directFields.put("allowAutomaticSkuMarketplaceCreation", "/allowAutomaticSkuMarketplaceCreation");
-        directFields.put("externalIdProduct", "/externalIdProduct");
-
-        for (Map.Entry<String, String> e : directFields.entrySet()) {
-            addReplace.accept(e.getValue(), root.get(e.getKey()));
-        }
-
-        Map<String, Object> category = asMap.apply("category");
-        if (category != null) {
-            addReplace.accept("/category/id", category.get("id"));
-        }
-
-        Map<String, Object> nbm = asMap.apply("nbm");
-        if (nbm != null) {
-            addReplace.accept("/nbm/id", nbm.get("id"));
-        }
-
-        Object originObj = root.get("origin");
-        if (originObj != null) {
-            if (originObj instanceof Map) {
-                Map<String, Object> originMap = (Map<String, Object>) originObj;
-                addReplace.accept("/origin/id", originMap.get("id"));
-            } else if (originObj instanceof Number) {
-                addReplace.accept("/origin/id", originObj);
-            } else if (originObj instanceof Enum) {
-                try {
-                    Method m = originObj.getClass().getMethod("getId");
-                    Object id = m.invoke(originObj);
-                    addReplace.accept("/origin/id", id);
-                } catch (Exception ignored) {
-                }
+        for (Map.Entry<String, Object> e : root.entrySet()) {
+            Object v = e.getValue();
+            if (v != null) {
+                ops.add(JsonPatchOperation.replace("/" + e.getKey(), v));
             }
         }
 
-        Map<String, Object> brand = asMap.apply("brand");
-        if (brand != null) {
-            addReplace.accept("/brand/id", brand.get("id"));
-            addReplace.accept("/brand/partnerId", brand.get("partnerId"));
-            addReplace.accept("/brand/name", brand.get("name"));
-        }
+        addNestedIdOps(ops, "category", category, Collections.singletonList("id"));
 
-        Object characteristics = root.get("characteristics");
-        if (characteristics != null) {
-            addReplace.accept("/characteristics", characteristics);
-        }
+        addNestedIdOps(ops, "brand", brand, Arrays.asList("id", "partnerId", "name"));
+
+        addNestedIdOps(ops, "nbm", nbm, Collections.singletonList("id"));
+
+        addOriginOps(ops, origin);
+
+        addCharacteristicsOps(ops, characteristics);
 
         return ops;
     }
+
+    @SuppressWarnings("unchecked")
+    private void addNestedIdOps(List<JsonPatchOperation> ops, String field, Object rawObj, List<String> allowedKeys) {
+        if (rawObj == null) return;
+
+        Map<String, Object> m;
+        if (rawObj instanceof Map) {
+            m = (Map<String, Object>) rawObj;
+        } else {
+            m = br.com.anymarket.sdk.http.Mapper.get()
+                    .convertValue(rawObj, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
+        }
+
+        for (String k : allowedKeys) {
+            Object v = m.get(k);
+            if (v != null) {
+                ops.add(JsonPatchOperation.replace("/" + field + "/" + k, v));
+            }
+        }
+    }
+
+    private void addOriginOps(List<JsonPatchOperation> ops, Object origin) {
+        if (origin == null) return;
+
+        if (origin instanceof Origin) {
+            Integer id = ((Origin) origin).getId();
+            if (id != null) {
+                ops.add(JsonPatchOperation.replace("/origin/id", id));
+            }
+            return;
+        }
+
+        Map<String, Object> m = br.com.anymarket.sdk.http.Mapper.get()
+                .convertValue(origin, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {});
+
+        Object id = m.get("id");
+        if (id != null) {
+            ops.add(JsonPatchOperation.replace("/origin/id", id));
+        }
+    }
+
+    private void addCharacteristicsOps(List<JsonPatchOperation> ops, Object characteristics) {
+        if (characteristics == null) return;
+
+        if (characteristics instanceof List) {
+            List<?> list = (List<?>) characteristics;
+            if (!list.isEmpty()) {
+                ops.add(JsonPatchOperation.replace("/characteristics", list));
+            }
+            return;
+        }
+
+        List<?> list = br.com.anymarket.sdk.http.Mapper.get()
+                .convertValue(characteristics, new com.fasterxml.jackson.core.type.TypeReference<List<Object>>() {});
+        if (list != null && !list.isEmpty()) {
+            ops.add(JsonPatchOperation.replace("/characteristics", list));
+        }
+    }
+
 
 
     public List<String> findByOiAndIdsInClient(List<String> skus, IntegrationHeader... headers) {
