@@ -37,7 +37,7 @@ public class ProductService extends HttpService {
     };
     private static final String PRODUCTS_URI = "/products";
     private static final String PRODUCT_MERGE_PATCH_URI = "/products/%s";
-
+    private static final String BRAND = "brand";
 
     private static final String IMAGES_MULTI = "/images/multi";
     private final String apiEndPoint;
@@ -340,7 +340,7 @@ public class ProductService extends HttpService {
     }
 
     private void normalizeBrand(Map<String, Object> map) {
-        Optional<Map<String, Object>> opt = asMap(map.get("brand"));
+        Optional<Map<String, Object>> opt = asMap(map.get(BRAND));
         if (!opt.isPresent()) {
             return;
         }
@@ -352,7 +352,7 @@ public class ProductService extends HttpService {
 
         boolean hasAny = id != null || name != null || partnerId != null;
         if (!hasAny) {
-            map.remove("brand");
+            map.remove(BRAND);
             return;
         }
 
@@ -361,7 +361,7 @@ public class ProductService extends HttpService {
         if (partnerId != null) br.put("partnerId", partnerId);
         if (name != null) br.put("name", name);
 
-        map.put("brand", br);
+        map.put(BRAND, br);
     }
 
     @SuppressWarnings("unchecked")

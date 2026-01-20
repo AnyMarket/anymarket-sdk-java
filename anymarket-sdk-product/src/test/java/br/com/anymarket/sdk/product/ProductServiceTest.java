@@ -4,12 +4,11 @@ import br.com.anymarket.sdk.MarketPlace;
 import br.com.anymarket.sdk.exception.HttpClientException;
 import br.com.anymarket.sdk.exception.NotFoundException;
 import br.com.anymarket.sdk.http.Response;
-import br.com.anymarket.sdk.http.headers.ContentTypeHeader;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.http.headers.ModuleOriginHeader;
 import br.com.anymarket.sdk.paging.Page;
-import br.com.anymarket.sdk.product.dto.Image;
 import br.com.anymarket.sdk.product.dto.Product;
+import br.com.anymarket.sdk.product.dto.ProductComplete;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.HttpRequestWithBody;
@@ -21,7 +20,10 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -39,131 +41,88 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void should_update_product_and_images_success() {
-        Product inputProduct = new Product();
-        inputProduct.setId(1L);
+    public void should_insert_product_success() {
+        Product input = new Product();
+        Product returned = new Product();
+        returned.setId(1L);
 
-        Product returnedProduct = new Product();
-        returnedProduct.setId(1L);
+        RequestBodyEntity mockedPost = mock(RequestBodyEntity.class);
+        doReturn(mockedPost).when(service).post(anyString(), eq(input), any());
 
-        Image imgToDelete = new Image();
-        imgToDelete.setId(10L);
-        inputProduct.setImagesForDelete(Collections.singletonList(imgToDelete));
+        Response response = mock(Response.class);
+        when(response.to(Product.class)).thenReturn(returned);
+        doReturn(response).when(service).execute(mockedPost);
 
-        Image newImage = new Image();
-        newImage.setId(99L);
-        returnedProduct.setImages(Collections.singletonList(newImage));
-
-        RequestBodyEntity mockedPut = mock(RequestBodyEntity.class);
-        doReturn(mockedPut).when(service).put(anyString(), eq(inputProduct), any());
-
-        Response mockedResponse = mock(Response.class);
-        when(mockedResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
-        when(mockedResponse.to(Product.class)).thenReturn(returnedProduct);
-        doReturn(mockedResponse).when(service).execute(mockedPut);
-
-        HttpRequestWithBody mockedDelete = mock(HttpRequestWithBody.class);
-        doReturn(mockedDelete).when(service).delete(contains("/images/multi"), any());
-
-        RequestBodyEntity mockedDeleteBody = mock(RequestBodyEntity.class);
-        when(mockedDelete.body("[10]")).thenReturn(mockedDeleteBody);
-
-        Response deleteResponse = mock(Response.class);
-        when(deleteResponse.getStatus()).thenReturn(HttpStatus.SC_NO_CONTENT);
-        doReturn(deleteResponse).when(service).execute(mockedDeleteBody);
-
-        Product result = service.updateProductAndImages(inputProduct, new ModuleOriginHeader("ECOMMERCE"));
+        Product result = service.insertProduct(input, new ModuleOriginHeader("ECOMMERCE"));
 
         assertNotNull(result);
         assertEquals(Long.valueOf(1L), result.getId());
-        assertEquals(1, result.getImages().size());
     }
 
     @Test
-    public void should_patch_product_success() {
+    public void should_update_product_success() {
         Product input = new Product();
         input.setId(1L);
-        input.setTitle("Produto teste");
 
         Product returned = new Product();
         returned.setId(1L);
 
-        RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
-
-        doReturn(mockedPatch).when(service).patch(
-                contains("/products/1"),
-                any(Map.class),
-                any(ModuleOriginHeader.class),
-                any(ContentTypeHeader.class)
-        );
+        RequestBodyEntity mockedPut = mock(RequestBodyEntity.class);
+        doReturn(mockedPut).when(service).put(contains("/products/1"), eq(input), any());
 
         Response response = mock(Response.class);
         when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
         when(response.to(Product.class)).thenReturn(returned);
+        doReturn(response).when(service).execute(mockedPut);
 
-        doReturn(response).when(service).execute(any());
-
-        Product result = service.mergePatchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
+        Product result = service.updateProduct(input, new ModuleOriginHeader("ECOMMERCE"));
 
         assertNotNull(result);
         assertEquals(Long.valueOf(1L), result.getId());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void should_throw_when_merge_patch_product_is_null() {
-        service.mergePatchProduct(null, new ModuleOriginHeader("ECOMMERCE"));
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void should_throw_when_merge_patch_product_id_is_null() {
-        Product input = new Product();
-        service.mergePatchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
-    }
-
     @Test(expected = HttpClientException.class)
-    public void should_throw_when_patch_returns_error_status() {
+    public void should_throw_when_update_product_status_not_200() {
         Product input = new Product();
         input.setId(1L);
-        input.setTitle("Produto teste");
 
-        RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
-        doReturn(mockedPatch).when(service).patch(
-                anyString(),
-                any(Map.class),
-                any(ModuleOriginHeader.class),
-                any(ContentTypeHeader.class)
-        );
+        RequestBodyEntity mockedPut = mock(RequestBodyEntity.class);
+        doReturn(mockedPut).when(service).put(anyString(), eq(input), any());
 
         Response response = mock(Response.class);
         when(response.getStatus()).thenReturn(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         when(response.getMessage()).thenReturn("error");
-        doReturn(response).when(service).execute(any());
+        doReturn(response).when(service).execute(mockedPut);
 
-        service.mergePatchProduct(input, new ModuleOriginHeader("ECOMMERCE"));
+        service.updateProduct(input, new ModuleOriginHeader("ECOMMERCE"));
     }
 
     @Test
-    public void should_get_product_success() {
-        GetRequest mockedGet = mock(GetRequest.class);
-        doReturn(mockedGet).when(service).get(contains("/products/1"), any());
+    public void should_get_all_products_success() {
+        String url = "http://x";
 
-        Product returned = new Product();
-        returned.setId(1L);
+        GetRequest mockedGet = mock(GetRequest.class);
+        doReturn(mockedGet).when(service).get(eq(url), any());
+
+        Product product = new Product();
+        product.setId(1L);
+
+        Page<Product> page = mock(Page.class);
+        when(page.getContent()).thenReturn(Collections.singletonList(product));
 
         Response response = mock(Response.class);
         when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
-        when(response.to(Product.class)).thenReturn(returned);
-
+        when(response.to(any(TypeReference.class))).thenReturn(page);
         doReturn(response).when(service).execute(mockedGet);
 
-        Product result = service.getProduct(1L, new ModuleOriginHeader("ECOMMERCE"));
+        List<Product> result = service.getAllProducts(url, new ModuleOriginHeader("ECOMMERCE"));
 
-        assertNotNull(result);
-        assertEquals(Long.valueOf(1L), result.getId());
+        assertEquals(1, result.size());
+        assertEquals(Long.valueOf(1L), result.get(0).getId());
     }
 
     @Test(expected = NotFoundException.class)
-    public void should_throw_not_found_when_get_product_status_not_200() {
+    public void should_throw_when_get_all_products_not_found() {
         GetRequest mockedGet = mock(GetRequest.class);
         doReturn(mockedGet).when(service).get(anyString(), any());
 
@@ -171,47 +130,70 @@ public class ProductServiceTest {
         when(response.getStatus()).thenReturn(HttpStatus.SC_NOT_FOUND);
         doReturn(response).when(service).execute(mockedGet);
 
-        service.getProduct(1L, new ModuleOriginHeader("ECOMMERCE"));
+        service.getAllProducts("http://x", new ModuleOriginHeader("ECOMMERCE"));
     }
 
     @Test
-    public void should_get_product_by_sku_returns_first() {
-        Product p1 = new Product();
-        p1.setId(1L);
-        Product p2 = new Product();
-        p2.setId(2L);
+    public void should_get_all_complete_products_success() {
+        GetRequest mockedGet = mock(GetRequest.class);
+        doReturn(mockedGet).when(service).get(anyString(), any());
 
-        doReturn(Arrays.asList(p1, p2)).when(service).getAllProducts(anyString(), any());
+        ProductComplete pc = new ProductComplete();
 
-        Product result = service.getProductBySku("ABC", new ModuleOriginHeader("ECOMMERCE"));
-
-        assertEquals(Long.valueOf(1L), result.getId());
-    }
-
-    @Test(expected = NotFoundException.class)
-    public void should_throw_not_found_when_get_product_by_sku_empty() {
-        doReturn(Collections.emptyList()).when(service).getAllProducts(anyString(), any());
-
-        service.getProductBySku("ABC", new ModuleOriginHeader("ECOMMERCE"));
-    }
-
-
-    @Test
-    public void should_find_by_oi_and_ids_in_client_success() {
-        List<String> skus = Arrays.asList("A", "B");
-
-        RequestBodyEntity mockedPost = mock(RequestBodyEntity.class);
-        doReturn(mockedPost).when(service).post(contains("/byOiAndIdsInClient"), eq(skus), any());
+        Page<ProductComplete> page = mock(Page.class);
+        when(page.getContent()).thenReturn(Collections.singletonList(pc));
 
         Response response = mock(Response.class);
         when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
-        when(response.to(any(TypeReference.class))).thenReturn(skus);
+        when(response.to(any(TypeReference.class))).thenReturn(page);
+        doReturn(response).when(service).execute(mockedGet);
 
-        doReturn(response).when(service).execute(mockedPost);
+        List<ProductComplete> result = service.getAllCompleteProducts("http://x", new ModuleOriginHeader("ECOMMERCE"));
 
-        List<String> result = service.findByOiAndIdsInClient(skus, new ModuleOriginHeader("ECOMMERCE"));
+        assertEquals(1, result.size());
+    }
 
-        assertEquals(2, result.size());
+    @Test
+    public void should_get_next_page_product_when_no_next() {
+        Page<Product> page = mock(Page.class);
+        when(page.getLinks()).thenReturn(Collections.emptyList());
+
+        Page<Product> result = service.getNextPageProduct(page, new ModuleOriginHeader("ECOMMERCE"));
+
+        assertNotNull(result);
+        assertTrue(result.getContent() == null || result.getContent().isEmpty());
+    }
+
+    @Test
+    public void should_get_active_attributes_success() {
+        GetRequest mockedGet = mock(GetRequest.class);
+        doReturn(mockedGet).when(service).get(contains("/attributes/"), any());
+
+        Map<String, String> attrs = new HashMap<>();
+        attrs.put("a", "b");
+
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
+        when(response.to(HashMap.class)).thenReturn((HashMap) attrs);
+        doReturn(response).when(service).execute(mockedGet);
+
+        Map<String, String> result = service.getActiveAttributesByMarketPlace(
+                1L, MarketPlace.AMAZON, new ModuleOriginHeader("ECOMMERCE"));
+
+        assertEquals(1, result.size());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void should_throw_when_get_active_attributes_not_found() {
+        GetRequest mockedGet = mock(GetRequest.class);
+        doReturn(mockedGet).when(service).get(anyString(), any());
+
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(HttpStatus.SC_NOT_FOUND);
+        doReturn(response).when(service).execute(mockedGet);
+
+        service.getActiveAttributesByMarketPlace(
+                1L, MarketPlace.AMAZON, new ModuleOriginHeader("ECOMMERCE"));
     }
 
     private static class ProductServiceFake extends ProductService {
