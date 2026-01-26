@@ -1,20 +1,28 @@
 package br.com.anymarket.sdk.product;
 
 import br.com.anymarket.sdk.SDKConstants;
+import br.com.anymarket.sdk.exception.HttpClientException;
 import br.com.anymarket.sdk.exception.NotFoundException;
 import br.com.anymarket.sdk.http.HttpService;
 import br.com.anymarket.sdk.http.Response;
+import br.com.anymarket.sdk.http.headers.AnymarketContentTypes;
+import br.com.anymarket.sdk.http.headers.ContentTypeHeader;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.paging.Page;
 import br.com.anymarket.sdk.product.dto.Sku;
 import br.com.anymarket.sdk.product.dto.SkuResource;
+import br.com.anymarket.sdk.product.dto.marketplace.JsonPatchOperation;
 import br.com.anymarket.sdk.resource.Link;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.base.Supplier;
 import com.mashape.unirest.request.GetRequest;
 import com.mashape.unirest.request.body.RequestBodyEntity;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static br.com.anymarket.sdk.http.headers.AnymarketHeaderUtils.addModuleOriginHeader;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -24,6 +32,7 @@ import static java.lang.String.format;
 public class SkuService extends HttpService {
 
     private static final String PRODUCT_SKU_URI = "/products/%s/skus/";
+    private static final String SKU_PATCH_URI = "/products/%s/skus/patch/%s";
     private static final String SKU_URI = "/skus/";
     private final String apiEndPoint;
     public static final String OFFSET = "offset";
@@ -34,7 +43,7 @@ public class SkuService extends HttpService {
 
     public SkuService(final String apiEndPoint) {
         this.apiEndPoint = !isNullOrEmpty(apiEndPoint) ? apiEndPoint :
-            SDKConstants.ANYMARKET_HOMOLOG_API_ENDPOINT;
+                SDKConstants.ANYMARKET_HOMOLOG_API_ENDPOINT;
     }
 
     public SkuService(final String apiEndPoint, String origin) {
@@ -115,7 +124,7 @@ public class SkuService extends HttpService {
 
     private <T> T getSku(Long idSku, boolean showProduct, Class<T> clazz, IntegrationHeader... headers) {
         checkNotNull(idSku, "Informe o id do Sku.");
-        String param = showProduct ? "?showProduct=true":"";
+        String param = showProduct ? "?showProduct=true" : "";
         GetRequest getRequest = get(this.apiEndPoint.concat("/skus/").concat(idSku.toString()).concat(param), addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(getRequest);
         if (response.getStatus() == HttpStatus.SC_OK) {
@@ -173,5 +182,74 @@ public class SkuService extends HttpService {
         }
         return new Page<Sku>();
     }
+
+    private Response execute(RequestBodyEntity request, int expectedHttpStatus, Supplier<String> failureMessagePrefixSupplier) {
+        Response response = execute(request);
+        if (response.getStatus() == expectedHttpStatus) {
+            return response;
+        }
+        String failureMessagePrefix = failureMessagePrefixSupplier.get();
+        throw new HttpClientException(format("%s. Cause: %s", failureMessagePrefix, response.getMessage()));
+    }
+
+    public Sku patchSku(Long productId, Sku sku, IntegrationHeader... headers) {
+        return patchSku(productId, sku, null, headers);
+    }
+
+    public Sku patchSku(Long productId, Sku sku, Boolean returnRelated, IntegrationHeader... headers) {
+        checkNotNull(productId, "Informe o id do produto do Sku.");
+        checkNotNull(sku, "Informe o Sku a ser atualizado via patch.");
+        checkNotNull(sku.getId(), "Informe o id do Sku.");
+
+        Long skuId = sku.getId();
+
+        List<JsonPatchOperation> ops = buildSkuPatchOperations(sku);
+
+        if (ops.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum campo para atualizar via patch (todos null ignorados).");
+        }
+
+        String url = String.format(apiEndPoint.concat(SKU_PATCH_URI), productId.toString(), skuId.toString());
+
+        if (returnRelated != null) {
+            url = url.concat("?returnRelated=").concat(returnRelated.toString());
+        }
+
+        IntegrationHeader[] withOrigin = addModuleOriginHeader(headers, this.moduleOrigin);
+
+        IntegrationHeader[] finalHeaders = ArrayUtils.add(
+                withOrigin,
+                new ContentTypeHeader(AnymarketContentTypes.JSON_PATCH)
+        );
+
+        RequestBodyEntity patchReq = patch(url, ops, finalHeaders);
+
+        Response response = execute(
+                patchReq,
+                HttpStatus.SC_OK,
+                () -> format("Failed to patch sku - id %s (productId %s)", skuId, productId)
+        );
+
+        return response.to(Sku.class);
+    }
+
+
+    private List<JsonPatchOperation> buildSkuPatchOperations(Sku sku) {
+        Map<String, Object> map = br.com.anymarket.sdk.http.Mapper.get()
+                .convertValue(sku, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
+                });
+
+        map.remove("id");
+        map.remove("variations");
+
+        List<JsonPatchOperation> ops = new ArrayList<>();
+        for (Map.Entry<String, Object> e : map.entrySet()) {
+            if (e.getValue() != null) {
+                ops.add(JsonPatchOperation.replace("/" + e.getKey(), e.getValue()));
+            }
+        }
+        return ops;
+    }
+
 
 }

@@ -6,6 +6,7 @@ import br.com.anymarket.sdk.exception.HttpClientException;
 import br.com.anymarket.sdk.exception.NotFoundException;
 import br.com.anymarket.sdk.http.HttpService;
 import br.com.anymarket.sdk.http.Response;
+import br.com.anymarket.sdk.http.headers.ContentTypeHeader;
 import br.com.anymarket.sdk.http.headers.IntegrationHeader;
 import br.com.anymarket.sdk.http.restdsl.AnyMarketRestDSL;
 import br.com.anymarket.sdk.paging.Page;
@@ -35,6 +36,9 @@ public class ProductService extends HttpService {
     public static final TypeReference<Page<Product>> PAGED_TYPE_REFERENCE = new TypeReference<Page<Product>>() {
     };
     private static final String PRODUCTS_URI = "/products";
+    private static final String PRODUCT_MERGE_PATCH_URI = "/products/%s";
+    private static final String BRAND = "brand";
+
     private static final String IMAGES_MULTI = "/images/multi";
     private final String apiEndPoint;
     public static final String NEXT = "next";
@@ -42,7 +46,7 @@ public class ProductService extends HttpService {
 
     public ProductService(String apiEndPoint) {
         this.apiEndPoint = !isNullOrEmpty(apiEndPoint) ? apiEndPoint :
-            SDKConstants.ANYMARKET_HOMOLOG_API_ENDPOINT;
+                SDKConstants.ANYMARKET_HOMOLOG_API_ENDPOINT;
     }
 
     public ProductService(String apiEndPoint, String origin) {
@@ -184,7 +188,7 @@ public class ProductService extends HttpService {
 
     private String getUrlForProductsWithSku(String sku) {
         return apiEndPoint.concat(PRODUCTS_URI).concat("?sku=")
-            .concat(SDKUrlEncoder.encodeParameterToUTF8(sku));
+                .concat(SDKUrlEncoder.encodeParameterToUTF8(sku));
     }
 
     public List<Product> getAllProducts(final String url, IntegrationHeader... headers) {
@@ -217,10 +221,10 @@ public class ProductService extends HttpService {
 
     public Page<Product> getProductPaged(List<ProductFilter> filters, IntegrationHeader... headers) {
         return AnyMarketRestDSL.get(apiEndPoint.concat(PRODUCTS_URI))
-            .headers(addModuleOriginHeader(headers, this.moduleOrigin))
-            .filters(filters)
-            .getResponse()
-            .to(PAGED_TYPE_REFERENCE);
+                .headers(addModuleOriginHeader(headers, this.moduleOrigin))
+                .filters(filters)
+                .getResponse()
+                .to(PAGED_TYPE_REFERENCE);
     }
 
     public Page<Product> getProductPaged(IntegrationHeader... headers) {
@@ -261,6 +265,124 @@ public class ProductService extends HttpService {
         throw new NotFoundException(format("Product(id: %s) active attributes not found to this marketplace(%s).", idProduct, marketPlace.name()));
     }
 
+
+    public Product mergePatchProduct(Product product, IntegrationHeader... headers) {
+        Objects.requireNonNull(product, "Informe o produto a ser atualizado via merge patch.");
+        Objects.requireNonNull(product.getId(), "Informe o id do produto.");
+
+        Long productId = product.getId();
+
+        Map<String, Object> body = buildProductMergePatchBody(product);
+        if (body.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum campo para atualizar via merge patch (todos null/ignorados).");
+        }
+
+        String url = String.format(apiEndPoint.concat(PRODUCT_MERGE_PATCH_URI), productId.toString());
+
+        IntegrationHeader[] withOrigin = addModuleOriginHeader(headers, this.moduleOrigin);
+
+        IntegrationHeader[] finalHeaders = org.apache.commons.lang3.ArrayUtils.add(
+                withOrigin,
+                new ContentTypeHeader("application/merge-patch+json")
+        );
+
+        RequestBodyEntity patchReq = patch(url, body, finalHeaders);
+
+        Response response = execute(
+                patchReq,
+                HttpStatus.SC_OK,
+                () -> format("Failed to merge patch product - id %s", productId)
+        );
+
+        return response.to(Product.class);
+    }
+
+    private Map<String, Object> buildProductMergePatchBody(Product product) {
+        Map<String, Object> map = br.com.anymarket.sdk.http.Mapper.get()
+                .convertValue(product, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
+                });
+
+        removeIgnoredFields(map);
+
+        normalizeIdOnlyObject(map, "category");
+        normalizeBrand(map);
+        normalizeIdOnlyObject(map, "nbm");
+        normalizeIdOnlyObject(map, "origin");
+
+        return removeNullValues(map);
+    }
+
+    private void removeIgnoredFields(Map<String, Object> map) {
+        map.remove("id");
+        map.remove("skus");
+        map.remove("images");
+        map.remove("marketplaceImages");
+        map.remove("imagesForDelete");
+        map.remove("kitComponents");
+    }
+
+    private void normalizeIdOnlyObject(Map<String, Object> map, String key) {
+        Optional<Map<String, Object>> opt = asMap(map.get(key));
+        if (!opt.isPresent()) {
+            return;
+        }
+
+        Map<String, Object> nested = opt.get();
+        Object id = nested.get("id");
+
+        if (id != null) {
+            Map<String, Object> idOnly = new HashMap<>(1);
+            idOnly.put("id", id);
+            map.put(key, idOnly);
+        } else {
+            map.remove(key);
+        }
+    }
+
+    private void normalizeBrand(Map<String, Object> map) {
+        Optional<Map<String, Object>> opt = asMap(map.get(BRAND));
+        if (!opt.isPresent()) {
+            return;
+        }
+
+        Map<String, Object> nested = opt.get();
+        Object id = nested.get("id");
+        Object name = nested.get("name");
+        Object partnerId = nested.get("partnerId");
+
+        boolean hasAny = id != null || name != null || partnerId != null;
+        if (!hasAny) {
+            map.remove(BRAND);
+            return;
+        }
+
+        Map<String, Object> br = new HashMap<>(3);
+        if (id != null) br.put("id", id);
+        if (partnerId != null) br.put("partnerId", partnerId);
+        if (name != null) br.put("name", name);
+
+        map.put(BRAND, br);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Optional<Map<String, Object>> asMap(Object value) {
+        if (value instanceof Map) {
+            return Optional.of((Map<String, Object>) value);
+        }
+        return Optional.empty();
+    }
+
+    private Map<String, Object> removeNullValues(Map<String, Object> map) {
+        Map<String, Object> cleaned = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> e : map.entrySet()) {
+            if (e.getValue() != null) {
+                cleaned.put(e.getKey(), e.getValue());
+            }
+        }
+        return cleaned;
+    }
+
+
     public List<String> findByOiAndIdsInClient(List<String> skus, IntegrationHeader... headers) {
         List<String> results = new ArrayList<>();
 
@@ -277,4 +399,6 @@ public class ProductService extends HttpService {
         }
         return results;
     }
+
+
 }

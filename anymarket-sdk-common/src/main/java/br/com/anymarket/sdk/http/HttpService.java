@@ -17,6 +17,7 @@ import com.mashape.unirest.request.HttpRequestWithBody;
 import com.mashape.unirest.request.body.RequestBodyEntity;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class HttpService {
@@ -117,6 +118,24 @@ public class HttpService {
             throw new HttpClientException(message, details, resources);
         }
 
+    }
+
+    public RequestBodyEntity patch(String url, Object body, IntegrationHeader... headers) {
+        return Unirest.patch(url)
+                .headers(toHeaderMap(headers))
+                .body(writeValueAsJson(body));
+    }
+
+    protected Map<String, String> toHeaderMap(IntegrationHeader... headers) {
+        Map<String, String> map = new HashMap<>();
+        if (headers == null) return map;
+
+        for (IntegrationHeader h : headers) {
+            if (h != null && h.getKey() != null && h.getValue() != null) {
+                map.put(h.getKey(), h.getValue());
+            }
+        }
+        return map;
     }
 
 }
