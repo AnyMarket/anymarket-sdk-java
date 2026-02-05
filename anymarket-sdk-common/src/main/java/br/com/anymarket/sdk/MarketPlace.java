@@ -319,5 +319,4 @@ public enum MarketPlace {
     public boolean isAllowsChangeIdInMarketplace() {
         return allowsChangeIdInMarketplace;
     }
-
 }
