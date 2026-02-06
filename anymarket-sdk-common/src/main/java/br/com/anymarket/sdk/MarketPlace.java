@@ -235,7 +235,7 @@ public enum MarketPlace {
     ZOOM_NOVA_API("Zoom Nova Api"),
     PANVEL("Panvel"),
     BYD("BYD SUPPLY"),
-    KABUM_NOVA_API("Kabum Nova API");
+    KABUM_NEW_API("Kabum Nova API");
 
     private String name;
     private final boolean specificConsumer;
