@@ -235,7 +235,8 @@ public enum MarketPlace {
     ZOOM_NOVA_API("Zoom Nova Api"),
     PANVEL("Panvel"),
     BYD("BYD SUPPLY"),
-    ELETROTRAFO("Eletrotrafo");
+    ELETROTRAFO("Eletrotrafo"),
+    DROGARIA_PACHECO("Drogaria Pacheco");
 
     private String name;
     private final boolean specificConsumer;
