@@ -236,7 +236,8 @@ public enum MarketPlace {
     PANVEL("Panvel"),
     BYD("BYD SUPPLY"),
     ELETROTRAFO("Eletrotrafo"),
-    DROGARIA_PACHECO("Drogaria Pacheco");
+    DROGARIA_PACHECO("Drogaria Pacheco"),
+    DROGARIA_SAO_PAULO("Drogaria Sao Paulo");
 
     private String name;
     private final boolean specificConsumer;
