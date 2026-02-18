@@ -235,7 +235,10 @@ public enum MarketPlace {
     ZOOM_NOVA_API("Zoom Nova Api"),
     PANVEL("Panvel"),
     BYD("BYD SUPPLY"),
-    KABUM_NEW_API("Kabum Nova API");
+    KABUM_NEW_API("Kabum Nova API"),
+    ELETROTRAFO("Eletrotrafo"),
+    DROGARIA_PACHECO("Drogaria Pacheco"),
+    DROGARIA_SAO_PAULO("Drogaria Sao Paulo");
 
     private String name;
     private final boolean specificConsumer;
@@ -319,4 +322,5 @@ public enum MarketPlace {
     public boolean isAllowsChangeIdInMarketplace() {
         return allowsChangeIdInMarketplace;
     }
+
 }
