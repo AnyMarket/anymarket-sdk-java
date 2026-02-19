@@ -237,7 +237,8 @@ public enum MarketPlace {
     BYD("BYD SUPPLY"),
     ELETROTRAFO("Eletrotrafo"),
     DROGARIA_PACHECO("Drogaria Pacheco"),
-    DROGARIA_SAO_PAULO("Drogaria Sao Paulo");
+    DROGARIA_SAO_PAULO("Drogaria Sao Paulo"),
+    EFACIL_NOVA_API("eFacil Nova Api");
 
     private String name;
     private final boolean specificConsumer;
