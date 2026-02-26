@@ -239,7 +239,8 @@ public enum MarketPlace {
     DROGARIA_PACHECO("Drogaria Pacheco"),
     DROGARIA_SAO_PAULO("Drogaria Sao Paulo"),
     EFACIL_NOVA_API("eFacil Nova Api"),
-    COLLECTION("Collection");
+    COLLECTION("Collection"),
+    MOVEIS_SIMONETTI("Moveis Simonetti");
 
     private String name;
     private final boolean specificConsumer;
