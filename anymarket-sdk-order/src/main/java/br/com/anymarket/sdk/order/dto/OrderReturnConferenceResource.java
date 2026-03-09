@@ -18,4 +18,10 @@ public class OrderReturnConferenceResource {
 
     @JsonProperty("observations")
     private String observations;
+
+    @JsonProperty("origin")
+    private String origin;
+
+    @JsonProperty("marketplaceReview")
+    private OrderReturnMarketplaceReviewResource marketplaceReview;
 }
