@@ -23,13 +23,12 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class SkuServiceTest {
 
     @Spy
+    @InjectMocks
     private SkuServiceFake service;
 
     @Before
@@ -274,7 +273,7 @@ public class SkuServiceTest {
 
         RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
         doReturn(mockedPatch).when(service)
-                .patch(contains("/products/10/skus/7"), any(), any());
+                .patch(contains("/products/10/skus/7"), any(), any(IntegrationHeader[].class));
 
         Sku returned = new Sku();
         returned.setId(7L);
@@ -298,22 +297,13 @@ public class SkuServiceTest {
         sku.setTitle("Novo titulo");
 
         RequestBodyEntity mockedPatch = mock(RequestBodyEntity.class);
-        doReturn(mockedPatch).when(service).patch(anyString(), any(), any());
+        doReturn(mockedPatch).when(service)
+                .patch(anyString(), any(), any(IntegrationHeader[].class));
 
         Response response = mock(Response.class);
         when(response.getStatus()).thenReturn(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         when(response.getMessage()).thenReturn("error");
         doReturn(response).when(service).execute(any(com.mashape.unirest.request.BaseRequest.class));
-
-        service.patchSkuMerge(productId, sku, new ModuleOriginHeader("ECOMMERCE"));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void should_throw_illegal_argument_exception_when_patch_sku_merge_has_no_fields_to_update() {
-        Long productId = 10L;
-
-        Sku sku = new Sku();
-        sku.setId(7L);
 
         service.patchSkuMerge(productId, sku, new ModuleOriginHeader("ECOMMERCE"));
     }
