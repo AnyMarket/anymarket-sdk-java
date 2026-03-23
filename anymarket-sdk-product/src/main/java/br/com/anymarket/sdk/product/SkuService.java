@@ -21,6 +21,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,12 @@ public class SkuService extends HttpService {
 
     private static final String PRODUCT_SKU_URI = "/products/%s/skus/";
     private static final String SKU_PATCH_URI = "/products/%s/skus/patch/%s";
+    private static final String SKU_MERGE_PATCH_URI = "/products/%s/skus/%s";
     private static final String SKU_URI = "/skus/";
+    private static final String SKU_ID_REQUIRED_MESSAGE = "Informe o id do Sku.";
+    private static final String PRODUCT_ID_REQUIRED_MESSAGE = "Informe o id do produto do Sku.";
+    private static final String MERGE_PATCH_CONTENT_TYPE = "application/merge-patch+json";
+
     private final String apiEndPoint;
     public static final String OFFSET = "offset";
     public static final String LIMIT = "limit";
@@ -58,7 +64,7 @@ public class SkuService extends HttpService {
 
     public Sku insertSku(final Sku sku, final Long idProduct, IntegrationHeader... headers) {
         checkNotNull(sku, "Informe o Sku a ser persistido.");
-        checkNotNull(idProduct, "Informe o id do produto do Sku.");
+        checkNotNull(idProduct, PRODUCT_ID_REQUIRED_MESSAGE);
         RequestBodyEntity post = post(getURLFormated(idProduct), sku, addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(post);
         return response.to(Sku.class);
@@ -66,7 +72,7 @@ public class SkuService extends HttpService {
 
     public Sku updateSku(final Sku sku, final Long idProduct, IntegrationHeader... headers) {
         checkNotNull(sku, "Informe o Sku a ser atualizado.");
-        checkNotNull(idProduct, "Informe o id do produto do Sku.");
+        checkNotNull(idProduct, PRODUCT_ID_REQUIRED_MESSAGE);
         RequestBodyEntity put = put(getURLFormated(idProduct).concat("/").concat(sku.getId().toString()), sku, addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(put);
         return response.to(Sku.class);
@@ -91,17 +97,13 @@ public class SkuService extends HttpService {
         }
     }
 
-//    public List<Sku> getAllSkus(final Long idProduct, IntegrationHeader... headers) {
-//
-//    }
-
     public Sku getSku(Long idSku, final Long idProduct, IntegrationHeader... headers) {
         return getSku(idSku, idProduct, Sku.class, headers);
     }
 
     public <T> T getSku(Long idSku, final Long idProduct, Class<T> clazz, IntegrationHeader... headers) {
-        checkNotNull(idSku, "Informe o id do Sku.");
-        checkNotNull(idProduct, "Informe o id do produto do Sku.");
+        checkNotNull(idSku, SKU_ID_REQUIRED_MESSAGE);
+        checkNotNull(idProduct, PRODUCT_ID_REQUIRED_MESSAGE);
         GetRequest getRequest = get(getURLFormated(idProduct).concat("/").concat(idSku.toString()), addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(getRequest);
         if (response.getStatus() == HttpStatus.SC_OK) {
@@ -123,7 +125,7 @@ public class SkuService extends HttpService {
     }
 
     private <T> T getSku(Long idSku, boolean showProduct, Class<T> clazz, IntegrationHeader... headers) {
-        checkNotNull(idSku, "Informe o id do Sku.");
+        checkNotNull(idSku, SKU_ID_REQUIRED_MESSAGE);
         String param = showProduct ? "?showProduct=true" : "";
         GetRequest getRequest = get(this.apiEndPoint.concat("/skus/").concat(idSku.toString()).concat(param), addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(getRequest);
@@ -197,9 +199,9 @@ public class SkuService extends HttpService {
     }
 
     public Sku patchSku(Long productId, Sku sku, Boolean returnRelated, IntegrationHeader... headers) {
-        checkNotNull(productId, "Informe o id do produto do Sku.");
+        checkNotNull(productId, PRODUCT_ID_REQUIRED_MESSAGE);
         checkNotNull(sku, "Informe o Sku a ser atualizado via patch.");
-        checkNotNull(sku.getId(), "Informe o id do Sku.");
+        checkNotNull(sku.getId(), SKU_ID_REQUIRED_MESSAGE);
 
         Long skuId = sku.getId();
 
@@ -233,6 +235,46 @@ public class SkuService extends HttpService {
         return response.to(Sku.class);
     }
 
+    public Sku patchSkuMerge(Long productId, Sku sku, IntegrationHeader... headers) {
+        return patchSkuMerge(productId, sku, null, headers);
+    }
+
+    public Sku patchSkuMerge(Long productId, Sku sku, Boolean returnRelated, IntegrationHeader... headers) {
+        checkNotNull(productId, PRODUCT_ID_REQUIRED_MESSAGE);
+        checkNotNull(sku, "Informe o Sku a ser atualizado via merge patch.");
+        checkNotNull(sku.getId(), SKU_ID_REQUIRED_MESSAGE);
+
+        Long skuId = sku.getId();
+
+        Map<String, Object> mergePatchBody = buildSkuMergePatchBody(sku);
+
+        if (mergePatchBody.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum campo para atualizar via merge patch (todos null ignorados).");
+        }
+
+        String url = String.format(apiEndPoint.concat(SKU_MERGE_PATCH_URI), productId.toString(), skuId.toString());
+
+        if (returnRelated != null) {
+            url = url.concat("?returnRelated=").concat(returnRelated.toString());
+        }
+
+        IntegrationHeader[] withOrigin = addModuleOriginHeader(headers, this.moduleOrigin);
+
+        IntegrationHeader[] finalHeaders = ArrayUtils.add(
+                withOrigin,
+                new ContentTypeHeader(MERGE_PATCH_CONTENT_TYPE)
+        );
+
+        RequestBodyEntity patchReq = patch(url, mergePatchBody, finalHeaders);
+
+        Response response = execute(
+                patchReq,
+                HttpStatus.SC_OK,
+                () -> format("Failed to merge patch sku - id %s (productId %s)", skuId, productId)
+        );
+
+        return response.to(Sku.class);
+    }
 
     private List<JsonPatchOperation> buildSkuPatchOperations(Sku sku) {
         Map<String, Object> map = br.com.anymarket.sdk.http.Mapper.get()
@@ -251,5 +293,22 @@ public class SkuService extends HttpService {
         return ops;
     }
 
+    private Map<String, Object> buildSkuMergePatchBody(Sku sku) {
+        Map<String, Object> map = br.com.anymarket.sdk.http.Mapper.get()
+                .convertValue(sku, new com.fasterxml.jackson.core.type.TypeReference<Map<String, Object>>() {
+                });
 
+        map.remove("id");
+        map.remove("variations");
+        map.remove("mappedVariations");
+
+        Map<String, Object> mergePatchBody = new LinkedHashMap<>();
+        for (Map.Entry<String, Object> e : map.entrySet()) {
+            if (e.getValue() != null) {
+                mergePatchBody.put(e.getKey(), e.getValue());
+            }
+        }
+
+        return mergePatchBody;
+    }
 }
