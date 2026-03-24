@@ -113,6 +113,7 @@
           <descriptorRefs>
             <descriptorRef>jar-with-dependencies</descriptorRef>
           </descriptorRefs>
+          <appendAssemblyId>true</appendAssemblyId>
         </configuration>
       </plugin>
     </plugins>
