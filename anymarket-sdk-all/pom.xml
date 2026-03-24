@@ -93,11 +93,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version>
-      </plugin>
       <!-- any other plugins -->
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -113,7 +108,6 @@
           <descriptorRefs>
             <descriptorRef>jar-with-dependencies</descriptorRef>
           </descriptorRefs>
-          <appendAssemblyId>true</appendAssemblyId>
         </configuration>
       </plugin>
     </plugins>
