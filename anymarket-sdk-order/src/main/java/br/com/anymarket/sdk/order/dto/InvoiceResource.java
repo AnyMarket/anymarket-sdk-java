@@ -40,6 +40,9 @@ public class InvoiceResource {
     @JsonProperty("invoiceLink")
     private String invoiceLink;
 
+    @JsonProperty("fiscalMetadata")
+    private FiscalMetadataResource fiscalMetadata;
+
     public String getAccessKey() {
         return accessKey;
     }
@@ -104,6 +107,14 @@ public class InvoiceResource {
         this.invoiceLink = invoiceLink;
     }
 
+    public FiscalMetadataResource getFiscalMetadata() {
+        return fiscalMetadata;
+    }
+
+    public void setFiscalMetadata(FiscalMetadataResource fiscalMetadata) {
+        this.fiscalMetadata = fiscalMetadata;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -115,6 +126,7 @@ public class InvoiceResource {
             .add("invoiceLink", invoiceLink)
             .add("cfop", cfop)
             .add("companyStateTaxId", companyStateTaxId)
+            .add("fiscalMetadata", fiscalMetadata)
             .toString();
     }
 }
