@@ -242,7 +242,8 @@ public enum MarketPlace {
     EFACIL_NOVA_API("eFacil Nova Api"),
     COLLECTION("Collection"),
     MOVEIS_SIMONETTI("Moveis Simonetti"),
-    ARMAZEM_PARAIBA_NEW_API("Armazem Paraiba");
+    ARMAZEM_PARAIBA_NEW_API("Armazem Paraiba"),
+    LIVERPOOL("Liverpool");
 
     private String name;
     private final boolean specificConsumer;
