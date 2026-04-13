@@ -243,7 +243,8 @@ public enum MarketPlace {
     COLLECTION("Collection"),
     MOVEIS_SIMONETTI("Moveis Simonetti"),
     ARMAZEM_PARAIBA_NEW_API("Armazem Paraiba"),
-    LIVERPOOL("Liverpool");
+    LIVERPOOL("Liverpool"),
+    IFOOD("iFood");
 
     private String name;
     private final boolean specificConsumer;
