@@ -244,6 +244,7 @@ public enum MarketPlace {
     MOVEIS_SIMONETTI("Moveis Simonetti"),
     ARMAZEM_PARAIBA_NEW_API("Armazem Paraiba"),
     LIVERPOOL("Liverpool"),
+    FORGE_MKP("Forge Mkp"),
     IFOOD("iFood");
 
     private String name;
