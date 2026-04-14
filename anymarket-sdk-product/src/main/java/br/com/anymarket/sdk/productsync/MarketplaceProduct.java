@@ -56,7 +56,7 @@ public class MarketplaceProduct implements ProductWithMandatoryInfo {
         return null;
     }
     @JsonIgnore
-    private boolean hasVariations() {
+    public boolean hasVariations() {
         return Objects.nonNull(variations) && !variations.isEmpty();
     }
     @JsonIgnore
