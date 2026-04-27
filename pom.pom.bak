@@ -1,51 +1,46 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-
-  <groupId>br.com.anymarket.sdk</groupId>
-  <artifactId>anymarket-sdk-java</artifactId>
-  <version>0.90.0-SNAPSHOT</version>
-  <modules>
-    <module>anymarket-sdk-stock</module>
-    <module>anymarket-sdk-order</module>
-    <module>anymarket-sdk-common</module>
-    <module>anymarket-sdk-brand</module>
-    <module>anymarket-sdk-product</module>
-    <module>anymarket-sdk-all</module>
-    <module>anymarket-sdk-monitor</module>
-    <module>anymarket-sdk-categories</module>
-    <module>anymarket-sdk-campaign</module>
-    <module>anymarket-sdk-delegator</module>
-    <module>anymarket-sdk-callback</module>
-    <module>anymarket-sdk-variation</module>
-    <module>anymarket-sdk-question</module>
-    <module>anymarket-sdk-freight</module>
-    <module>anymarket-sdk-template</module>
-    <module>anymarket-sdk-marketplaces</module>
-    <module>anymarket-sdk-printtag</module>
-    <module>anymarket-sdk-profile</module>
-    <module>anymarket-sdk-automatic-message</module>
-    <module>anymarket-sdk-parameter</module>
-    <module>anymarket-sdk-fileimport</module>
-  </modules>
-
-  <packaging>pom</packaging>
-
-  <name>SDK de Integração com a APIv2 do AnyMarket</name>
-
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <guava.version>18.0</guava.version>
-    <commons-lang.version>3.4</commons-lang.version>
-    <slf4j-simple.version>1.7.2</slf4j-simple.version>
-    <!-- Nao atualizar para 1.4.8, quebrado compatibildiade de dependencias-->
-    <unirest.version>1.4.7</unirest.version>
-    <jackson.version>2.6.2</jackson.version>
-    <junit.version>4.12</junit.version>
-    <mockito.version>1.10.17</mockito.version>
-    <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-    <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
-    <sonar.coverage.exclusions>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>br.com.anymarket.sdk</groupId>
+    <artifactId>anymarket-sdk-java</artifactId>
+    <version>0.90.60</version>
+    <modules>
+        <module>anymarket-sdk-stock</module>
+        <module>anymarket-sdk-order</module>
+        <module>anymarket-sdk-common</module>
+        <module>anymarket-sdk-brand</module>
+        <module>anymarket-sdk-product</module>
+        <module>anymarket-sdk-all</module>
+        <module>anymarket-sdk-monitor</module>
+        <module>anymarket-sdk-categories</module>
+        <module>anymarket-sdk-campaign</module>
+        <module>anymarket-sdk-delegator</module>
+        <module>anymarket-sdk-callback</module>
+        <module>anymarket-sdk-variation</module>
+        <module>anymarket-sdk-question</module>
+        <module>anymarket-sdk-freight</module>
+        <module>anymarket-sdk-template</module>
+        <module>anymarket-sdk-marketplaces</module>
+        <module>anymarket-sdk-printtag</module>
+        <module>anymarket-sdk-profile</module>
+        <module>anymarket-sdk-automatic-message</module>
+        <module>anymarket-sdk-parameter</module>
+        <module>anymarket-sdk-fileimport</module>
+    </modules>
+    <packaging>pom</packaging>
+    <name>SDK de Integração com a APIv2 do AnyMarket</name>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <guava.version>18.0</guava.version>
+        <commons-lang.version>3.4</commons-lang.version>
+        <slf4j-simple.version>1.7.2</slf4j-simple.version>
+        <unirest.version>1.4.7</unirest.version>
+        <jackson.version>2.6.2</jackson.version>
+        <junit.version>4.12</junit.version>
+        <mockito.version>1.10.17</mockito.version>
+        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+        <sonar-maven-plugin.version>3.7.0.1746</sonar-maven-plugin.version>
+        <sonar.coverage.exclusions>
       src/main/java/br/com/db1/anymarket/gateway/parameter/valuedefault/dto/*
     </sonar.coverage.exclusions>
         <sonar.cpd.exclusions>
@@ -287,28 +282,6 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${sonar-maven-plugin.version}</version>
-            </plugin>
-            <plugin>
-                <groupId>org.cyclonedx</groupId>
-                <artifactId>cyclonedx-maven-plugin</artifactId>
-                <version>2.8.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>makeAggregateBom</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <failOnError>false</failOnError>
-                    <failOnWarnings>false</failOnWarnings>
-                    <doclint>none</doclint>
-                </configuration>
             </plugin>
         </plugins>
     </build>
