@@ -245,7 +245,8 @@ public enum MarketPlace {
     ARMAZEM_PARAIBA_NEW_API("Armazem Paraiba"),
     LIVERPOOL("Liverpool"),
     DROGARIA_VENANCIO("Drogaria Venancio"),
-    IFOOD("iFood");
+    IFOOD("iFood"),
+    REDE_D1000("Rede D1000");
 
     private String name;
     private final boolean specificConsumer;
