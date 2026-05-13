@@ -246,7 +246,8 @@ public enum MarketPlace {
     LIVERPOOL("Liverpool"),
     DROGARIA_VENANCIO("Drogaria Venancio"),
     IFOOD("iFood"),
-    REDE_D1000("Rede D1000");
+    REDE_D1000("Rede D1000"),
+    TROCAMOTOR("Trocamotor");
 
     private String name;
     private final boolean specificConsumer;
