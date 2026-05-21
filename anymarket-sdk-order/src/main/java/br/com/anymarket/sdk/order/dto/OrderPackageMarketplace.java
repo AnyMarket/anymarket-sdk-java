@@ -15,6 +15,7 @@ public class OrderPackageMarketplace {
 
     private Long orderId;
     private Long packageId;
+    private EventPackage event;
     private String oi;
     private String orderIdInMarketplace;
     private PackageReasonMarketplace packageReasonMarketplace;

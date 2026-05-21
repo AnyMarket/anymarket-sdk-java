@@ -1,5 +1,6 @@
 package br.com.anymarket.sdk.order.dto;
 
+import br.com.anymarket.sdk.order.OrderPackageDelivery;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,7 @@ public class OrderPackageUnit {
     private String externalId;
     private List<ItemsPackage> items;
     private DimensionsPackage dimensions;
+    private OrderPackageInvoice invoice;
+    private OrderPackageShipping tracking;
+    private OrderPackageDelivery delivered;
 }
