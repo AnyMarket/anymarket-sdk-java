@@ -248,7 +248,8 @@ public enum MarketPlace {
     IFOOD("iFood"),
     REDE_D1000("Rede D1000"),
     TROCAMOTOR("Trocamotor"),
-    ADDI("Addi");
+    ADDI("Addi"),
+    PUNTOS("Puntos");
 
     private String name;
     private final boolean specificConsumer;
