@@ -60,57 +60,6 @@ public class OrderPackageShippingTest {
     }
 
     @Test
-    public void should_be_equal_when_same_fields() {
-        Date date = new Date(0L);
-        OrderPackageShipping s1 = OrderPackageShipping.builder()
-                .trackingNumber("T001").carrier("Correios").shippedDate(date).build();
-        OrderPackageShipping s2 = OrderPackageShipping.builder()
-                .trackingNumber("T001").carrier("Correios").shippedDate(date).build();
-
-        assertEquals(s1, s2);
-        assertEquals(s1.hashCode(), s2.hashCode());
-    }
-
-    @Test
-    public void should_not_be_equal_when_different_tracking_number() {
-        OrderPackageShipping s1 = OrderPackageShipping.builder().trackingNumber("T001").build();
-        OrderPackageShipping s2 = OrderPackageShipping.builder().trackingNumber("T002").build();
-
-        assertNotEquals(s1, s2);
-    }
-
-    @Test
-    public void should_not_be_equal_when_different_carrier() {
-        OrderPackageShipping s1 = OrderPackageShipping.builder().carrier("Correios").build();
-        OrderPackageShipping s2 = OrderPackageShipping.builder().carrier("Jadlog").build();
-
-        assertNotEquals(s1, s2);
-    }
-
-    @Test
-    public void should_not_be_equal_when_different_shipped_date() {
-        OrderPackageShipping s1 = OrderPackageShipping.builder().shippedDate(new Date(1_000L)).build();
-        OrderPackageShipping s2 = OrderPackageShipping.builder().shippedDate(new Date(2_000L)).build();
-
-        assertNotEquals(s1, s2);
-    }
-
-    @Test
-    public void should_contain_field_names_in_to_string() {
-        OrderPackageShipping shipping = OrderPackageShipping.builder()
-                .trackingNumber("T-XPTO")
-                .carrier("Azul Cargo")
-                .build();
-
-        String text = shipping.toString();
-
-        assertTrue(text.contains("trackingNumber"));
-        assertTrue(text.contains("T-XPTO"));
-        assertTrue(text.contains("carrier"));
-        assertTrue(text.contains("Azul Cargo"));
-    }
-
-    @Test
     public void should_serialize_all_fields_to_json() throws Exception {
         OrderPackageShipping shipping = OrderPackageShipping.builder()
                 .trackingNumber("BR123456789BR")

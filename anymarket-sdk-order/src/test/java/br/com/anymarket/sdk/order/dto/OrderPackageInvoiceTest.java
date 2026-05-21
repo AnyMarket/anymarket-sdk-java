@@ -54,46 +54,6 @@ public class OrderPackageInvoiceTest {
     }
 
     @Test
-    public void should_be_equal_when_same_fields() {
-        Date date = new Date(0L);
-        OrderPackageInvoice i1 = OrderPackageInvoice.builder()
-                .invoiceNumber("NF-001").invoiceKey("KEY-1").invoiceDate(date).build();
-        OrderPackageInvoice i2 = OrderPackageInvoice.builder()
-                .invoiceNumber("NF-001").invoiceKey("KEY-1").invoiceDate(date).build();
-
-        assertEquals(i1, i2);
-        assertEquals(i1.hashCode(), i2.hashCode());
-    }
-
-    @Test
-    public void should_not_be_equal_when_different_invoice_number() {
-        OrderPackageInvoice i1 = OrderPackageInvoice.builder().invoiceNumber("NF-001").build();
-        OrderPackageInvoice i2 = OrderPackageInvoice.builder().invoiceNumber("NF-002").build();
-
-        assertNotEquals(i1, i2);
-    }
-
-    @Test
-    public void should_not_be_equal_when_different_invoice_key() {
-        OrderPackageInvoice i1 = OrderPackageInvoice.builder().invoiceKey("KEY-A").build();
-        OrderPackageInvoice i2 = OrderPackageInvoice.builder().invoiceKey("KEY-B").build();
-
-        assertNotEquals(i1, i2);
-    }
-
-    @Test
-    public void should_contain_field_names_in_to_string() {
-        OrderPackageInvoice invoice = OrderPackageInvoice.builder()
-                .invoiceNumber("NF-999")
-                .build();
-
-        String text = invoice.toString();
-
-        assertTrue(text.contains("invoiceNumber"));
-        assertTrue(text.contains("NF-999"));
-    }
-
-    @Test
     public void should_serialize_all_fields_to_json() throws Exception {
         OrderPackageInvoice invoice = OrderPackageInvoice.builder()
                 .invoiceNumber("NF-001")

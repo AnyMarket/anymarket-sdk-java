@@ -1,6 +1,5 @@
 package br.com.anymarket.sdk.order.dto;
 
-import br.com.anymarket.sdk.order.OrderPackageDelivery;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

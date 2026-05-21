@@ -1,6 +1,5 @@
 package br.com.anymarket.sdk.order.dto;
 
-import br.com.anymarket.sdk.order.OrderPackageDelivery;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 

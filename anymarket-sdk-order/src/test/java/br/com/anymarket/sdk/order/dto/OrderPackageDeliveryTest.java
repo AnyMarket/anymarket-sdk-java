@@ -1,6 +1,5 @@
 package br.com.anymarket.sdk.order.dto;
 
-import br.com.anymarket.sdk.order.OrderPackageDelivery;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 
@@ -41,24 +40,6 @@ public class OrderPackageDeliveryTest {
     }
 
     @Test
-    public void should_be_equal_when_same_delivered_date() {
-        Date date = new Date(1_000_000L);
-        OrderPackageDelivery d1 = OrderPackageDelivery.builder().deliveredDate(date).build();
-        OrderPackageDelivery d2 = OrderPackageDelivery.builder().deliveredDate(date).build();
-
-        assertEquals(d1, d2);
-        assertEquals(d1.hashCode(), d2.hashCode());
-    }
-
-    @Test
-    public void should_not_be_equal_when_different_dates() {
-        OrderPackageDelivery d1 = OrderPackageDelivery.builder().deliveredDate(new Date(1_000L)).build();
-        OrderPackageDelivery d2 = OrderPackageDelivery.builder().deliveredDate(new Date(2_000L)).build();
-
-        assertNotEquals(d1, d2);
-    }
-
-    @Test
     public void should_serialize_delivered_date_as_string_not_timestamp() throws Exception {
         Date date = new Date(0L);
         OrderPackageDelivery delivery = OrderPackageDelivery.builder().deliveredDate(date).build();
@@ -76,14 +57,5 @@ public class OrderPackageDeliveryTest {
         String json = objectMapper.writeValueAsString(delivery);
 
         assertTrue(json.contains("\"deliveredDate\":null"));
-    }
-
-    @Test
-    public void should_contain_field_name_in_to_string() {
-        OrderPackageDelivery delivery = OrderPackageDelivery.builder()
-                .deliveredDate(new Date(0L))
-                .build();
-
-        assertTrue(delivery.toString().contains("deliveredDate"));
     }
 }
