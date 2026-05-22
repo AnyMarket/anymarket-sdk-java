@@ -14,7 +14,7 @@ public class OrderPackageInvoiceTest {
     @Test
     public void should_build_with_all_fields() {
         Date date = new Date(1_000_000L);
-        OrderPackageInvoice invoice = OrderPackageInvoice.builder()
+        InvoicePackage invoice = InvoicePackage.builder()
                 .invoiceNumber("NF-001")
                 .invoiceUrl("https://nfe.example.com/NF-001.xml")
                 .invoiceKey("12345678901234567890123456789012345678901234")
@@ -29,7 +29,7 @@ public class OrderPackageInvoiceTest {
 
     @Test
     public void should_build_with_no_fields() {
-        OrderPackageInvoice invoice = OrderPackageInvoice.builder().build();
+        InvoicePackage invoice = InvoicePackage.builder().build();
 
         assertNotNull(invoice);
         assertNull(invoice.getInvoiceNumber());
@@ -41,7 +41,7 @@ public class OrderPackageInvoiceTest {
     @Test
     public void should_set_and_get_fields_via_setter() {
         Date date = new Date(2_000_000L);
-        OrderPackageInvoice invoice = new OrderPackageInvoice();
+        InvoicePackage invoice = new InvoicePackage();
         invoice.setInvoiceNumber("NF-002");
         invoice.setInvoiceUrl("https://nfe.example.com/NF-002.xml");
         invoice.setInvoiceKey("KEY-XYZ");
@@ -55,7 +55,7 @@ public class OrderPackageInvoiceTest {
 
     @Test
     public void should_serialize_all_fields_to_json() throws Exception {
-        OrderPackageInvoice invoice = OrderPackageInvoice.builder()
+        InvoicePackage invoice = InvoicePackage.builder()
                 .invoiceNumber("NF-001")
                 .invoiceUrl("https://nfe.example.com/NF-001.xml")
                 .invoiceKey("KEY-123")
@@ -70,7 +70,7 @@ public class OrderPackageInvoiceTest {
 
     @Test
     public void should_serialize_null_invoice_date_as_null() throws Exception {
-        OrderPackageInvoice invoice = OrderPackageInvoice.builder()
+        InvoicePackage invoice = InvoicePackage.builder()
                 .invoiceNumber("NF-001")
                 .build();
 
@@ -82,7 +82,7 @@ public class OrderPackageInvoiceTest {
     @Test
     public void should_serialize_invoice_date_not_as_raw_timestamp() throws Exception {
         Date date = new Date(0L);
-        OrderPackageInvoice invoice = OrderPackageInvoice.builder()
+        InvoicePackage invoice = InvoicePackage.builder()
                 .invoiceDate(date)
                 .build();
 
@@ -96,7 +96,7 @@ public class OrderPackageInvoiceTest {
     public void should_deserialize_from_json() throws Exception {
         String json = "{\"invoiceNumber\":\"NF-042\",\"invoiceUrl\":\"https://nfe.example.com\",\"invoiceKey\":\"K42\",\"invoiceDate\":null}";
 
-        OrderPackageInvoice invoice = objectMapper.readValue(json, OrderPackageInvoice.class);
+        InvoicePackage invoice = objectMapper.readValue(json, InvoicePackage.class);
 
         assertEquals("NF-042", invoice.getInvoiceNumber());
         assertEquals("https://nfe.example.com", invoice.getInvoiceUrl());

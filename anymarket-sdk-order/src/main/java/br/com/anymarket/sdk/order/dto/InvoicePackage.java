@@ -15,7 +15,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderPackageInvoice {
+public class InvoicePackage {
 
     private String invoiceNumber;
     private String invoiceUrl;

@@ -14,7 +14,7 @@ public class OrderPackageShippingTest {
     @Test
     public void should_build_with_all_fields() {
         Date date = new Date(1_000_000L);
-        OrderPackageShipping shipping = OrderPackageShipping.builder()
+        ShippingPackage shipping = ShippingPackage.builder()
                 .trackingNumber("BR123456789BR")
                 .carrier("Correios")
                 .shippedDate(date)
@@ -27,7 +27,7 @@ public class OrderPackageShippingTest {
 
     @Test
     public void should_build_with_no_fields() {
-        OrderPackageShipping shipping = OrderPackageShipping.builder().build();
+        ShippingPackage shipping = ShippingPackage.builder().build();
 
         assertNotNull(shipping);
         assertNull(shipping.getTrackingNumber());
@@ -37,7 +37,7 @@ public class OrderPackageShippingTest {
 
     @Test
     public void should_build_with_only_tracking_number() {
-        OrderPackageShipping shipping = OrderPackageShipping.builder()
+        ShippingPackage shipping = ShippingPackage.builder()
                 .trackingNumber("JD123456789BR")
                 .build();
 
@@ -49,7 +49,7 @@ public class OrderPackageShippingTest {
     @Test
     public void should_set_and_get_all_fields_via_setter() {
         Date date = new Date(5_000_000L);
-        OrderPackageShipping shipping = new OrderPackageShipping();
+        ShippingPackage shipping = new ShippingPackage();
         shipping.setTrackingNumber("UP999999999BR");
         shipping.setCarrier("Jadlog");
         shipping.setShippedDate(date);
@@ -61,7 +61,7 @@ public class OrderPackageShippingTest {
 
     @Test
     public void should_serialize_all_fields_to_json() throws Exception {
-        OrderPackageShipping shipping = OrderPackageShipping.builder()
+        ShippingPackage shipping = ShippingPackage.builder()
                 .trackingNumber("BR123456789BR")
                 .carrier("Correios")
                 .build();
@@ -74,7 +74,7 @@ public class OrderPackageShippingTest {
 
     @Test
     public void should_serialize_null_shipped_date_as_null() throws Exception {
-        OrderPackageShipping shipping = OrderPackageShipping.builder()
+        ShippingPackage shipping = ShippingPackage.builder()
                 .trackingNumber("T001")
                 .build();
 
@@ -86,7 +86,7 @@ public class OrderPackageShippingTest {
     @Test
     public void should_serialize_shipped_date_not_as_raw_timestamp() throws Exception {
         Date date = new Date(0L);
-        OrderPackageShipping shipping = OrderPackageShipping.builder()
+        ShippingPackage shipping = ShippingPackage.builder()
                 .shippedDate(date)
                 .build();
 
@@ -100,7 +100,7 @@ public class OrderPackageShippingTest {
     public void should_deserialize_from_json() throws Exception {
         String json = "{\"trackingNumber\":\"DE999999999BR\",\"carrier\":\"DHL\",\"shippedDate\":null}";
 
-        OrderPackageShipping shipping = objectMapper.readValue(json, OrderPackageShipping.class);
+        ShippingPackage shipping = objectMapper.readValue(json, ShippingPackage.class);
 
         assertEquals("DE999999999BR", shipping.getTrackingNumber());
         assertEquals("DHL", shipping.getCarrier());
@@ -109,13 +109,13 @@ public class OrderPackageShippingTest {
 
     @Test
     public void should_serialize_and_deserialize_roundtrip() throws Exception {
-        OrderPackageShipping original = OrderPackageShipping.builder()
+        ShippingPackage original = ShippingPackage.builder()
                 .trackingNumber("RT-001")
                 .carrier("FedEx")
                 .build();
 
         String json = objectMapper.writeValueAsString(original);
-        OrderPackageShipping deserialized = objectMapper.readValue(json, OrderPackageShipping.class);
+        ShippingPackage deserialized = objectMapper.readValue(json, ShippingPackage.class);
 
         assertEquals(original.getTrackingNumber(), deserialized.getTrackingNumber());
         assertEquals(original.getCarrier(), deserialized.getCarrier());

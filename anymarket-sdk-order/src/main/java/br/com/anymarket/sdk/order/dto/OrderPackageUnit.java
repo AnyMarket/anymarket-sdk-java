@@ -18,7 +18,7 @@ public class OrderPackageUnit {
     private String externalId;
     private List<ItemsPackage> items;
     private DimensionsPackage dimensions;
-    private OrderPackageInvoice invoice;
-    private OrderPackageShipping tracking;
-    private OrderPackageDelivery delivered;
+    private InvoicePackage invoice;
+    private ShippingPackage tracking;
+    private DeliveryPackage delivered;
 }

@@ -10,13 +10,15 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@Builder
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderPackageDelivery {
+public class ShippingPackage {
 
+    private String trackingNumber;
+    private String carrier;
     @JsonSerialize(using = SDKDateSerializer.class)
-    private Date deliveredDate;
+    private Date shippedDate;
 }

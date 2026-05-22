@@ -32,15 +32,15 @@ public class OrderPackageUnitTest {
     @Test
     public void should_build_fully_populated_unit() {
         UUID id = UUID.randomUUID();
-        OrderPackageInvoice invoice = OrderPackageInvoice.builder()
+        InvoicePackage invoice = InvoicePackage.builder()
                 .invoiceNumber("NF-001")
                 .invoiceKey("key-abc")
                 .build();
-        OrderPackageShipping shipping = OrderPackageShipping.builder()
+        ShippingPackage shipping = ShippingPackage.builder()
                 .trackingNumber("BR123456789")
                 .carrier("Correios")
                 .build();
-        OrderPackageDelivery delivery = OrderPackageDelivery.builder().build();
+        DeliveryPackage delivery = DeliveryPackage.builder().build();
 
         OrderPackageUnit unit = OrderPackageUnit.builder()
                 .packageIdItem(id)

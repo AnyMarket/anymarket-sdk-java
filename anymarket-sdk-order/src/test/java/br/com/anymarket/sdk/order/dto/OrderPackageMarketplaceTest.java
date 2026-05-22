@@ -144,9 +144,9 @@ public class OrderPackageMarketplaceTest {
         OrderPackageUnit unit = OrderPackageUnit.builder()
                 .packageIdItem(unitId)
                 .externalId("EXT-1")
-                .invoice(OrderPackageInvoice.builder().invoiceNumber("NF-001").build())
-                .tracking(OrderPackageShipping.builder().trackingNumber("T123").carrier("Correios").build())
-                .delivered(OrderPackageDelivery.builder().build())
+                .invoice(InvoicePackage.builder().invoiceNumber("NF-001").build())
+                .tracking(ShippingPackage.builder().trackingNumber("T123").carrier("Correios").build())
+                .delivered(DeliveryPackage.builder().build())
                 .build();
 
         OrderPackageMarketplace dto = OrderPackageMarketplace.builder()

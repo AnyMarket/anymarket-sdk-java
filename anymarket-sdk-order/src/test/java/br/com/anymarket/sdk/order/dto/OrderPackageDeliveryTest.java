@@ -14,7 +14,7 @@ public class OrderPackageDeliveryTest {
     @Test
     public void should_build_delivery_with_delivered_date() {
         Date now = new Date();
-        OrderPackageDelivery delivery = OrderPackageDelivery.builder()
+        DeliveryPackage delivery = DeliveryPackage.builder()
                 .deliveredDate(now)
                 .build();
 
@@ -24,7 +24,7 @@ public class OrderPackageDeliveryTest {
 
     @Test
     public void should_build_delivery_with_null_delivered_date() {
-        OrderPackageDelivery delivery = OrderPackageDelivery.builder().build();
+        DeliveryPackage delivery = DeliveryPackage.builder().build();
 
         assertNotNull(delivery);
         assertNull(delivery.getDeliveredDate());
@@ -33,7 +33,7 @@ public class OrderPackageDeliveryTest {
     @Test
     public void should_set_delivered_date_via_setter() {
         Date date = new Date(1_000_000L);
-        OrderPackageDelivery delivery = new OrderPackageDelivery();
+        DeliveryPackage delivery = new DeliveryPackage();
         delivery.setDeliveredDate(date);
 
         assertEquals(date, delivery.getDeliveredDate());
@@ -42,7 +42,7 @@ public class OrderPackageDeliveryTest {
     @Test
     public void should_serialize_delivered_date_as_string_not_timestamp() throws Exception {
         Date date = new Date(0L);
-        OrderPackageDelivery delivery = OrderPackageDelivery.builder().deliveredDate(date).build();
+        DeliveryPackage delivery = DeliveryPackage.builder().deliveredDate(date).build();
 
         String json = objectMapper.writeValueAsString(delivery);
 
@@ -52,7 +52,7 @@ public class OrderPackageDeliveryTest {
 
     @Test
     public void should_serialize_null_delivered_date_as_null() throws Exception {
-        OrderPackageDelivery delivery = OrderPackageDelivery.builder().build();
+        DeliveryPackage delivery = DeliveryPackage.builder().build();
 
         String json = objectMapper.writeValueAsString(delivery);
 
