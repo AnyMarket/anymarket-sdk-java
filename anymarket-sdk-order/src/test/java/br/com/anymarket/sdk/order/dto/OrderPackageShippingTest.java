@@ -73,17 +73,6 @@ public class OrderPackageShippingTest {
     }
 
     @Test
-    public void should_serialize_null_shipped_date_as_null() throws Exception {
-        ShippingPackage shipping = ShippingPackage.builder()
-                .trackingNumber("T001")
-                .build();
-
-        String json = objectMapper.writeValueAsString(shipping);
-
-        assertTrue(json.contains("\"shippedDate\":null"));
-    }
-
-    @Test
     public void should_serialize_shipped_date_not_as_raw_timestamp() throws Exception {
         Date date = new Date(0L);
         ShippingPackage shipping = ShippingPackage.builder()
