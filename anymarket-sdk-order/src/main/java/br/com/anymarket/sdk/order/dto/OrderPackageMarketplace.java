@@ -5,13 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderPackageMarketplace {
+public class OrderPackageMarketplace implements Serializable {
 
     private Long orderId;
     private Long packageId;
