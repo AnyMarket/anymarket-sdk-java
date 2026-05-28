@@ -73,7 +73,7 @@ public class SkuService extends HttpService {
     public Sku updateSku(final Sku sku, final Long idProduct, IntegrationHeader... headers) {
         checkNotNull(sku, "Informe o Sku a ser atualizado.");
         checkNotNull(idProduct, PRODUCT_ID_REQUIRED_MESSAGE);
-        RequestBodyEntity put = put(getURLFormated(idProduct).concat("/").concat(sku.getId().toString()), sku, addModuleOriginHeader(headers, this.moduleOrigin));
+        RequestBodyEntity put = put(getURLFormated(idProduct).concat(sku.getId().toString()), sku, addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(put);
         return response.to(Sku.class);
     }
@@ -87,7 +87,7 @@ public class SkuService extends HttpService {
     }
 
     public List<Sku> getAllSkus(final Long idProduct, IntegrationHeader... headers) {
-        final GetRequest getRequest = get(getURLFormated(idProduct).concat("/"), addModuleOriginHeader(headers, this.moduleOrigin));
+        final GetRequest getRequest = get(getURLFormated(idProduct), addModuleOriginHeader(headers, this.moduleOrigin));
         final Response response = execute(getRequest);
         if (response.getStatus() == HttpStatus.SC_OK) {
             return response.to(new TypeReference<List<Sku>>() {
@@ -104,7 +104,7 @@ public class SkuService extends HttpService {
     public <T> T getSku(Long idSku, final Long idProduct, Class<T> clazz, IntegrationHeader... headers) {
         checkNotNull(idSku, SKU_ID_REQUIRED_MESSAGE);
         checkNotNull(idProduct, PRODUCT_ID_REQUIRED_MESSAGE);
-        GetRequest getRequest = get(getURLFormated(idProduct).concat("/").concat(idSku.toString()), addModuleOriginHeader(headers, this.moduleOrigin));
+        GetRequest getRequest = get(getURLFormated(idProduct).concat(idSku.toString()), addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(getRequest);
         if (response.getStatus() == HttpStatus.SC_OK) {
             return response.to(clazz);

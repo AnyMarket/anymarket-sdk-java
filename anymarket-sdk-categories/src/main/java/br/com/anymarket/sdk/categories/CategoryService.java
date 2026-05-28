@@ -48,7 +48,7 @@ public class CategoryService extends HttpService {
     }
 
     public Category updateCategory(Category category, IntegrationHeader... headers) {
-        RequestBodyEntity putRequest = put(apiEndPoint + CATEGORIES_URI + "/" + category.getId(), category, addModuleOriginHeader(headers, this.moduleOrigin));
+        RequestBodyEntity putRequest = put(apiEndPoint + CATEGORIES_URI + category.getId(), category, addModuleOriginHeader(headers, this.moduleOrigin));
         Response response = execute(putRequest);
         return response.to(Category.class);
     }
