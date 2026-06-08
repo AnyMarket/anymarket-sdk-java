@@ -249,7 +249,8 @@ public enum MarketPlace {
     REDE_D1000("Rede D1000"),
     TROCAMOTOR("Trocamotor"),
     ADDI("Addi"),
-    PUNTOS("Puntos");
+    PUNTOS("Puntos"),
+    FORGE_MKP("Forge MKP");
 
     private String name;
     private final boolean specificConsumer;
