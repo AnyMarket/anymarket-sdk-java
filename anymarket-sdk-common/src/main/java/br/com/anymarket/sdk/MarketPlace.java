@@ -250,7 +250,8 @@ public enum MarketPlace {
     TROCAMOTOR("Trocamotor"),
     ADDI("Addi"),
     PUNTOS("Puntos"),
-    FORGE_MKP("Forge MKP");
+    FORGE_MKP("Forge MKP"),
+    BRAVIUM_NEW_API("Bravium New Api");
 
     private String name;
     private final boolean specificConsumer;
