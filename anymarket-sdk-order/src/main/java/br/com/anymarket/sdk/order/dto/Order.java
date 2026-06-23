@@ -1,6 +1,7 @@
 package br.com.anymarket.sdk.order.dto;
 
 import br.com.anymarket.sdk.MarketPlace;
+import br.com.anymarket.sdk.order.dto.packages.OrderPackageResourceTrackingCode;
 import br.com.anymarket.sdk.serializer.SDKDateSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -180,6 +181,12 @@ public class Order {
     @JsonProperty("printTagDate")
     @JsonSerialize(using = SDKDateSerializer.class)
     private Date printTagDate;
+
+    @JsonProperty("packages")
+    private List<OrderPackageResourceTrackingCode> packages;
+
+    @JsonProperty("hasPackages")
+    private boolean hasPackages;
 
     @JsonProperty("discountMetadata")
     private List<DiscountMetadata> discountMetadata = new ArrayList<>();
@@ -608,6 +615,22 @@ public class Order {
         this.printTagDate = printTagDate;
     }
 
+    public List<OrderPackageResourceTrackingCode> getPackages() {
+        return packages;
+    }
+
+    public void setPackages(List<OrderPackageResourceTrackingCode> packages) {
+        this.packages = packages;
+    }
+
+    public boolean isHasPackages() {
+        return hasPackages;
+    }
+
+    public void setHasPackages(boolean hasPackages) {
+        this.hasPackages = hasPackages;
+    }
+
     public List<DiscountMetadata> getDiscountMetadata() {
         return discountMetadata;
     }
@@ -657,6 +680,8 @@ public class Order {
                 .add("metadata", metadata)
                 .add("orderTypeName", orderTypeName)
                 .add("printTagDate", printTagDate)
+                .add("packages", packages)
+                .add("hasPackages", hasPackages)
                 .add("discountMetadata", discountMetadata)
                 .add("lastUpdate", lastUpdate)
                 .toString();
