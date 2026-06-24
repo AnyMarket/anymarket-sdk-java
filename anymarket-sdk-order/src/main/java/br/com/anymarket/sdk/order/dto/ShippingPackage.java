@@ -23,4 +23,5 @@ public class ShippingPackage {
     private String carrier;
     @JsonSerialize(using = SDKDateSerializer.class)
     private Date shippedDate;
+    private String url;
 }
