@@ -12,5 +12,4 @@ public class DiscountMetadata {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     List<DiscountDetails> discountDetails;
-
 }
