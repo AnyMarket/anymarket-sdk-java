@@ -242,8 +242,8 @@ public class DiscountMetadataTest {
                 null
         );
 
-        assertTrue(withNullType.hashCode() != 0);
-        assertTrue(withNullDetails.hashCode() != 0);
+        assertNotEquals(0, withNullType.hashCode());
+        assertNotEquals(0, withNullDetails.hashCode());
     }
 
     private DiscountMetadata metadataWith(java.util.List<DiscountType> types, java.util.List<DiscountDetails> details) {

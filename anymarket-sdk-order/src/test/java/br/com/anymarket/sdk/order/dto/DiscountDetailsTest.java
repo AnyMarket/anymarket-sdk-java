@@ -139,7 +139,7 @@ public class DiscountDetailsTest {
     public void should_generate_hashcode_when_fields_are_null() {
         DiscountDetails details = new DiscountDetails();
 
-        assertTrue(details.hashCode() != 0);
+        assertNotEquals(0, details.hashCode());
     }
 
     private DiscountDetails discountDetails(DiscountType type, String sellerValue, String marketplaceValue) {
