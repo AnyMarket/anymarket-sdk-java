@@ -165,6 +165,87 @@ public class DiscountMetadataTest {
         assertTrue(asString.contains("COUPON"));
     }
 
+    @Test
+    public void should_be_equal_to_itself() {
+        DiscountMetadata metadata = metadataWith(
+                Collections.singletonList(DiscountType.COUPON),
+                Collections.singletonList(discountDetails(DiscountType.COUPON, "10.00", "5.00"))
+        );
+
+        assertEquals(metadata, metadata);
+    }
+
+    @Test
+    public void should_be_equal_when_both_objects_have_null_fields() {
+        DiscountMetadata left = new DiscountMetadata();
+        DiscountMetadata right = new DiscountMetadata();
+
+        assertEquals(left, right);
+        assertEquals(left.hashCode(), right.hashCode());
+    }
+
+    @Test
+    public void should_not_be_equal_when_type_nullability_differs() {
+        DiscountMetadata leftWithNullType = metadataWith(
+                null,
+                Collections.singletonList(discountDetails(DiscountType.COUPON, "10.00", "5.00"))
+        );
+
+        DiscountMetadata rightWithType = metadataWith(
+                Collections.singletonList(DiscountType.COUPON),
+                Collections.singletonList(discountDetails(DiscountType.COUPON, "10.00", "5.00"))
+        );
+
+        assertNotEquals(leftWithNullType, rightWithType);
+        assertNotEquals(rightWithType, leftWithNullType);
+    }
+
+    @Test
+    public void should_not_be_equal_when_discount_details_nullability_differs() {
+        DiscountMetadata leftWithNullDetails = metadataWith(
+                Collections.singletonList(DiscountType.COUPON),
+                null
+        );
+
+        DiscountMetadata rightWithDetails = metadataWith(
+                Collections.singletonList(DiscountType.COUPON),
+                Collections.singletonList(discountDetails(DiscountType.COUPON, "10.00", "5.00"))
+        );
+
+        assertNotEquals(leftWithNullDetails, rightWithDetails);
+        assertNotEquals(rightWithDetails, leftWithNullDetails);
+    }
+
+    @Test
+    public void should_not_be_equal_when_can_equal_is_false() {
+        DiscountMetadata base = metadataWith(
+                Collections.singletonList(DiscountType.COUPON),
+                Collections.singletonList(discountDetails(DiscountType.COUPON, "10.00", "5.00"))
+        );
+
+        DiscountMetadataWithStrictCanEqual strict = new DiscountMetadataWithStrictCanEqual();
+        strict.setType(Collections.singletonList(DiscountType.COUPON));
+        strict.setDiscountDetails(Collections.singletonList(discountDetails(DiscountType.COUPON, "10.00", "5.00")));
+
+        assertNotEquals(base, strict);
+    }
+
+    @Test
+    public void should_generate_hashcode_when_only_one_field_is_null() {
+        DiscountMetadata withNullType = metadataWith(
+                null,
+                Collections.singletonList(discountDetails(DiscountType.COUPON, "10.00", "5.00"))
+        );
+
+        DiscountMetadata withNullDetails = metadataWith(
+                Collections.singletonList(DiscountType.COUPON),
+                null
+        );
+
+        assertTrue(withNullType.hashCode() != 0);
+        assertTrue(withNullDetails.hashCode() != 0);
+    }
+
     private DiscountMetadata metadataWith(java.util.List<DiscountType> types, java.util.List<DiscountDetails> details) {
         DiscountMetadata metadata = new DiscountMetadata();
         metadata.setType(types);
@@ -178,5 +259,12 @@ public class DiscountMetadataTest {
         details.setDiscountOrderSeller(new BigDecimal(sellerValue));
         details.setDiscountOrderMarketplace(new BigDecimal(marketplaceValue));
         return details;
+    }
+
+    private static class DiscountMetadataWithStrictCanEqual extends DiscountMetadata {
+        @Override
+        protected boolean canEqual(Object other) {
+            return false;
+        }
     }
 }
