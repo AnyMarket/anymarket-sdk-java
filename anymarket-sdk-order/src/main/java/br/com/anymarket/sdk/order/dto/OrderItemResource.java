@@ -33,6 +33,9 @@ public class OrderItemResource {
     @JsonProperty("discount")
     private BigDecimal discount;
 
+    @JsonProperty("discountItemMetadata")
+    private List<DiscountItemMetadata> discountItemMetadata = new ArrayList<>();
+
     @JsonProperty("shippings")
     private List<OrderItemShippingResource> shippings = new ArrayList();
 
@@ -118,6 +121,14 @@ public class OrderItemResource {
 
     public void setDiscount(BigDecimal discount) {
         this.discount = discount;
+    }
+
+    public List<DiscountItemMetadata> getDiscountItemMetadata() {
+        return discountItemMetadata;
+    }
+
+    public void setDiscountItemMetadata(List<DiscountItemMetadata> discountItemMetadata) {
+        this.discountItemMetadata = discountItemMetadata;
     }
 
     public List<OrderItemShippingResource> getShippings() {
@@ -209,6 +220,7 @@ public class OrderItemResource {
             .add("gross", gross)
             .add("total", total)
             .add("discount", discount)
+            .add("discountItemMetadata", discountItemMetadata)
             .add("shippings", shippings)
             .add("marketPlaceId", marketPlaceId)
             .add("stocks", stocks)
