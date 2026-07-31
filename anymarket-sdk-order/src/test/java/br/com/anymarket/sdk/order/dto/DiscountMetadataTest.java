@@ -75,6 +75,31 @@ public class DiscountMetadataTest {
     }
 
     @Test
+    public void should_not_serialize_type_as_null_when_type_is_absent_on_round_trip() throws Exception {
+        DiscountMetadata parsed = objectMapper.readValue("{}", DiscountMetadata.class);
+
+        String json = objectMapper.writeValueAsString(parsed);
+
+        assertFalse(json.contains("\"type\":null"));
+    }
+
+    @Test
+    public void should_not_serialize_type_as_null_when_type_is_explicit_null_on_round_trip() throws Exception {
+        DiscountMetadata parsed = objectMapper.readValue("{\"type\": null}", DiscountMetadata.class);
+
+        String json = objectMapper.writeValueAsString(parsed);
+
+        assertFalse(json.contains("\"type\":null"));
+    }
+
+    @Test
+    public void should_have_non_null_discount_details_when_freshly_constructed() {
+        DiscountMetadata metadata = new DiscountMetadata();
+
+        assertTrue(metadata.getDiscountDetails().isEmpty());
+    }
+
+    @Test
     public void should_set_and_get_fields_from_data_annotation() {
         DiscountDetails firstDetail = discountDetails(DiscountType.COUPON, "10.00", "5.00");
         DiscountDetails secondDetail = discountDetails(DiscountType.FREE_ITEM, "2.00", "1.00");
@@ -176,7 +201,7 @@ public class DiscountMetadataTest {
     }
 
     @Test
-    public void should_be_equal_when_both_objects_have_null_fields() {
+    public void should_be_equal_when_both_objects_are_freshly_constructed() {
         DiscountMetadata left = new DiscountMetadata();
         DiscountMetadata right = new DiscountMetadata();
 
