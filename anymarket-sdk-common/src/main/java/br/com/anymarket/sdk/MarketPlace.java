@@ -253,7 +253,7 @@ public enum MarketPlace {
     FORGE_MKP("Forge MKP"),
     BRAVIUM_NEW_API("Bravium New Api"),
     TEMU("Temu"),
-    NINETY_NINE_FOOD("Ninety Nine Food");
+    NINETY_NINE_FOOD("99 Food");
 
     private String name;
     private final boolean specificConsumer;
