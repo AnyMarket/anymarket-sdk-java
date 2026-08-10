@@ -1,0 +1,17 @@
+# CODEOWNERS — anymarket/anymarket-sdk-java
+#
+# Time dono: Developer Solutions  ->  @anymarket/times/developer-solutions
+#
+# Este arquivo registra APENAS quem e o dono desta codebase.
+#
+# Ele e a fonte da verdade versionada do ownership e alimenta a checagem de
+# aprovacao de revisor, que verifica se todo merge na branch principal teve
+# aprovacao de par - revisor diferente do autor (Feature ADO 2080684, politica
+# de gestao de mudancas, ISO/IEC 27001:2022 A.8.32). Essa verificacao e feita
+# pela esteira, nao por este arquivo.
+#
+# O dono vem do mapa de ownership de codebase, validado com o proprio time em
+# 2026-08-03. Para mudar o dono, alinhe com o CTO: a rotina semanal compara
+# este arquivo com o mapa e reporta divergencia nos dois sentidos.
+
+*    @anymarket/times/developer-solutions
