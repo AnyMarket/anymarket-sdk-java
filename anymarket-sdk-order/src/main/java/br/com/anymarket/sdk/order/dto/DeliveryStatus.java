@@ -17,7 +17,8 @@ public enum DeliveryStatus {
     SHIPPED("Enviado", "7"),
     SHIP_CONFIRMED("Ship Confirmed","8"),
     QUARANTINE("Quarentena","9"),
-    NOT_DELIVERED("Não entregue", "10");
+    NOT_DELIVERED("Não entregue", "10"),
+    LOST_IN_TRANSIT("Perdido em trânsito", "11");
 
     private final String description;
     private final String code;
