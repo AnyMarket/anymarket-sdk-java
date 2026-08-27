@@ -4,7 +4,19 @@ variables:
   MR_BUILD_ENABLED: "true"
   MAVEN_BUILD_IMAGE_GOAL : "clean source:jar install deploy"
 
+  # manifesto de visibilidade: esta lib nao tem tags @api.* (nao e lib de
+  # contrato), mas os ENUMS dela aparecem na doc publica dos servicos que a
+  # consomem. O manifesto sai so com os enums e da lastro pro verify do
+  # docs-sync — nenhum tagueamento necessario aqui.
+  VISIBILITY_MANIFEST_ENABLED: "true"
+  # o consumidor pina br.com.anymarket.sdk:anymarket-sdk-all; o pom raiz e
+  # agregador e ninguem o declara como dependencia.
+  VISIBILITY_MANIFEST_ARTIFACT: "anymarket-sdk-all"
+
 include:
   - project: anymarket/pipelines-anymarket
     ref: master
     file: /dependencies/ci-cd-base-config.yml
+  - project: anymarket/pipelines-anymarket
+    ref: master
+    file: /modules/deploy/post-deploy/visibility-manifest.yml
