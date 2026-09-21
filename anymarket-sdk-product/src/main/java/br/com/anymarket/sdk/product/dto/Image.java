@@ -66,6 +66,9 @@ public class Image {
     @JsonProperty("originalHeight")
     private Integer originalHeight;
 
+    @JsonProperty("useCase")
+    private AnyImageType type;
+
     public Long getId() {
         return id;
     }
@@ -186,6 +189,14 @@ public class Image {
         this.originalHeight = originalHeight;
     }
 
+    public AnyImageType getType() {
+        return type;
+    }
+
+    public void setType(final AnyImageType type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -204,6 +215,7 @@ public class Image {
             .add("standardHeight", standardHeight)
             .add("originalWidth", originalWidth)
             .add("originalHeight", originalHeight)
+            .add("type", type)
             .toString();
     }
 }
