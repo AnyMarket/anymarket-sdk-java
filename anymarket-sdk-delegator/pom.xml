@@ -6,7 +6,7 @@
   <parent>
     <artifactId>anymarket-sdk-java</artifactId>
     <groupId>br.com.anymarket.sdk</groupId>
-    <version>0.90.85</version>
+    <version>0.90.86</version>
   </parent>
 
   <artifactId>anymarket-sdk-delegator</artifactId>
@@ -15,6 +15,11 @@
     <dependency>
       <groupId>br.com.anymarket.sdk</groupId>
       <artifactId>anymarket-sdk-common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
