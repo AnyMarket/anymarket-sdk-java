@@ -254,7 +254,8 @@ public enum MarketPlace {
     BRAVIUM_NEW_API("Bravium New Api"),
     TEMU("Temu"),
     NINETY_NINE_FOOD("99 Food"),
-    TROCAMOTOR_NOVA_API("Trocamotor Nova API");
+    TROCAMOTOR_NOVA_API("Trocamotor Nova API"),
+    STONE("STONE");
 
     private String name;
     private final boolean specificConsumer;
