@@ -323,7 +323,7 @@ public class ProductService extends HttpService {
 
     private void normalizeIdOnlyObject(Map<String, Object> map, String key) {
         Optional<Map<String, Object>> opt = asMap(map.get(key));
-        if (!opt.isPresent()) {
+        if (opt.isEmpty()) {
             return;
         }
 
@@ -341,7 +341,7 @@ public class ProductService extends HttpService {
 
     private void normalizeBrand(Map<String, Object> map) {
         Optional<Map<String, Object>> opt = asMap(map.get(BRAND));
-        if (!opt.isPresent()) {
+        if (opt.isEmpty()) {
             return;
         }
 
