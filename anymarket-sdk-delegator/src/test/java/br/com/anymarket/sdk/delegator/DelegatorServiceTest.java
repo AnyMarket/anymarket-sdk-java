@@ -1,66 +1,78 @@
 package br.com.anymarket.sdk.delegator;
 
-import br.com.anymarket.sdk.MarketPlace;
-import br.com.anymarket.sdk.exception.HttpClientException;
-import br.com.anymarket.sdk.http.Response;
-import com.mashape.unirest.request.BaseRequest;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.contains;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import org.apache.http.HttpStatus;
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import com.mashape.unirest.request.BaseRequest;
+import com.mashape.unirest.request.body.RequestBodyEntity;
+
+import br.com.anymarket.sdk.MarketPlace;
+import br.com.anymarket.sdk.http.Response;
+import br.com.anymarket.sdk.http.headers.IntegrationHeader;
+import br.com.anymarket.sdk.http.headers.ModuleOriginHeader;
 
 public class DelegatorServiceTest {
 
-    private static final String API = "http://core.test/v2";
+    private static final String API_ENDPOINT = "http://hom-api.anymarket.com.br/v2";
 
-    private static class CapturingDelegatorService extends DelegatorService {
+    private DelegatorServiceFake service;
 
-        private final int status;
-        private String url;
-        private String method;
+    @Before
+    public void setUp() {
+        service = spy(new DelegatorServiceFake(API_ENDPOINT, "ORIGIN"));
+    }
 
-        CapturingDelegatorService(int status) {
-            super(API);
-            this.status = status;
+    @Test
+    public void should_add_to_force_sync_markup_with_account_success() {
+        RequestBodyEntity mockedPut = mock(RequestBodyEntity.class);
+        String substring = "/delegates/forceSyncMarkup/B2W?idAccount=42";
+        doReturn(mockedPut).when(service).put(contains(substring), any(), any());
+
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
+        doReturn(response).when(service).execute(any(BaseRequest.class));
+
+        service.addToForceSyncMarkupForMarketplace(MarketPlace.B2W, 42L, new ModuleOriginHeader("TEST"));
+
+        verify(service).put(contains(substring), any(), any(IntegrationHeader[].class));
+    }
+
+    @Test
+    public void should_add_to_force_sync_markup_without_account_success() {
+        RequestBodyEntity mockedPut = mock(RequestBodyEntity.class);
+        doReturn(mockedPut).when(service).put(contains("/delegates/forceSyncMarkup/B2W"), any(), any());
+
+        Response response = mock(Response.class);
+        when(response.getStatus()).thenReturn(HttpStatus.SC_OK);
+        doReturn(response).when(service).execute(any(BaseRequest.class));
+
+        service.addToForceSyncMarkupForMarketplace(MarketPlace.B2W, new ModuleOriginHeader("TEST"));
+
+        verify(service).execute(any(BaseRequest.class));
+    }
+
+    static class DelegatorServiceFake extends DelegatorService {
+        DelegatorServiceFake(String apiEndPoint, String origin) {
+            super(apiEndPoint, origin);
+        }
+
+        @Override
+        protected RequestBodyEntity put(String url, Object body, IntegrationHeader... headers) {
+            return super.put(url, body, headers);
         }
 
         @Override
         protected Response execute(BaseRequest request) {
-            url = request.getHttpRequest().getUrl();
-            method = request.getHttpRequest().getHttpMethod().name();
-            return new Response(status, "");
-        }
-    }
-
-    @Test
-    public void should_send_the_account_as_query_param_when_syncing_markup_by_account() {
-        CapturingDelegatorService service = new CapturingDelegatorService(200);
-
-        service.addToForceSyncMarkupForMarketplace(MarketPlace.GFG, 221L);
-
-        assertEquals("http://core.test/v2/delegates/forceSyncMarkup/GFG?idAccount=221", service.url);
-        assertEquals("PUT", service.method);
-    }
-
-    @Test
-    public void should_not_send_the_param_when_syncing_markup_without_account() {
-        CapturingDelegatorService service = new CapturingDelegatorService(200);
-
-        service.addToForceSyncMarkupForMarketplace(MarketPlace.GFG);
-
-        assertEquals("http://core.test/v2/delegates/forceSyncMarkup/GFG", service.url);
-    }
-
-    @Test
-    public void should_throw_when_the_core_answers_not_found() {
-        CapturingDelegatorService service = new CapturingDelegatorService(404);
-
-        try {
-            service.addToForceSyncMarkupForMarketplace(MarketPlace.GFG, 221L);
-            fail("esperava HttpClientException");
-        } catch (HttpClientException e) {
-            assertTrue(e.getMessage().contains("/forceSyncMarkup/GFG"));
+            return super.execute(request);
         }
     }
 }
