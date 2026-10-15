@@ -3,6 +3,7 @@ variables:
   JAVA_VERSION: 11
   MR_BUILD_ENABLED: "true"
   MAVEN_BUILD_IMAGE_GOAL : "clean source:jar install deploy"
+  MR_SONAR_ENABLED: "true"
 
   # manifesto de visibilidade: esta lib nao tem tags @api.* (nao e lib de
   # contrato), mas os ENUMS dela aparecem na doc publica dos servicos que a

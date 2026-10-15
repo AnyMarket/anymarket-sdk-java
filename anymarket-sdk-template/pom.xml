@@ -5,7 +5,7 @@
   <parent>
     <artifactId>anymarket-sdk-java</artifactId>
     <groupId>br.com.anymarket.sdk</groupId>
-    <version>0.90.87</version>
+    <version>0.90.88</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -13,7 +13,6 @@
   <artifactId>anymarket-sdk-template</artifactId>
 
   <dependencies>
-
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
@@ -23,14 +22,22 @@
       <groupId>br.com.anymarket.sdk</groupId>
       <artifactId>anymarket-sdk-common</artifactId>
     </dependency>
-      <dependency>
-          <groupId>org.projectlombok</groupId>
-          <artifactId>lombok</artifactId>
-          <version>1.18.34</version>
-          <scope>provided</scope>
-      </dependency>
-
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.46</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-
 
 </project>

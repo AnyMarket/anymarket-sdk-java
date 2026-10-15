@@ -23,12 +23,11 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequestWithBody;
 import com.mashape.unirest.request.body.MultipartBody;
 import org.apache.http.entity.ContentType;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -37,14 +36,11 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({AnyMarketRestDSL.class, Unirest.class})
 public class OrderPackageServiceTest {
 
     private static final Long ORDER_ID = 123L;
@@ -54,6 +50,9 @@ public class OrderPackageServiceTest {
 
     private Response mockDslResponse;
     private HttpRequestWithBody mockUnirestPost;
+
+    private MockedStatic<AnyMarketRestDSL> mockedRestDSL;
+    private MockedStatic<Unirest> mockedUnirest;
 
     @Before
     public void setUp() throws UnirestException {
@@ -74,20 +73,26 @@ public class OrderPackageServiceTest {
         when(mockGetRequest.routeParam(anyString(), anyString())).thenReturn(mockGetRequest);
         when(mockGetRequest.getResponse()).thenReturn(mockDslResponse);
 
-        mockStatic(AnyMarketRestDSL.class);
-        when(AnyMarketRestDSL.post(anyString())).thenReturn(mockPostPutRequest);
-        when(AnyMarketRestDSL.get(anyString())).thenReturn(mockGetRequest);
-        when(AnyMarketRestDSL.put(anyString())).thenReturn(mockPostPutRequest);
+        mockedRestDSL = Mockito.mockStatic(AnyMarketRestDSL.class);
+        mockedRestDSL.when(() -> AnyMarketRestDSL.post(anyString())).thenReturn(mockPostPutRequest);
+        mockedRestDSL.when(() -> AnyMarketRestDSL.get(anyString())).thenReturn(mockGetRequest);
+        mockedRestDSL.when(() -> AnyMarketRestDSL.put(anyString())).thenReturn(mockPostPutRequest);
 
         MultipartBody mockMultipartBody = mock(MultipartBody.class);
         when(mockUnirestPost.header(anyString(), anyString())).thenReturn(mockUnirestPost);
         when(mockUnirestPost.fields(any(java.util.Map.class))).thenReturn(mockMultipartBody);
         when(mockMultipartBody.field(anyString(), any(byte[].class), any(ContentType.class), anyString())).thenReturn(mockMultipartBody);
 
-        mockStatic(Unirest.class);
-        when(Unirest.post(anyString())).thenReturn(mockUnirestPost);
+        mockedUnirest = Mockito.mockStatic(Unirest.class);
+        mockedUnirest.when(() -> Unirest.post(anyString())).thenReturn(mockUnirestPost);
         HttpResponse<String> mockUnirestResponse = mock(HttpResponse.class);
         when(mockUnirestPost.asString()).thenReturn(mockUnirestResponse);
+    }
+
+    @After
+    public void tearDown() {
+        mockedRestDSL.close();
+        mockedUnirest.close();
     }
 
     @Test
@@ -173,8 +178,7 @@ public class OrderPackageServiceTest {
         assertNotNull(result);
         assertEquals(ORDER_ID, result.getOrderId());
         assertEquals(Long.valueOf(10L), result.getPackageId());
-        PowerMockito.verifyStatic();
-        AnyMarketRestDSL.post(ENDPOINT.concat("/orders/{orderId}/packages"));
+        mockedRestDSL.verify(() -> AnyMarketRestDSL.post(ENDPOINT.concat("/orders/{orderId}/packages")));
     }
 
     @Test(expected = NullPointerException.class)
@@ -191,8 +195,7 @@ public class OrderPackageServiceTest {
 
         assertNotNull(result);
         assertEquals(1, result.size());
-        PowerMockito.verifyStatic();
-        AnyMarketRestDSL.get(ENDPOINT.concat("/orders/{orderId}/packages"));
+        mockedRestDSL.verify(() -> AnyMarketRestDSL.get(ENDPOINT.concat("/orders/{orderId}/packages")));
     }
 
     @Test(expected = NullPointerException.class)
@@ -204,8 +207,7 @@ public class OrderPackageServiceTest {
     public void invoice_package_with_null_xml_bytes_should_post_without_file_field() {
         service.invoicePackage(ORDER_ID, null, buildValidInvoiceResource());
 
-        PowerMockito.verifyStatic();
-        Unirest.post(ENDPOINT.concat("/orders/").concat(ORDER_ID.toString()).concat("/fiscalDocument"));
+        mockedUnirest.verify(() -> Unirest.post(ENDPOINT.concat("/orders/").concat(ORDER_ID.toString()).concat("/fiscalDocument")));
     }
 
     @Test(expected = NullPointerException.class)
@@ -217,8 +219,7 @@ public class OrderPackageServiceTest {
     public void invoice_package_should_post_to_fiscal_document_endpoint() {
         service.invoicePackage(ORDER_ID, new byte[0], buildValidInvoiceResource());
 
-        PowerMockito.verifyStatic();
-        Unirest.post(ENDPOINT.concat("/orders/").concat(ORDER_ID.toString()).concat("/fiscalDocument"));
+        mockedUnirest.verify(() -> Unirest.post(ENDPOINT.concat("/orders/").concat(ORDER_ID.toString()).concat("/fiscalDocument")));
     }
 
     @Test
@@ -227,8 +228,7 @@ public class OrderPackageServiceTest {
 
         serviceWithOrigin.invoicePackage(ORDER_ID, new byte[0], buildValidInvoiceResource());
 
-        PowerMockito.verifyStatic();
-        Unirest.post(ENDPOINT.concat("/orders/").concat(ORDER_ID.toString()).concat("/fiscalDocument"));
+        mockedUnirest.verify(() -> Unirest.post(ENDPOINT.concat("/orders/").concat(ORDER_ID.toString()).concat("/fiscalDocument")));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -261,8 +261,7 @@ public class OrderPackageServiceTest {
         Order result = service.sendPackage(ORDER_ID, "pkg-1", buildValidTrackingResource());
 
         assertNotNull(result);
-        PowerMockito.verifyStatic();
-        AnyMarketRestDSL.put(ENDPOINT.concat("/orders/{orderId}"));
+        mockedRestDSL.verify(() -> AnyMarketRestDSL.put(ENDPOINT.concat("/orders/{orderId}")));
     }
 
     @Test(expected = NullPointerException.class)
@@ -279,8 +278,7 @@ public class OrderPackageServiceTest {
     public void deliver_package_should_put_to_delivered_endpoint() {
         service.deliverPackage(ORDER_ID, buildValidDeliverRequest());
 
-        PowerMockito.verifyStatic();
-        AnyMarketRestDSL.put(ENDPOINT.concat("/orders/{orderId}/packages/delivered"));
+        mockedRestDSL.verify(() -> AnyMarketRestDSL.put(ENDPOINT.concat("/orders/{orderId}/packages/delivered")));
     }
 
     private OrderPackageRequest buildValidPackageRequest() {
