@@ -54,7 +54,7 @@ public class CategoryServiceTest {
         Category result = service.updateCategory(category, new ModuleOriginHeader("ECOMMERCE"));
 
         assertNotNull(result);
-        verify(service).put(contains("/categories/10"), eq(category), any());
+        verify(service).put(contains("/categories/10"), eq(category), any(IntegrationHeader[].class));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class CategoryServiceTest {
         Category result = service.insertCategory(category, new ModuleOriginHeader("ECOMMERCE"));
 
         assertNotNull(result);
-        verify(service).post(contains("/categories/"), eq(category), any());
+        verify(service).post(contains("/categories/"), eq(category), any(IntegrationHeader[].class));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class CategoryServiceTest {
 
         service.deleteCategory(category, new ModuleOriginHeader("ECOMMERCE"));
 
-        verify(service).delete(contains("/categories/10"), any());
+        verify(service).delete(contains("/categories/10"), any(IntegrationHeader[].class));
     }
 
     @Test
@@ -381,7 +381,7 @@ public class CategoryServiceTest {
 
         assertNotNull(result);
         assertEquals(1, result.size());
-        verify(service, atLeast(2)).get(anyString(), any());
+        verify(service, atLeast(2)).get(anyString(), any(IntegrationHeader[].class));
     }
 
     @Test

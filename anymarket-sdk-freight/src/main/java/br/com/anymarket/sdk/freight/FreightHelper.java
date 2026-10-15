@@ -4,6 +4,7 @@ import br.com.anymarket.sdk.freight.dto.FreightProduct;
 import br.com.anymarket.sdk.freight.dto.FreightResponse;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public final class FreightHelper {
 
@@ -26,12 +27,12 @@ public final class FreightHelper {
 
     public static BigDecimal getPriceRatingByWeight(BigDecimal totalWeight, BigDecimal totalPrice, FreightProduct product) {
         BigDecimal percent = product.getDimensions().getWeight()
-                .divide(totalWeight, SCALE_5, BigDecimal.ROUND_HALF_UP).multiply(BIG_100);
+                .divide(totalWeight, SCALE_5, RoundingMode.HALF_UP).multiply(BIG_100);
         BigDecimal priceOfTotal = totalPrice.multiply(percent)
-                .divide(BIG_100, SCALE_5, BigDecimal.ROUND_HALF_UP);
+                .divide(BIG_100, SCALE_5, RoundingMode.HALF_UP);
 
         return priceOfTotal
                 .multiply(product.getAmount())
-                .divide(BigDecimal.ONE, SCALE_2, BigDecimal.ROUND_HALF_UP);
+                .divide(BigDecimal.ONE, SCALE_2, RoundingMode.HALF_UP);
     }
 }

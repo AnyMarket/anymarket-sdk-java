@@ -65,7 +65,7 @@ public class CampaignServiceTest {
     @Test
     public void should_get_active_campaign_by_id_expected_success() throws UnirestException, IOException {
         try (MockedStatic<Unirest> unirest = Mockito.mockStatic(Unirest.class)) {
-            unirest.when((MockedStatic.Verification) Unirest.get(URL)).thenReturn(getRequest);
+            unirest.when(() -> Unirest.get(URL)).thenReturn(getRequest);
             when(getRequest.asString()).thenReturn(httpResponse);
             when(httpResponse.getStatus()).thenReturn(HttpStatus.SC_OK);
             when(httpResponse.getBody()).thenReturn(getCampaignResponse());
@@ -100,7 +100,7 @@ public class CampaignServiceTest {
     @Test
     public void should_get_active_campaign_by_id_expected_not_found_exception() throws IOException, UnirestException {
         try (MockedStatic<Unirest> unirest = Mockito.mockStatic(Unirest.class)) {
-            unirest.when((MockedStatic.Verification) Unirest.get(URL)).thenReturn(getRequest);
+            unirest.when(() -> Unirest.get(URL)).thenReturn(getRequest);
             when(getRequest.asString()).thenReturn(httpResponse);
             when(httpResponse.getStatus()).thenReturn(HttpStatus.SC_NOT_FOUND);
 
