@@ -1,6 +1,6 @@
 variables:
   APP_TYPE: "java"
-  JAVA_VERSION: 8
+  JAVA_VERSION: 11
   MR_BUILD_ENABLED: "true"
   MAVEN_BUILD_IMAGE_GOAL : "clean source:jar install deploy"
 
