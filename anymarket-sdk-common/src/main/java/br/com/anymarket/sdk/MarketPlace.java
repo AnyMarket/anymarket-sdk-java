@@ -255,7 +255,8 @@ public enum MarketPlace {
     TEMU("Temu"),
     NINETY_NINE_FOOD("99 Food"),
     TROCAMOTOR_NOVA_API("Trocamotor Nova API"),
-    STONE("STONE");
+    STONE("STONE"),
+    FRAVEGA("Fravega");
 
     private String name;
     private final boolean specificConsumer;
